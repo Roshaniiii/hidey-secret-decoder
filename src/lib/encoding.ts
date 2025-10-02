@@ -2,17 +2,17 @@
 export type PatternType = 'alnum' | 'symbol' | 'caps' | 'hex' | 'emoji' | 'custom';
 
 const PATTERNS = {
-  alnum: 'abcdefghijklmnopqrstuvwxyz0123456789',
-  symbol: '!@#$%^&*()_+-=[]{}|;:,.<>?~`',
-  caps: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
-  hex: '0123456789abcdef',
+  alnum: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 .,!?;:\'"()-_',
+  symbol: '!@#$%^&*()_+-=[]{}|;:,.<>?~`/\\\'"`ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿ',
+  caps: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 .,!?;:\'"()-_',
+  hex: '0123456789abcdefABCDEFghijklmnopqrstuvwxyzGHIJKLMNOPQRSTUVWXYZ .,!?;:\'"()-_',
   emoji: '😀😃😄😁😆😅🤣😂🙂🙃😉😊😇🥰😍🤩😘😗😚😙🥲😋😛😜🤪😝🤑🤗🤭🤫🤔🤐🤨😐😑😶😏😒🙄😬🤥😌😔😪🤤😴😷🤒🤕🤢🤮🤧🥵🥶🥴😵🤯🤠🥳🥸😎🤓🧐😕😟🙁☹️😮😯😲😳🥺😦😧😨😰😥😢😭😱😖😣😞😓😩😫🥱😤😡😠🤬😈👿💀☠️💩🤡👹👺👻👽👾🤖',
 };
 
 // Generate a character mapping from pattern
 function generateMapping(pattern: string, passphrase?: string): Map<string, string> {
   const mapping = new Map<string, string>();
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 .,!?;:\'"()-';
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 .,!?;:\'"()-_';
   
   let patternChars = pattern.split('');
   
@@ -23,6 +23,11 @@ function generateMapping(pattern: string, passphrase?: string): Map<string, stri
   if (passphrase) {
     const seed = passphrase.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
     patternChars = shuffleWithSeed(patternChars, seed);
+  }
+  
+  // Ensure pattern has enough characters for bijective mapping
+  if (patternChars.length < chars.length) {
+    console.warn(`Pattern has ${patternChars.length} unique chars but character set has ${chars.length} chars. Some characters may not encode/decode correctly.`);
   }
   
   // Create bijective mapping - only map as many chars as we have unique pattern chars
@@ -62,25 +67,15 @@ export function encodeMessage(
     
   const mapping = generateMapping(pattern, passphrase);
   
-  // Group characters for readability
+  // Encode each character directly without adding formatting spaces
   let encoded = '';
-  let group = '';
   
   for (const char of message) {
     const mappedChar = mapping.get(char) || char;
-    group += mappedChar;
-    
-    if (group.length >= 5) {
-      encoded += group + ' ';
-      group = '';
-    }
+    encoded += mappedChar;
   }
   
-  if (group) {
-    encoded += group;
-  }
-  
-  return encoded.trim();
+  return encoded;
 }
 
 export function decodeMessage(
@@ -103,11 +98,10 @@ export function decodeMessage(
     reverseMapping.set(value, key);
   });
   
-  // Remove spaces and decode
-  const cleanEncoded = encodedMessage.replace(/\s/g, '');
+  // Decode each character directly
   let decoded = '';
   
-  for (const char of cleanEncoded) {
+  for (const char of encodedMessage) {
     decoded += reverseMapping.get(char) || char;
   }
   
