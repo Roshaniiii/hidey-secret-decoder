@@ -7,7 +7,6 @@ export function PatternExamples() {
     { pattern: 'symbol', label: 'Symbol Stream', example: getPatternExample('symbol') },
     { pattern: 'caps', label: 'Caps Blast', example: getPatternExample('caps') },
     { pattern: 'hex', label: 'Hex Weave', example: getPatternExample('hex') },
-    { pattern: 'emoji', label: 'Emoji Mask', example: getPatternExample('emoji') },
   ];
 
   return (

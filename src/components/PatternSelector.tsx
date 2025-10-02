@@ -14,8 +14,6 @@ const patterns = [
   { value: 'symbol', label: 'Symbol Stream', description: 'Symbols-only mapping' },
   { value: 'caps', label: 'Caps Blast', description: 'Uppercase clusters' },
   { value: 'hex', label: 'Hex Weave', description: 'Hexadecimal-style blocks' },
-  { value: 'emoji', label: 'Emoji Mask', description: 'Emojis as mapping' },
-  { value: 'custom', label: 'Custom Pattern', description: 'Create your own or use passphrase-derived' },
 ];
 
 export function PatternSelector({ value, onChange }: PatternSelectorProps) {

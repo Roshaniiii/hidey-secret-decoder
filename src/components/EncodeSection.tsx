@@ -14,7 +14,6 @@ export function EncodeSection() {
   const [pattern, setPattern] = useState<PatternType>("alnum");
   const [usePassphrase, setUsePassphrase] = useState(false);
   const [passphrase, setPassphrase] = useState("");
-  const [customPattern, setCustomPattern] = useState("");
   const [encoded, setEncoded] = useState("");
 
   const handleEncode = () => {
@@ -39,7 +38,6 @@ export function EncodeSection() {
     const result = encodeMessage(
       message,
       pattern,
-      customPattern || undefined,
       usePassphrase ? passphrase : undefined
     );
     
@@ -78,21 +76,6 @@ export function EncodeSection() {
 
       <PatternSelector value={pattern} onChange={setPattern} />
 
-      {pattern === "custom" && (
-        <div className="space-y-2">
-          <Label htmlFor="custom-pattern" className="text-foreground font-medium">
-            Custom pattern characters
-          </Label>
-          <Input
-            id="custom-pattern"
-            placeholder="Enter your custom characters..."
-            value={customPattern}
-            onChange={(e) => setCustomPattern(e.target.value)}
-            className="bg-card border-2 border-border rounded-xl"
-          />
-        </div>
-      )}
-
       <div className="space-y-3 p-4 bg-accent/30 rounded-xl border-2 border-border">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -117,7 +100,7 @@ export function EncodeSection() {
           />
         )}
         <p className="text-xs text-muted-foreground">
-          Derive a private mapping from a passphrase. Recipient must use the same to decode.
+          This is a secret code that protects your message. Others need this password to decode it.
         </p>
       </div>
 

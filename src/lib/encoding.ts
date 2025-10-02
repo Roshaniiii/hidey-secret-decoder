@@ -1,12 +1,11 @@
 // Encoding patterns for Hidey
-export type PatternType = 'alnum' | 'symbol' | 'caps' | 'hex' | 'emoji' | 'custom';
+export type PatternType = 'alnum' | 'symbol' | 'caps' | 'hex';
 
 const PATTERNS = {
-  alnum: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 .,!?;:\'"()-_',
+  alnum: 'qwErTyuIoPaSdFgHjKlZxCvBnM1234567890 zyxwvutsrqponmlkjihgfedcba.,!?;:\'"()-_',
   symbol: '!@#$%^&*()_+-=[]{}|;:,.<>?~`/\\\'"`ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿ',
-  caps: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 .,!?;:\'"()-_',
+  caps: 'ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba9876543210 .,!?;:\'"()-_',
   hex: '0123456789abcdefABCDEFghijklmnopqrstuvwxyzGHIJKLMNOPQRSTUVWXYZ .,!?;:\'"()-_',
-  emoji: '😀😃😄😁😆😅🤣😂🙂🙃😉😊😇🥰😍🤩😘😗😚😙🥲😋😛😜🤪😝🤑🤗🤭🤫🤔🤐🤨😐😑😶😏😒🙄😬🤥😌😔😪🤤😴😷🤒🤕🤢🤮🤧🥵🥶🥴😵🤯🤠🥳🥸😎🤓🧐😕😟🙁☹️😮😯😲😳🥺😦😧😨😰😥😢😭😱😖😣😞😓😩😫🥱😤😡😠🤬😈👿💀☠️💩🤡👹👺👻👽👾🤖',
 };
 
 // Generate a character mapping from pattern
@@ -56,14 +55,11 @@ function shuffleWithSeed(array: string[], seed: number): string[] {
 export function encodeMessage(
   message: string,
   patternType: PatternType,
-  customPattern?: string,
   passphrase?: string
 ): string {
   if (!message) return '';
   
-  const pattern = patternType === 'custom' && customPattern 
-    ? customPattern 
-    : PATTERNS[patternType];
+  const pattern = PATTERNS[patternType];
     
   const mapping = generateMapping(pattern, passphrase);
   
@@ -81,14 +77,11 @@ export function encodeMessage(
 export function decodeMessage(
   encodedMessage: string,
   patternType: PatternType,
-  customPattern?: string,
   passphrase?: string
 ): string {
   if (!encodedMessage) return '';
   
-  const pattern = patternType === 'custom' && customPattern 
-    ? customPattern 
-    : PATTERNS[patternType];
+  const pattern = PATTERNS[patternType];
     
   const mapping = generateMapping(pattern, passphrase);
   

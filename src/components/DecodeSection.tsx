@@ -14,7 +14,6 @@ export function DecodeSection() {
   const [pattern, setPattern] = useState<PatternType>("alnum");
   const [usePassphrase, setUsePassphrase] = useState(false);
   const [passphrase, setPassphrase] = useState("");
-  const [customPattern, setCustomPattern] = useState("");
   const [decoded, setDecoded] = useState("");
 
   const handleDecode = () => {
@@ -31,7 +30,6 @@ export function DecodeSection() {
       const result = decodeMessage(
         encoded,
         pattern,
-        customPattern || undefined,
         usePassphrase ? passphrase : undefined
       );
       
@@ -75,21 +73,6 @@ export function DecodeSection() {
 
       <PatternSelector value={pattern} onChange={setPattern} />
 
-      {pattern === "custom" && (
-        <div className="space-y-2">
-          <Label htmlFor="custom-pattern-decode" className="text-foreground font-medium">
-            Custom pattern characters
-          </Label>
-          <Input
-            id="custom-pattern-decode"
-            placeholder="Enter your custom characters..."
-            value={customPattern}
-            onChange={(e) => setCustomPattern(e.target.value)}
-            className="bg-card border-2 border-border rounded-xl"
-          />
-        </div>
-      )}
-
       <div className="space-y-3 p-4 bg-accent/30 rounded-xl border-2 border-border">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -113,6 +96,9 @@ export function DecodeSection() {
             className="bg-card border-2 border-border rounded-xl"
           />
         )}
+        <p className="text-xs text-muted-foreground">
+          This is a secret code that protects the message. You need the same password to decode it.
+        </p>
       </div>
 
       <Button 
