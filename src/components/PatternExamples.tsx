@@ -15,7 +15,7 @@ export function PatternExamples() {
       <CardHeader>
         <CardTitle className="text-foreground font-bold">Pattern Examples</CardTitle>
         <p className="text-sm text-muted-foreground">
-          Original: "The location is 123 Marine Road"
+          Original: "Meet me at the old oak tree"
         </p>
       </CardHeader>
       <CardContent className="space-y-3">

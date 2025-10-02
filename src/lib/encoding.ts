@@ -16,17 +16,20 @@ function generateMapping(pattern: string, passphrase?: string): Map<string, stri
   
   let patternChars = pattern.split('');
   
+  // Remove duplicates from pattern to ensure bijective mapping
+  patternChars = [...new Set(patternChars)];
+  
   // If passphrase is provided, use it to shuffle the pattern
   if (passphrase) {
     const seed = passphrase.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
     patternChars = shuffleWithSeed(patternChars, seed);
   }
   
-  // Create mapping
-  chars.split('').forEach((char, index) => {
-    const mappedChar = patternChars[index % patternChars.length];
-    mapping.set(char, mappedChar);
-  });
+  // Create bijective mapping - only map as many chars as we have unique pattern chars
+  const maxChars = Math.min(chars.length, patternChars.length);
+  for (let i = 0; i < maxChars; i++) {
+    mapping.set(chars[i], patternChars[i]);
+  }
   
   return mapping;
 }
@@ -112,6 +115,6 @@ export function decodeMessage(
 }
 
 export function getPatternExample(patternType: PatternType): string {
-  const sample = 'The location is 123 Marine Road';
+  const sample = 'Meet me at the old oak tree';
   return encodeMessage(sample, patternType);
 }
