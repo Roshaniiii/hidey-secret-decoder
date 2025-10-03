@@ -2,7 +2,7 @@
 export type PatternType = 'alnum' | 'symbol' | 'caps' | 'hex';
 
 const PATTERNS = {
-  alnum: 'qwErTyuIoPaSdFgHjKlZxCvBnM1234567890 zyxwvutsrqponmlkjihgfedcba.,!?;:\'"()-_',
+  alnum: 'qwErTyUiOpLkJhGfDsAzXcVbNm1234567890QWEUIKHFSZCBMljhgfdsazxcvbnm .,!?;:\'"()-_',
   symbol: '!@#$%^&*()_+-=[]{}|;:,.<>?~`/\\\'"`ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿ',
   caps: 'ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba9876543210 .,!?;:\'"()-_',
   hex: '0123456789abcdefABCDEFghijklmnopqrstuvwxyzGHIJKLMNOPQRSTUVWXYZ .,!?;:\'"()-_',
