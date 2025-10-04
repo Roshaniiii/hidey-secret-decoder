@@ -1,10 +1,8 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EncodeSection } from "@/components/EncodeSection";
 import { DecodeSection } from "@/components/DecodeSection";
-import { ImageEncodeSection } from "@/components/ImageEncodeSection";
-import { ImageDecodeSection } from "@/components/ImageDecodeSection";
 import { PatternExamples } from "@/components/PatternExamples";
-import { Lock, Unlock, MessageSquare, Image } from "lucide-react";
+import { Lock, Unlock } from "lucide-react";
 
 const Index = () => {
   return (
@@ -26,91 +24,34 @@ const Index = () => {
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2">
-            {/* Mode Selection */}
-            <Tabs defaultValue="message" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 bg-card border-2 border-border rounded-2xl p-1 h-14 mb-6">
+            <Tabs defaultValue="encode" className="w-full">
+              <TabsList className="grid w-full grid-cols-2 bg-card border-2 border-border rounded-2xl p-1 h-14">
                 <TabsTrigger 
-                  value="message" 
+                  value="encode" 
                   className="rounded-xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground font-semibold"
                 >
-                  <MessageSquare className="mr-2 h-4 w-4" />
-                  Message Mode
+                  <Lock className="mr-2 h-4 w-4" />
+                  Encode
                 </TabsTrigger>
                 <TabsTrigger 
-                  value="image"
+                  value="decode"
                   className="rounded-xl data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground font-semibold"
                 >
-                  <Image className="mr-2 h-4 w-4" />
-                  Image Mode
+                  <Unlock className="mr-2 h-4 w-4" />
+                  Decode
                 </TabsTrigger>
               </TabsList>
               
-              {/* Message Mode */}
-              <TabsContent value="message" className="space-y-0">
-                <Tabs defaultValue="encode" className="w-full">
-                  <TabsList className="grid w-full grid-cols-2 bg-card border-2 border-border rounded-2xl p-1 h-14">
-                    <TabsTrigger 
-                      value="encode" 
-                      className="rounded-xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground font-semibold"
-                    >
-                      <Lock className="mr-2 h-4 w-4" />
-                      Encode
-                    </TabsTrigger>
-                    <TabsTrigger 
-                      value="decode"
-                      className="rounded-xl data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground font-semibold"
-                    >
-                      <Unlock className="mr-2 h-4 w-4" />
-                      Decode
-                    </TabsTrigger>
-                  </TabsList>
-                  
-                  <TabsContent value="encode" className="mt-6">
-                    <div className="bg-card border-2 border-border rounded-2xl p-6 shadow-lg">
-                      <EncodeSection />
-                    </div>
-                  </TabsContent>
-                  
-                  <TabsContent value="decode" className="mt-6">
-                    <div className="bg-card border-2 border-border rounded-2xl p-6 shadow-lg">
-                      <DecodeSection />
-                    </div>
-                  </TabsContent>
-                </Tabs>
+              <TabsContent value="encode" className="mt-6">
+                <div className="bg-card border-2 border-border rounded-2xl p-6 shadow-lg">
+                  <EncodeSection />
+                </div>
               </TabsContent>
-
-              {/* Image Mode */}
-              <TabsContent value="image" className="space-y-0">
-                <Tabs defaultValue="scramble" className="w-full">
-                  <TabsList className="grid w-full grid-cols-2 bg-card border-2 border-border rounded-2xl p-1 h-14">
-                    <TabsTrigger 
-                      value="scramble" 
-                      className="rounded-xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground font-semibold"
-                    >
-                      <Lock className="mr-2 h-4 w-4" />
-                      Scramble
-                    </TabsTrigger>
-                    <TabsTrigger 
-                      value="reveal"
-                      className="rounded-xl data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground font-semibold"
-                    >
-                      <Unlock className="mr-2 h-4 w-4" />
-                      Reveal
-                    </TabsTrigger>
-                  </TabsList>
-                  
-                  <TabsContent value="scramble" className="mt-6">
-                    <div className="bg-card border-2 border-border rounded-2xl p-6 shadow-lg">
-                      <ImageEncodeSection />
-                    </div>
-                  </TabsContent>
-                  
-                  <TabsContent value="reveal" className="mt-6">
-                    <div className="bg-card border-2 border-border rounded-2xl p-6 shadow-lg">
-                      <ImageDecodeSection />
-                    </div>
-                  </TabsContent>
-                </Tabs>
+              
+              <TabsContent value="decode" className="mt-6">
+                <div className="bg-card border-2 border-border rounded-2xl p-6 shadow-lg">
+                  <DecodeSection />
+                </div>
               </TabsContent>
             </Tabs>
           </div>
