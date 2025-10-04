@@ -1,16 +1,31 @@
-// Base62 encoding for Hidey
+// Base encoding for Hidey with different pattern alphabets
 export type PatternType = 'alnum' | 'symbol' | 'caps' | 'hex';
 
-const BASE62_ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 const LENGTH_PREFIX_WIDTH = 3;
 const MAX_MESSAGE_LENGTH = 10000;
 
-// Pattern configurations
+// Pattern configurations with their own alphabets
 const PATTERN_CONFIG = {
-  alnum: { groupSize: 6, separator: ' ' },
-  symbol: { groupSize: 0, separator: '' },
-  caps: { groupSize: 0, separator: '' },
-  hex: { groupSize: 0, separator: '' },
+  alnum: { 
+    alphabet: "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
+    groupSize: 6, 
+    separator: ' ' 
+  },
+  symbol: { 
+    alphabet: "!@#$%^&*()_+-=[]{}|;:,.<>?~`",
+    groupSize: 4, 
+    separator: '-' 
+  },
+  caps: { 
+    alphabet: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+    groupSize: 5, 
+    separator: ' ' 
+  },
+  hex: { 
+    alphabet: "0123456789ABCDEF",
+    groupSize: 8, 
+    separator: '' 
+  },
 };
 
 // Shuffle array with seed for consistent results
@@ -28,9 +43,9 @@ function shuffleWithSeed(array: string[], seed: number): string[] {
 }
 
 // Generate permuted alphabet from passphrase
-function permuteAlphabet(passphrase: string): string {
+function permuteAlphabet(passphrase: string, baseAlphabet: string): string {
   const seed = passphrase.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-  const chars = BASE62_ALPHABET.split('');
+  const chars = baseAlphabet.split('');
   return shuffleWithSeed(chars, seed).join('');
 }
 
@@ -149,8 +164,9 @@ export function encodeMessage(
     throw new Error(`Message exceeds maximum length of ${MAX_MESSAGE_LENGTH} characters`);
   }
   
-  // Get alphabet (permuted if passphrase provided)
-  const alphabet = passphrase ? permuteAlphabet(passphrase) : BASE62_ALPHABET;
+  // Get pattern config and alphabet (permuted if passphrase provided)
+  const config = PATTERN_CONFIG[patternType];
+  const alphabet = passphrase ? permuteAlphabet(passphrase, config.alphabet) : config.alphabet;
   
   // Convert message to UTF-8 bytes
   const encoder = new TextEncoder();
@@ -177,8 +193,9 @@ export function decodeMessage(
   if (!encodedMessage) return '';
   
   try {
-    // Get alphabet (permuted if passphrase provided)
-    const alphabet = passphrase ? permuteAlphabet(passphrase) : BASE62_ALPHABET;
+    // Get pattern config and alphabet (permuted if passphrase provided)
+    const config = PATTERN_CONFIG[patternType];
+    const alphabet = passphrase ? permuteAlphabet(passphrase, config.alphabet) : config.alphabet;
     
     // Remove pattern formatting
     const cleaned = removePatternFormatting(encodedMessage, patternType);
