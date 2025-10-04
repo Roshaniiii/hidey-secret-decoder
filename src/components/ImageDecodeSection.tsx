@@ -53,9 +53,9 @@ export function ImageDecodeSection() {
       if (scrambledCode) {
         // Decode from code
         const decoded = decodeScrambledData(scrambledCode);
-        image = await loadImageFromBase64(decoded.base64);
-        style = decoded.metadata.style;
-        hasPassphrase = decoded.metadata.hasPassphrase;
+        image = await loadImageFromBase64(decoded.image);
+        style = decoded.style;
+        hasPassphrase = decoded.seed === "protected";
       } else if (uploadedFile) {
         // Load from file - attempt to extract metadata from filename or use default
         image = await loadImageFromFile(uploadedFile);
