@@ -164,16 +164,6 @@ export interface ScrambleResult {
   };
 }
 
-export interface DecodedScrambleData {
-  image: string;
-  style: ScrambleStyle;
-  seed: string;
-  params: {
-    width: number;
-    height: number;
-  };
-}
-
 // Scramble an image
 export async function scrambleImage(
   image: HTMLImageElement,
@@ -358,30 +348,17 @@ function reverseGlitchLines(canvas: HTMLCanvasElement, ctx: CanvasRenderingConte
 // Encode scrambled data with metadata
 export function encodeScrambledData(result: ScrambleResult): string {
   const data = {
-    style: result.metadata.style,
-    seed: result.metadata.hasPassphrase ? "protected" : "default",
-    params: {
-      width: result.metadata.width,
-      height: result.metadata.height,
-    },
     image: result.base64,
+    metadata: result.metadata,
   };
   return btoa(JSON.stringify(data));
 }
 
 // Decode scrambled data
-export function decodeScrambledData(encoded: string): DecodedScrambleData {
+export function decodeScrambledData(encoded: string): ScrambleResult {
   try {
     const decoded = JSON.parse(atob(encoded));
-    return {
-      image: decoded.image,
-      style: decoded.style,
-      seed: decoded.seed,
-      params: {
-        width: decoded.params.width,
-        height: decoded.params.height,
-      },
-    };
+    return decoded as ScrambleResult;
   } catch (error) {
     throw new Error('Invalid scrambled image code');
   }
