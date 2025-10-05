@@ -2,8 +2,9 @@ import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
 import { Card } from "@/components/ui/card";
+import { toast } from "sonner";
+import { Download, Copy, Loader2, Upload } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -11,25 +12,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { toast } from "sonner";
-import { Download, Copy, Loader2 } from "lucide-react";
 import {
-  scrambleImage,
-  loadImageFromFile,
-  encodeScrambledData,
-  type ScrambleStyle,
-  type ScrambleResult,
-} from "@/lib/imageScramble";
+  maskImage,
+  encodeMaskedData,
+  MaskType,
+  MaskResult,
+} from "@/lib/imageMask";
 
 export function ImageEncodeSection() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string>("");
-  const [scrambleStyle, setScrambleStyle] = useState<ScrambleStyle>("pixel-shuffle");
-  const [usePassphrase, setUsePassphrase] = useState(false);
+  const [maskType, setMaskType] = useState<MaskType>("blur");
   const [passphrase, setPassphrase] = useState("");
-  const [isScrambling, setIsScrambling] = useState(false);
-  const [scrambledResult, setScrambledResult] = useState<ScrambleResult | null>(null);
-  const [scrambledCode, setScrambledCode] = useState("");
+  const [isMasking, setIsMasking] = useState(false);
+  const [maskedResult, setMaskedResult] = useState<MaskResult | null>(null);
+  const [encodedCode, setEncodedCode] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,85 +39,94 @@ export function ImageEncodeSection() {
     }
 
     setSelectedFile(file);
-    const url = URL.createObjectURL(file);
-    setPreviewUrl(url);
-    setScrambledResult(null);
-    setScrambledCode("");
+    setMaskedResult(null);
+    setEncodedCode("");
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setPreviewUrl(e.target?.result as string);
+    };
+    reader.readAsDataURL(file);
+
+    toast.success("Image loaded");
   };
 
-  const handleScramble = async () => {
+  const handleMask = async () => {
     if (!selectedFile) {
-      toast.error("Please upload an image first");
+      toast.error("Please select an image first");
       return;
     }
 
-    if (usePassphrase && !passphrase.trim()) {
-      toast.error("Please enter a passphrase or disable private pattern");
+    if (!passphrase) {
+      toast.error("Passphrase is required to mask the image");
       return;
     }
 
-    setIsScrambling(true);
-    toast.loading("🌀 Scrambling pixels…");
+    setIsMasking(true);
+    toast.loading("🎭 Applying mask...");
 
     try {
-      const image = await loadImageFromFile(selectedFile);
-      const result = await scrambleImage(
-        image,
-        scrambleStyle,
-        usePassphrase ? passphrase : undefined
-      );
+      const result = await maskImage(selectedFile, maskType, passphrase);
+      const encoded = encodeMaskedData(result);
 
-      setScrambledResult(result);
-      const encoded = encodeScrambledData(result);
-      setScrambledCode(encoded);
+      setMaskedResult(result);
+      setEncodedCode(encoded);
 
       toast.dismiss();
-      toast.success("✨ Done! Image scrambled successfully");
+      toast.success("✨ Image masked! Share the preview or code");
     } catch (error) {
       toast.dismiss();
-      toast.error(error instanceof Error ? error.message : "Failed to scramble image");
+      toast.error(
+        error instanceof Error ? error.message : "Failed to mask image"
+      );
     } finally {
-      setIsScrambling(false);
+      setIsMasking(false);
     }
   };
 
-  const handleDownload = () => {
-    if (!scrambledResult) return;
+  const handleDownloadMasked = () => {
+    if (!maskedResult) return;
 
     const link = document.createElement("a");
-    link.href = scrambledResult.base64;
-    link.download = "scrambled-image.png";
+    link.href = maskedResult.maskedPreview;
+    link.download = "masked-image.png";
     link.click();
 
-    toast.success("✅ Downloaded!");
+    toast.success("✅ Downloaded masked image!");
   };
 
-  const handleCopyCode = async () => {
-    if (!scrambledCode) return;
+  const handleCopyCode = () => {
+    if (!encodedCode) return;
 
-    try {
-      await navigator.clipboard.writeText(scrambledCode);
-      toast.success("✅ Copied! Share this code with your friend");
-    } catch (error) {
-      toast.error("Failed to copy code");
-    }
+    navigator.clipboard.writeText(encodedCode);
+    toast.success("✅ Code copied to clipboard!");
   };
 
   return (
     <div className="space-y-6">
       <div className="space-y-4">
         <div>
-          <Label htmlFor="image-upload" className="text-lg font-semibold text-foreground">
-            Upload your image
+          <Label htmlFor="file-upload" className="text-lg font-semibold text-foreground">
+            Upload Image
           </Label>
-          <Input
-            ref={fileInputRef}
-            id="image-upload"
-            type="file"
-            accept=".png,.jpg,.jpeg"
-            onChange={handleFileSelect}
-            className="mt-2"
-          />
+          <div className="mt-2">
+            <Input
+              ref={fileInputRef}
+              id="file-upload"
+              type="file"
+              accept=".png,.jpg,.jpeg"
+              onChange={handleFileSelect}
+              className="hidden"
+            />
+            <Button
+              variant="outline"
+              className="w-full"
+              onClick={() => fileInputRef.current?.click()}
+            >
+              <Upload className="mr-2 h-4 w-4" />
+              {selectedFile ? selectedFile.name : "Choose Image"}
+            </Button>
+          </div>
         </div>
 
         {previewUrl && (
@@ -134,111 +140,97 @@ export function ImageEncodeSection() {
         )}
 
         <div>
-          <Label className="text-lg font-semibold text-foreground">
-            Choose a scramble style
+          <Label htmlFor="mask-type" className="text-base font-semibold text-foreground">
+            Mask Type
           </Label>
           <Select
-            value={scrambleStyle}
-            onValueChange={(value) => setScrambleStyle(value as ScrambleStyle)}
+            value={maskType}
+            onValueChange={(value) => setMaskType(value as MaskType)}
           >
-            <SelectTrigger className="mt-2">
+            <SelectTrigger id="mask-type" className="mt-2">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="pixel-shuffle">
-                <div>
-                  <div className="font-semibold">Pixel Shuffle</div>
-                  <div className="text-xs text-muted-foreground">
-                    Randomly rearrange small square blocks
-                  </div>
-                </div>
-              </SelectItem>
-              <SelectItem value="mosaic-blur">
-                <div>
-                  <div className="font-semibold">Mosaic Blur</div>
-                  <div className="text-xs text-muted-foreground">
-                    Pixelated chunky blocks
-                  </div>
-                </div>
-              </SelectItem>
-              <SelectItem value="glitch-lines">
-                <div>
-                  <div className="font-semibold">Glitch Lines</div>
-                  <div className="text-xs text-muted-foreground">
-                    Offset horizontal color stripes (glitchy effect)
-                  </div>
-                </div>
-              </SelectItem>
+              <SelectItem value="blur">🌫 Blur</SelectItem>
+              <SelectItem value="pixel">💎 Pixel Mosaic</SelectItem>
+              <SelectItem value="mosaic">🔲 Block Mosaic</SelectItem>
+              <SelectItem value="swirl">🌀 Swirl</SelectItem>
+              <SelectItem value="noise">📺 Noise</SelectItem>
             </SelectContent>
           </Select>
         </div>
 
-        <div className="space-y-3">
-          <div className="flex items-center justify-between">
-            <Label htmlFor="use-passphrase" className="text-base font-semibold">
-              Private pattern (optional)
-            </Label>
-            <Switch
-              id="use-passphrase"
-              checked={usePassphrase}
-              onCheckedChange={setUsePassphrase}
-            />
-          </div>
-
-          {usePassphrase && (
-            <div>
-              <Input
-                type="password"
-                placeholder="Enter passphrase"
-                value={passphrase}
-                onChange={(e) => setPassphrase(e.target.value)}
-              />
-              <p className="text-xs text-muted-foreground mt-1">
-                This secret code protects your image. Others need this to reveal it.
-              </p>
-            </div>
-          )}
+        <div>
+          <Label htmlFor="passphrase" className="text-base font-semibold text-foreground">
+            Passphrase (Required)
+          </Label>
+          <Input
+            id="passphrase"
+            type="password"
+            placeholder="Enter a strong passphrase"
+            value={passphrase}
+            onChange={(e) => setPassphrase(e.target.value)}
+            className="mt-2"
+          />
         </div>
 
         <Button
-          onClick={handleScramble}
-          disabled={!selectedFile || isScrambling}
+          onClick={handleMask}
+          disabled={!selectedFile || !passphrase || isMasking}
           className="w-full"
           size="lg"
         >
-          {isScrambling ? (
+          {isMasking ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Scrambling...
+              Masking...
             </>
           ) : (
-            "Scramble Image"
+            "🎭 Mask Image"
           )}
         </Button>
       </div>
 
-      {scrambledResult && (
+      {maskedResult && (
         <div className="space-y-4 pt-6 border-t border-border">
-          <h3 className="text-lg font-semibold text-foreground">Scrambled Result</h3>
+          <h3 className="text-lg font-semibold text-foreground">Masked Result</h3>
 
           <Card className="p-4 bg-muted/30">
             <img
-              src={scrambledResult.base64}
-              alt="Scrambled"
+              src={maskedResult.maskedPreview}
+              alt="Masked"
               className="max-h-64 mx-auto rounded-lg shadow-md"
             />
           </Card>
 
+          <div>
+            <Label className="text-sm font-medium text-foreground">
+              Encoded Code (copy to reveal later)
+            </Label>
+            <div className="mt-2 p-3 bg-muted rounded-lg break-all font-mono text-xs">
+              {encodedCode}
+            </div>
+          </div>
+
           <div className="flex gap-2">
-            <Button onClick={handleDownload} variant="outline" className="flex-1">
+            <Button
+              onClick={handleDownloadMasked}
+              variant="outline"
+              className="flex-1"
+            >
               <Download className="mr-2 h-4 w-4" />
-              Download
+              Download Masked
             </Button>
             <Button onClick={handleCopyCode} variant="outline" className="flex-1">
               <Copy className="mr-2 h-4 w-4" />
               Copy Code
             </Button>
           </div>
+
+          <p className="text-sm text-muted-foreground">
+            💡 Share the masked image publicly, but keep the code private. Only
+            those with the code and passphrase can reveal the original.
+          </p>
         </div>
       )}
     </div>

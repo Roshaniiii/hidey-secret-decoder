@@ -7,7 +7,6 @@ import { Copy, Lock } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { encodeQuestionMessage } from '@/lib/questionEncoding';
 import { PatternType } from '@/lib/encoding';
-import { PatternSelector } from './PatternSelector';
 
 export function QuestionEncodeSection() {
   const [message, setMessage] = useState('');
@@ -99,8 +98,6 @@ export function QuestionEncodeSection() {
             className="mt-2"
           />
         </div>
-
-        <PatternSelector value={patternType} onChange={setPatternType} />
 
         <div className="flex items-center gap-2">
           <input

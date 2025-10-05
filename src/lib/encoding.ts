@@ -12,7 +12,7 @@ const PATTERN_CONFIG = {
     separator: ' ' 
   },
   symbol: { 
-    alphabet: "!@#$%^&*()_+-=[]{}|;:,.<>?~`",
+    alphabet: "!@#$%^&*()_+-=[]{}|;:,.<>?/~`'\"\\",
     groupSize: 4, 
     separator: '-' 
   },

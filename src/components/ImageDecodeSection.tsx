@@ -1,89 +1,44 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
-import { Download, Copy, Loader2, Upload } from "lucide-react";
-import {
-  unscrambleImage,
-  loadImageFromBase64,
-  loadImageFromFile,
-  decodeScrambledData,
-} from "@/lib/imageScramble";
+import { Download, Copy, Loader2 } from "lucide-react";
+import { decodeMaskedData, revealImage } from "@/lib/imageMask";
 
 export function ImageDecodeSection() {
-  const [scrambledCode, setScrambledCode] = useState("");
-  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [encodedCode, setEncodedCode] = useState("");
   const [passphrase, setPassphrase] = useState("");
   const [isRevealing, setIsRevealing] = useState(false);
   const [revealedImage, setRevealedImage] = useState<string>("");
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    if (!file.type.match(/^image\/(png|jpeg|jpg)$/)) {
-      toast.error("Please select a PNG or JPG image");
+  const handleReveal = async () => {
+    if (!encodedCode) {
+      toast.error("Please paste the encoded code");
       return;
     }
 
-    setUploadedFile(file);
-    setScrambledCode("");
-    setRevealedImage("");
-    toast.success("Image uploaded");
-  };
-
-  const handleReveal = async () => {
-    if (!scrambledCode && !uploadedFile) {
-      toast.error("Please paste scrambled code or upload an image");
+    if (!passphrase) {
+      toast.error("Passphrase is required");
       return;
     }
 
     setIsRevealing(true);
-    toast.loading("🌀 Unscrambling…");
+    toast.loading("🔓 Revealing image...");
 
     try {
-      let image: HTMLImageElement;
-      let style: string;
-      let hasPassphrase: boolean;
+      const { encrypted } = decodeMaskedData(encodedCode);
+      const revealed = revealImage(encrypted, passphrase);
 
-      if (scrambledCode) {
-        // Decode from code
-        const decoded = decodeScrambledData(scrambledCode);
-        image = await loadImageFromBase64(decoded.base64);
-        style = decoded.metadata.style;
-        hasPassphrase = decoded.metadata.hasPassphrase;
-      } else if (uploadedFile) {
-        // Load from file - attempt to extract metadata from filename or use default
-        image = await loadImageFromFile(uploadedFile);
-        style = "pixel-shuffle"; // Default style
-        hasPassphrase = false;
-        toast("Note: Using default Pixel Shuffle style for uploaded image", {
-          duration: 3000,
-        });
-      } else {
-        throw new Error("No image data provided");
+      if (!revealed) {
+        throw new Error("Incorrect passphrase or corrupted data");
       }
-
-      if (hasPassphrase && !passphrase) {
-        toast.dismiss();
-        toast.error("This image requires a passphrase to reveal");
-        setIsRevealing(false);
-        return;
-      }
-
-      const revealed = await unscrambleImage(
-        image,
-        style as any,
-        passphrase || undefined
-      );
 
       setRevealedImage(revealed);
       toast.dismiss();
-      toast.success("✨ Revealed! Image unscrambled");
+      toast.success("✨ Original image revealed!");
     } catch (error) {
       toast.dismiss();
       toast.error(
@@ -123,58 +78,24 @@ export function ImageDecodeSection() {
     <div className="space-y-6">
       <div className="space-y-4">
         <div>
-          <Label htmlFor="scrambled-code" className="text-lg font-semibold text-foreground">
-            Paste Scrambled Image Code
+          <Label htmlFor="encoded-code" className="text-lg font-semibold text-foreground">
+            Paste Encoded Code
           </Label>
           <Textarea
-            id="scrambled-code"
-            placeholder="Paste the scrambled code here..."
-            value={scrambledCode}
+            id="encoded-code"
+            placeholder="Paste the MASKED:: code here..."
+            value={encodedCode}
             onChange={(e) => {
-              setScrambledCode(e.target.value);
-              setUploadedFile(null);
+              setEncodedCode(e.target.value);
               setRevealedImage("");
             }}
             className="mt-2 min-h-[100px] font-mono text-sm"
           />
         </div>
 
-        <div className="relative">
-          <div className="absolute inset-0 flex items-center">
-            <span className="w-full border-t border-border" />
-          </div>
-          <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-card px-2 text-muted-foreground">Or</span>
-          </div>
-        </div>
-
-        <div>
-          <Label htmlFor="file-upload" className="text-lg font-semibold text-foreground">
-            Upload Scrambled Image
-          </Label>
-          <div className="mt-2">
-            <Input
-              ref={fileInputRef}
-              id="file-upload"
-              type="file"
-              accept=".png,.jpg,.jpeg"
-              onChange={handleFileSelect}
-              className="hidden"
-            />
-            <Button
-              variant="outline"
-              className="w-full"
-              onClick={() => fileInputRef.current?.click()}
-            >
-              <Upload className="mr-2 h-4 w-4" />
-              {uploadedFile ? uploadedFile.name : "Choose File"}
-            </Button>
-          </div>
-        </div>
-
         <div>
           <Label htmlFor="passphrase" className="text-base font-semibold text-foreground">
-            Passphrase (if required)
+            Passphrase
           </Label>
           <Input
             id="passphrase"
@@ -188,7 +109,7 @@ export function ImageDecodeSection() {
 
         <Button
           onClick={handleReveal}
-          disabled={(!scrambledCode && !uploadedFile) || isRevealing}
+          disabled={!encodedCode || !passphrase || isRevealing}
           className="w-full"
           size="lg"
         >
@@ -198,7 +119,7 @@ export function ImageDecodeSection() {
               Revealing...
             </>
           ) : (
-            "Reveal Image"
+            "🔓 Reveal Image"
           )}
         </Button>
       </div>
