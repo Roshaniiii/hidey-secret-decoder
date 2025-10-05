@@ -3,8 +3,10 @@ import { EncodeSection } from "@/components/EncodeSection";
 import { DecodeSection } from "@/components/DecodeSection";
 import { ImageEncodeSection } from "@/components/ImageEncodeSection";
 import { ImageDecodeSection } from "@/components/ImageDecodeSection";
+import { QuestionEncodeSection } from "@/components/QuestionEncodeSection";
+import { QuestionDecodeSection } from "@/components/QuestionDecodeSection";
 import { PatternExamples } from "@/components/PatternExamples";
-import { Lock, Unlock, MessageSquare, Image } from "lucide-react";
+import { Lock, Unlock, MessageSquare, Image, HelpCircle } from "lucide-react";
 
 const Index = () => {
   return (
@@ -28,7 +30,7 @@ const Index = () => {
           <div className="lg:col-span-2">
             {/* Mode Selection */}
             <Tabs defaultValue="message" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 bg-card border-2 border-border rounded-2xl p-1 h-14 mb-6">
+              <TabsList className="grid w-full grid-cols-3 bg-card border-2 border-border rounded-2xl p-1 h-14 mb-6">
                 <TabsTrigger 
                   value="message" 
                   className="rounded-xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground font-semibold"
@@ -42,6 +44,13 @@ const Index = () => {
                 >
                   <Image className="mr-2 h-4 w-4" />
                   Image Mode
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="question"
+                  className="rounded-xl data-[state=active]:bg-accent data-[state=active]:text-accent-foreground font-semibold"
+                >
+                  <HelpCircle className="mr-2 h-4 w-4" />
+                  Question Mode
                 </TabsTrigger>
               </TabsList>
               
@@ -108,6 +117,40 @@ const Index = () => {
                   <TabsContent value="reveal" className="mt-6">
                     <div className="bg-card border-2 border-border rounded-2xl p-6 shadow-lg">
                       <ImageDecodeSection />
+                    </div>
+                  </TabsContent>
+                </Tabs>
+              </TabsContent>
+
+              {/* Question Mode */}
+              <TabsContent value="question" className="space-y-0">
+                <Tabs defaultValue="create" className="w-full">
+                  <TabsList className="grid w-full grid-cols-2 bg-card border-2 border-border rounded-2xl p-1 h-14">
+                    <TabsTrigger 
+                      value="create" 
+                      className="rounded-xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground font-semibold"
+                    >
+                      <Lock className="mr-2 h-4 w-4" />
+                      Create Challenge
+                    </TabsTrigger>
+                    <TabsTrigger 
+                      value="unlock"
+                      className="rounded-xl data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground font-semibold"
+                    >
+                      <Unlock className="mr-2 h-4 w-4" />
+                      Unlock
+                    </TabsTrigger>
+                  </TabsList>
+                  
+                  <TabsContent value="create" className="mt-6">
+                    <div className="bg-card border-2 border-border rounded-2xl p-6 shadow-lg">
+                      <QuestionEncodeSection />
+                    </div>
+                  </TabsContent>
+                  
+                  <TabsContent value="unlock" className="mt-6">
+                    <div className="bg-card border-2 border-border rounded-2xl p-6 shadow-lg">
+                      <QuestionDecodeSection />
                     </div>
                   </TabsContent>
                 </Tabs>
