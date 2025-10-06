@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
-import { Download, Copy, Loader2, Upload, Share2 } from "lucide-react";
+import { Download, Copy, Loader2, Upload } from "lucide-react";
 import {
   maskImage,
   encodeMaskedData,
@@ -18,6 +18,7 @@ export function ImageEncodeSection() {
   const [isMasking, setIsMasking] = useState(false);
   const [maskedResult, setMaskedResult] = useState<MaskResult | null>(null);
   const [encodedCode, setEncodedCode] = useState("");
+  const [shortCode, setShortCode] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,6 +33,7 @@ export function ImageEncodeSection() {
     setSelectedFile(file);
     setMaskedResult(null);
     setEncodedCode("");
+    setShortCode(null);
 
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -59,10 +61,14 @@ export function ImageEncodeSection() {
     try {
       const result = await maskImage(selectedFile, "blur", passphrase);
       const encoded = encodeMaskedData(result);
-
+      
       setMaskedResult(result);
       setEncodedCode(encoded);
-
+      // Generate short share code mapped to full encoded code
+      const shortId = Math.random().toString(36).substring(2, 8).toUpperCase();
+      localStorage.setItem(`hidey-${shortId}`, encoded);
+      setShortCode(shortId);
+      
       toast.dismiss();
       toast.success("✨ Image masked & encrypted!");
     } catch (error) {
@@ -93,15 +99,7 @@ export function ImageEncodeSection() {
     toast.success("✅ Code copied to clipboard!");
   };
 
-  const handleShare = () => {
-    if (!encodedCode) return;
-
-    const shareUrl = `${window.location.origin}/#image-decode=${encodeURIComponent(
-      encodedCode
-    )}`;
-    navigator.clipboard.writeText(shareUrl);
-    toast.success("✅ Share link copied! Anyone with this link can decode.");
-  };
+  // Share option removed as requested
 
   return (
     <div className="space-y-6">
@@ -195,6 +193,16 @@ export function ImageEncodeSection() {
             </div>
           </div>
 
+          {shortCode && (
+            <div className="p-3 bg-muted rounded-lg text-sm">
+              <div className="font-medium text-foreground">Your share code:</div>
+              <div className="font-mono break-all">HIDEY-{shortCode}</div>
+              <div className="mt-2 text-xs text-muted-foreground">
+                Share link: {window.location.origin}/reveal?code={shortCode}
+              </div>
+            </div>
+          )}
+          
           <div className="flex gap-2">
             <Button
               onClick={handleDownloadMasked}
@@ -208,12 +216,8 @@ export function ImageEncodeSection() {
               <Copy className="mr-2 h-4 w-4" />
               Copy Code
             </Button>
-            <Button onClick={handleShare} variant="outline" className="flex-1">
-              <Share2 className="mr-2 h-4 w-4" />
-              Share Link
-            </Button>
           </div>
-
+          
           <p className="text-sm text-muted-foreground">
             💡 Share the link or code. Only those with the correct passphrase can
             reveal the original image.

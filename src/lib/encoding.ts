@@ -12,9 +12,9 @@ const PATTERN_CONFIG = {
     separator: ' ' 
   },
   symbol: { 
-    alphabet: "!@#$%^&*()_+-=[]{}|;:,.<>?~`/\\\\'\"ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿ",
+    alphabet: "!@#$%^&*()_+-=[]{}|;:,.<>?~`/\\'\"ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿ",
     groupSize: 4, 
-    separator: '-' 
+    separator: ' ' 
   },
   caps: { 
     alphabet: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",

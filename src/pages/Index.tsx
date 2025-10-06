@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EncodeSection } from "@/components/EncodeSection";
 import { DecodeSection } from "@/components/DecodeSection";
@@ -6,9 +7,11 @@ import { ImageDecodeSection } from "@/components/ImageDecodeSection";
 import { QuestionEncodeSection } from "@/components/QuestionEncodeSection";
 import { QuestionDecodeSection } from "@/components/QuestionDecodeSection";
 import { PatternExamples } from "@/components/PatternExamples";
+import { HelpSidebar } from "@/components/HelpSidebar";
 import { Lock, Unlock, MessageSquare, Image, HelpCircle } from "lucide-react";
 
 const Index = () => {
+  const [mode, setMode] = useState<"message" | "image" | "question">("message");
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-accent/20 to-secondary/20">
       <div className="container max-w-6xl mx-auto px-4 py-12">
@@ -29,7 +32,8 @@ const Index = () => {
           {/* Main Content */}
           <div className="lg:col-span-2">
             {/* Mode Selection */}
-            <Tabs defaultValue="message" className="w-full">
+            {(() => {})()}
+            <Tabs value={mode} onValueChange={setMode} defaultValue="message" className="w-full">
               <TabsList className="grid w-full grid-cols-3 bg-card border-2 border-border rounded-2xl p-1 h-14 mb-6">
                 <TabsTrigger 
                   value="message" 
@@ -160,7 +164,11 @@ const Index = () => {
 
           {/* Sidebar */}
           <div className="lg:col-span-1">
-            <PatternExamples />
+            {mode === "image" || mode === "question" ? (
+              <HelpSidebar mode={mode} />
+            ) : (
+              <PatternExamples />
+            )}
           </div>
         </div>
 

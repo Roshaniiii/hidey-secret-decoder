@@ -14,13 +14,22 @@ export function ImageDecodeSection() {
   const [isRevealing, setIsRevealing] = useState(false);
   const [revealedImage, setRevealedImage] = useState<string>("");
 
-  // Check for URL hash on mount
+  // Check for URL hash or short code on mount
   useEffect(() => {
     const hash = window.location.hash;
+    let prefill = "";
     if (hash.startsWith("#image-decode=")) {
-      const code = decodeURIComponent(hash.replace("#image-decode=", ""));
-      setEncodedCode(code);
-      // Clear the hash
+      prefill = decodeURIComponent(hash.replace("#image-decode=", ""));
+    }
+    const params = new URLSearchParams(window.location.search);
+    const short = params.get("code");
+    if (short) {
+      const full = localStorage.getItem(`hidey-${short}`) || "";
+      if (full) prefill = full;
+    }
+    if (prefill) {
+      setEncodedCode(prefill);
+      // Clear hash and query
       window.history.replaceState(null, "", window.location.pathname);
     }
   }, []);
@@ -94,11 +103,23 @@ export function ImageDecodeSection() {
           </Label>
           <Textarea
             id="encoded-code"
-            placeholder="Paste the MASKED:: code here..."
+            placeholder="Paste the MASKED:: code here... or HIDEY-XXXXXX"
             value={encodedCode}
             onChange={(e) => {
-              setEncodedCode(e.target.value);
+              const val = e.target.value.trim();
               setRevealedImage("");
+              const m = val.match(/^HIDEY-([A-Z0-9]{6,8})$/);
+              if (m) {
+                const full = localStorage.getItem(`hidey-${m[1]}`) || "";
+                if (full) {
+                  setEncodedCode(full);
+                  toast.success("Loaded code from share ID");
+                } else {
+                  setEncodedCode(val);
+                }
+              } else {
+                setEncodedCode(val);
+              }
             }}
             className="mt-2 min-h-[100px] font-mono text-sm"
           />

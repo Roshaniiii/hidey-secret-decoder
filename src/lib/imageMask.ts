@@ -287,9 +287,18 @@ export async function maskImage(
   const encrypted = CryptoJS.AES.encrypt(base64, key).toString();
 
   // Compress the encrypted data
+  function uint8ToBase64(bytes: Uint8Array): string {
+    let binary = "";
+    const chunkSize = 0x8000; // 32KB chunks to avoid call stack overflow
+    for (let i = 0; i < bytes.length; i += chunkSize) {
+      const chunk = bytes.subarray(i, i + chunkSize);
+      binary += String.fromCharCode(...Array.from(chunk));
+    }
+    return btoa(binary);
+  }
   const compressed = pako.deflate(encrypted);
-  const compressedBase64 = btoa(String.fromCharCode(...compressed));
-
+  const compressedBase64 = uint8ToBase64(compressed);
+  
   // Create masked preview (always blur for visual effect)
   const maskedPreview = await applyMask(imageFile, "blur");
 

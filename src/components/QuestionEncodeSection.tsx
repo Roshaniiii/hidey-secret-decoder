@@ -62,14 +62,7 @@ export function QuestionEncodeSection() {
     });
   };
 
-  const handleShare = () => {
-    const shareUrl = `${window.location.origin}/#question-decode=${encodeURIComponent(encoded)}`;
-    navigator.clipboard.writeText(shareUrl);
-    toast({
-      title: 'Share Link Copied! 🔗',
-      description: 'Anyone with this link can try the challenge.',
-    });
-  };
+  // Share option removed as requested
 
   return (
     <div className="space-y-6">
@@ -159,10 +152,6 @@ export function QuestionEncodeSection() {
             <Button onClick={handleCopy} variant="outline" className="flex-1">
               <Copy className="mr-2 h-4 w-4" />
               Copy Code
-            </Button>
-            <Button onClick={handleShare} variant="outline" className="flex-1">
-              <Share2 className="mr-2 h-4 w-4" />
-              Share Link
             </Button>
           </div>
         </div>
