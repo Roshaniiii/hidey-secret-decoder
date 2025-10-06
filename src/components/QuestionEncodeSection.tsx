@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
-import { Copy, Lock } from 'lucide-react';
+import { Copy, Lock, Share2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { encodeQuestionMessage } from '@/lib/questionEncoding';
 import { PatternType } from '@/lib/encoding';
@@ -59,6 +59,15 @@ export function QuestionEncodeSection() {
     toast({
       title: 'Copied! 📋',
       description: 'Challenge code copied to clipboard.',
+    });
+  };
+
+  const handleShare = () => {
+    const shareUrl = `${window.location.origin}/#question-decode=${encodeURIComponent(encoded)}`;
+    navigator.clipboard.writeText(shareUrl);
+    toast({
+      title: 'Share Link Copied! 🔗',
+      description: 'Anyone with this link can try the challenge.',
     });
   };
 
@@ -146,10 +155,16 @@ export function QuestionEncodeSection() {
             </div>
           </div>
 
-          <Button onClick={handleCopy} variant="outline" className="w-full">
-            <Copy className="mr-2 h-4 w-4" />
-            Copy Challenge Code
-          </Button>
+          <div className="flex gap-2">
+            <Button onClick={handleCopy} variant="outline" className="flex-1">
+              <Copy className="mr-2 h-4 w-4" />
+              Copy Code
+            </Button>
+            <Button onClick={handleShare} variant="outline" className="flex-1">
+              <Share2 className="mr-2 h-4 w-4" />
+              Share Link
+            </Button>
+          </div>
         </div>
       )}
     </div>

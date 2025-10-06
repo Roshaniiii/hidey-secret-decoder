@@ -4,25 +4,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
-import { Download, Copy, Loader2, Upload } from "lucide-react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Download, Copy, Loader2, Upload, Share2 } from "lucide-react";
 import {
   maskImage,
   encodeMaskedData,
-  MaskType,
   MaskResult,
 } from "@/lib/imageMask";
 
 export function ImageEncodeSection() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string>("");
-  const [maskType, setMaskType] = useState<MaskType>("blur");
   const [passphrase, setPassphrase] = useState("");
   const [isMasking, setIsMasking] = useState(false);
   const [maskedResult, setMaskedResult] = useState<MaskResult | null>(null);
@@ -63,17 +54,17 @@ export function ImageEncodeSection() {
     }
 
     setIsMasking(true);
-    toast.loading("🎭 Applying mask...");
+    toast.loading("🎭 Masking & encrypting...");
 
     try {
-      const result = await maskImage(selectedFile, maskType, passphrase);
+      const result = await maskImage(selectedFile, "blur", passphrase);
       const encoded = encodeMaskedData(result);
 
       setMaskedResult(result);
       setEncodedCode(encoded);
 
       toast.dismiss();
-      toast.success("✨ Image masked! Share the preview or code");
+      toast.success("✨ Image masked & encrypted!");
     } catch (error) {
       toast.dismiss();
       toast.error(
@@ -100,6 +91,16 @@ export function ImageEncodeSection() {
 
     navigator.clipboard.writeText(encodedCode);
     toast.success("✅ Code copied to clipboard!");
+  };
+
+  const handleShare = () => {
+    if (!encodedCode) return;
+
+    const shareUrl = `${window.location.origin}/#image-decode=${encodeURIComponent(
+      encodedCode
+    )}`;
+    navigator.clipboard.writeText(shareUrl);
+    toast.success("✅ Share link copied! Anyone with this link can decode.");
   };
 
   return (
@@ -140,27 +141,6 @@ export function ImageEncodeSection() {
         )}
 
         <div>
-          <Label htmlFor="mask-type" className="text-base font-semibold text-foreground">
-            Mask Type
-          </Label>
-          <Select
-            value={maskType}
-            onValueChange={(value) => setMaskType(value as MaskType)}
-          >
-            <SelectTrigger id="mask-type" className="mt-2">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="blur">🌫 Blur</SelectItem>
-              <SelectItem value="pixel">💎 Pixel Mosaic</SelectItem>
-              <SelectItem value="mosaic">🔲 Block Mosaic</SelectItem>
-              <SelectItem value="swirl">🌀 Swirl</SelectItem>
-              <SelectItem value="noise">📺 Noise</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div>
           <Label htmlFor="passphrase" className="text-base font-semibold text-foreground">
             Passphrase (Required)
           </Label>
@@ -172,6 +152,9 @@ export function ImageEncodeSection() {
             onChange={(e) => setPassphrase(e.target.value)}
             className="mt-2"
           />
+          <p className="text-xs text-muted-foreground mt-1">
+            🔒 Your image will be encrypted with this passphrase
+          </p>
         </div>
 
         <Button
@@ -219,17 +202,21 @@ export function ImageEncodeSection() {
               className="flex-1"
             >
               <Download className="mr-2 h-4 w-4" />
-              Download Masked
+              Download
             </Button>
             <Button onClick={handleCopyCode} variant="outline" className="flex-1">
               <Copy className="mr-2 h-4 w-4" />
               Copy Code
             </Button>
+            <Button onClick={handleShare} variant="outline" className="flex-1">
+              <Share2 className="mr-2 h-4 w-4" />
+              Share Link
+            </Button>
           </div>
 
           <p className="text-sm text-muted-foreground">
-            💡 Share the masked image publicly, but keep the code private. Only
-            those with the code and passphrase can reveal the original.
+            💡 Share the link or code. Only those with the correct passphrase can
+            reveal the original image.
           </p>
         </div>
       )}

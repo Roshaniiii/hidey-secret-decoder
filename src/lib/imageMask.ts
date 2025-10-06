@@ -1,4 +1,5 @@
 import CryptoJS from "crypto-js";
+import pako from "pako";
 
 export type MaskType = "blur" | "swirl" | "pixel" | "noise" | "mosaic";
 
@@ -257,6 +258,15 @@ async function applyMask(
   return canvas.toDataURL("image/png");
 }
 
+// Derive encryption key from passphrase using SHA-256
+async function deriveKey(passphrase: string): Promise<string> {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(passphrase);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
+}
+
 // Main mask function
 export async function maskImage(
   imageFile: File,
@@ -270,15 +280,22 @@ export async function maskImage(
   // Convert image to base64
   const base64 = await fileToBase64(imageFile);
 
-  // Encrypt the original image
-  const encrypted = CryptoJS.AES.encrypt(base64, passphrase).toString();
+  // Derive encryption key from passphrase
+  const key = await deriveKey(passphrase);
 
-  // Create masked preview
-  const maskedPreview = await applyMask(imageFile, maskType);
+  // Encrypt the original image with derived key
+  const encrypted = CryptoJS.AES.encrypt(base64, key).toString();
+
+  // Compress the encrypted data
+  const compressed = pako.deflate(encrypted);
+  const compressedBase64 = btoa(String.fromCharCode(...compressed));
+
+  // Create masked preview (always blur for visual effect)
+  const maskedPreview = await applyMask(imageFile, "blur");
 
   return {
     maskedPreview,
-    encodedData: encrypted,
+    encodedData: compressedBase64,
     metadata: {
       maskType,
       hasPassphrase: true,
@@ -287,12 +304,22 @@ export async function maskImage(
 }
 
 // Reveal original image
-export function revealImage(
+export async function revealImage(
   encodedData: string,
   passphrase: string
-): string | null {
+): Promise<string | null> {
   try {
-    const bytes = CryptoJS.AES.decrypt(encodedData, passphrase);
+    // Decompress the data
+    const compressedData = Uint8Array.from(atob(encodedData), (c) =>
+      c.charCodeAt(0)
+    );
+    const decompressed = pako.inflate(compressedData, { to: "string" });
+
+    // Derive the same encryption key
+    const key = await deriveKey(passphrase);
+
+    // Decrypt the data
+    const bytes = CryptoJS.AES.decrypt(decompressed, key);
     const base64 = bytes.toString(CryptoJS.enc.Utf8);
 
     if (!base64) {

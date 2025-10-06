@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
@@ -17,6 +17,32 @@ export function QuestionDecodeSection() {
   const [isLoading, setIsLoading] = useState(false);
   const [attempts, setAttempts] = useState(0);
   const { toast } = useToast();
+
+  // Check for URL hash on mount
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (hash.startsWith('#question-decode=')) {
+      const code = decodeURIComponent(hash.replace('#question-decode=', ''));
+      setEncodedText(code);
+      handleLoadChallengeFromCode(code);
+      // Clear the hash
+      window.history.replaceState(null, '', window.location.pathname);
+    }
+  }, []);
+
+  const handleLoadChallengeFromCode = (code: string) => {
+    try {
+      const data = decodeQuestionStructure(code);
+      setQuestionData(data);
+      setAttempts(0);
+    } catch (error) {
+      toast({
+        title: 'Invalid Code',
+        description: error instanceof Error ? error.message : 'Unknown error',
+        variant: 'destructive',
+      });
+    }
+  };
 
   const handleLoadChallenge = () => {
     try {

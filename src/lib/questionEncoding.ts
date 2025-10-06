@@ -1,4 +1,5 @@
 import { encodeMessage, decodeMessage, PatternType } from './encoding';
+import pako from 'pako';
 
 export interface QuestionData {
   question: string;
@@ -42,9 +43,10 @@ export async function encodeQuestionMessage(
     patternType,
   };
 
-  // Convert to base64
+  // Convert to base64 and compress
   const jsonString = JSON.stringify(questionData);
-  const base64 = btoa(jsonString);
+  const compressed = pako.deflate(jsonString);
+  const base64 = btoa(String.fromCharCode(...compressed));
 
   // Add prefix to identify question mode
   return `QMODE::${base64}`;
@@ -57,7 +59,9 @@ export function decodeQuestionStructure(encodedText: string): QuestionData {
   }
 
   const base64 = encodedText.slice(7);
-  const jsonString = atob(base64);
+  // Decompress the data
+  const compressedData = Uint8Array.from(atob(base64), (c) => c.charCodeAt(0));
+  const jsonString = pako.inflate(compressedData, { to: 'string' });
   const questionData: QuestionData = JSON.parse(jsonString);
 
   if (!questionData.question || !questionData.answerHash || !questionData.encryptedMessage) {
