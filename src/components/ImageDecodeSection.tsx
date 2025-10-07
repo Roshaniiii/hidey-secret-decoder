@@ -6,37 +6,27 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
 import { Download, Copy, Loader2 } from "lucide-react";
-import { decodeMaskedData, revealImage } from "@/lib/imageMask";
+import { decodeShortCode, revealImage } from "@/lib/imageMask";
 
 export function ImageDecodeSection() {
-  const [encodedCode, setEncodedCode] = useState("");
+  const [shortCode, setShortCode] = useState("");
   const [passphrase, setPassphrase] = useState("");
   const [isRevealing, setIsRevealing] = useState(false);
   const [revealedImage, setRevealedImage] = useState<string>("");
 
-  // Check for URL hash or short code on mount
+  // Check for URL query params on mount
   useEffect(() => {
-    const hash = window.location.hash;
-    let prefill = "";
-    if (hash.startsWith("#image-decode=")) {
-      prefill = decodeURIComponent(hash.replace("#image-decode=", ""));
-    }
     const params = new URLSearchParams(window.location.search);
-    const short = params.get("code");
-    if (short) {
-      const full = localStorage.getItem(`hidey-${short}`) || "";
-      if (full) prefill = full;
-    }
-    if (prefill) {
-      setEncodedCode(prefill);
-      // Clear hash and query
+    const code = params.get("code");
+    if (code) {
+      setShortCode(`HIDEY-${code}`);
       window.history.replaceState(null, "", window.location.pathname);
     }
   }, []);
 
   const handleReveal = async () => {
-    if (!encodedCode) {
-      toast.error("Please paste the encoded code");
+    if (!shortCode) {
+      toast.error("Please paste the code");
       return;
     }
 
@@ -46,24 +36,27 @@ export function ImageDecodeSection() {
     }
 
     setIsRevealing(true);
-    toast.loading("🔓 Revealing image...");
 
     try {
-      const { encrypted } = decodeMaskedData(encodedCode);
+      const { encrypted } = decodeShortCode(shortCode.trim());
       const revealed = await revealImage(encrypted, passphrase);
 
       if (!revealed) {
-        throw new Error("Incorrect passphrase or corrupted data");
+        throw new Error("Incorrect passphrase");
       }
 
       setRevealedImage(revealed);
-      toast.dismiss();
       toast.success("✨ Original image revealed!");
     } catch (error) {
-      toast.dismiss();
-      toast.error(
-        error instanceof Error ? error.message : "Failed to reveal image"
-      );
+      if (error instanceof Error && error.message.includes("Invalid or corrupted")) {
+        toast.error("⚠️ Invalid or expired code. Please recheck or ask the sender to regenerate it.");
+      } else if (error instanceof Error && error.message.includes("Incorrect passphrase")) {
+        toast.error("❌ Incorrect passphrase. Try again.");
+      } else {
+        toast.error(
+          error instanceof Error ? error.message : "Failed to reveal image"
+        );
+      }
     } finally {
       setIsRevealing(false);
     }
@@ -98,28 +91,16 @@ export function ImageDecodeSection() {
     <div className="space-y-6">
       <div className="space-y-4">
         <div>
-          <Label htmlFor="encoded-code" className="text-lg font-semibold text-foreground">
-            Paste Encoded Code
+          <Label htmlFor="short-code" className="text-base font-semibold text-foreground">
+            Paste Code
           </Label>
           <Textarea
-            id="encoded-code"
-            placeholder="Paste the MASKED:: code here... or HIDEY-XXXXXX"
-            value={encodedCode}
+            id="short-code"
+            placeholder="Paste your HIDEY-XXXXXX code here..."
+            value={shortCode}
             onChange={(e) => {
-              const val = e.target.value.trim();
+              setShortCode(e.target.value.trim());
               setRevealedImage("");
-              const m = val.match(/^HIDEY-([A-Z0-9]{6,8})$/);
-              if (m) {
-                const full = localStorage.getItem(`hidey-${m[1]}`) || "";
-                if (full) {
-                  setEncodedCode(full);
-                  toast.success("Loaded code from share ID");
-                } else {
-                  setEncodedCode(val);
-                }
-              } else {
-                setEncodedCode(val);
-              }
             }}
             className="mt-2 min-h-[100px] font-mono text-sm"
           />
@@ -141,7 +122,7 @@ export function ImageDecodeSection() {
 
         <Button
           onClick={handleReveal}
-          disabled={!encodedCode || !passphrase || isRevealing}
+          disabled={!shortCode || !passphrase || isRevealing}
           className="w-full"
           size="lg"
         >
@@ -158,7 +139,7 @@ export function ImageDecodeSection() {
 
       {revealedImage && (
         <div className="space-y-4 pt-6 border-t border-border">
-          <h3 className="text-lg font-semibold text-foreground">Revealed Image</h3>
+          <h3 className="text-base font-semibold text-foreground">Revealed Image</h3>
 
           <Card className="p-4 bg-muted/30">
             <img

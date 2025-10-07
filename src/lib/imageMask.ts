@@ -342,29 +342,59 @@ export async function revealImage(
   }
 }
 
-// Encode masked data with metadata
-export function encodeMaskedData(result: MaskResult): string {
+// Generate portable short code that contains all data
+export function generateShortCode(result: MaskResult): string {
   const payload = {
     encrypted: result.encodedData,
     mask: result.metadata.maskType,
   };
-  return `MASKED::${btoa(JSON.stringify(payload))}`;
+  const jsonStr = JSON.stringify(payload);
+  const compressed = pako.deflate(jsonStr);
+  const base64 = uint8ToBase64(compressed);
+  // Use base64url encoding (replace +/ with -_ and remove padding)
+  const shortCode = base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+  return `HIDEY-${shortCode}`;
 }
 
-// Decode masked data
-export function decodeMaskedData(encoded: string): {
+// Helper for compression
+function uint8ToBase64(bytes: Uint8Array): string {
+  let binary = "";
+  const chunkSize = 0x8000;
+  for (let i = 0; i < bytes.length; i += chunkSize) {
+    const chunk = bytes.subarray(i, i + chunkSize);
+    binary += String.fromCharCode(...Array.from(chunk));
+  }
+  return btoa(binary);
+}
+
+// Decode short code to get encrypted data
+export function decodeShortCode(shortCode: string): {
   encrypted: string;
   maskType: MaskType;
 } {
-  if (!encoded.startsWith("MASKED::")) {
-    throw new Error("Invalid masked image code");
+  try {
+    // Remove HIDEY- prefix
+    if (!shortCode.startsWith("HIDEY-")) {
+      throw new Error("Invalid code format");
+    }
+    
+    const encoded = shortCode.substring(6);
+    // Convert back from base64url to base64
+    const base64 = encoded.replace(/-/g, '+').replace(/_/g, '/');
+    // Add padding if needed
+    const padded = base64 + '=='.substring(0, (4 - base64.length % 4) % 4);
+    
+    // Decompress
+    const compressedData = Uint8Array.from(atob(padded), (c) => c.charCodeAt(0));
+    const decompressed = pako.inflate(compressedData, { to: 'string' });
+    const payload = JSON.parse(decompressed);
+
+    return {
+      encrypted: payload.encrypted,
+      maskType: payload.mask,
+    };
+  } catch (error) {
+    console.error("Decode error:", error);
+    throw new Error("Invalid or corrupted code");
   }
-
-  const payload = encoded.substring(8);
-  const decoded = JSON.parse(atob(payload));
-
-  return {
-    encrypted: decoded.encrypted,
-    maskType: decoded.mask,
-  };
 }

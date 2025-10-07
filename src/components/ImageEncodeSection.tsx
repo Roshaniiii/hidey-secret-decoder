@@ -4,10 +4,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
-import { Download, Copy, Loader2, Upload } from "lucide-react";
+import { Copy, Loader2, Upload } from "lucide-react";
 import {
   maskImage,
-  encodeMaskedData,
+  generateShortCode,
   MaskResult,
 } from "@/lib/imageMask";
 
@@ -17,8 +17,7 @@ export function ImageEncodeSection() {
   const [passphrase, setPassphrase] = useState("");
   const [isMasking, setIsMasking] = useState(false);
   const [maskedResult, setMaskedResult] = useState<MaskResult | null>(null);
-  const [encodedCode, setEncodedCode] = useState("");
-  const [shortCode, setShortCode] = useState<string | null>(null);
+  const [shortCode, setShortCode] = useState<string>("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,8 +31,7 @@ export function ImageEncodeSection() {
 
     setSelectedFile(file);
     setMaskedResult(null);
-    setEncodedCode("");
-    setShortCode(null);
+    setShortCode("");
 
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -56,23 +54,16 @@ export function ImageEncodeSection() {
     }
 
     setIsMasking(true);
-    toast.loading("🎭 Masking & encrypting...");
 
     try {
       const result = await maskImage(selectedFile, "blur", passphrase);
-      const encoded = encodeMaskedData(result);
+      const code = generateShortCode(result);
       
       setMaskedResult(result);
-      setEncodedCode(encoded);
-      // Generate short share code mapped to full encoded code
-      const shortId = Math.random().toString(36).substring(2, 8).toUpperCase();
-      localStorage.setItem(`hidey-${shortId}`, encoded);
-      setShortCode(shortId);
+      setShortCode(code);
       
-      toast.dismiss();
       toast.success("✨ Image masked & encrypted!");
     } catch (error) {
-      toast.dismiss();
       toast.error(
         error instanceof Error ? error.message : "Failed to mask image"
       );
@@ -93,10 +84,10 @@ export function ImageEncodeSection() {
   };
 
   const handleCopyCode = () => {
-    if (!encodedCode) return;
+    if (!shortCode) return;
 
-    navigator.clipboard.writeText(encodedCode);
-    toast.success("✅ Code copied to clipboard!");
+    navigator.clipboard.writeText(shortCode);
+    toast.success("✅ Code copied!");
   };
 
   // Share option removed as requested
@@ -105,7 +96,7 @@ export function ImageEncodeSection() {
     <div className="space-y-6">
       <div className="space-y-4">
         <div>
-          <Label htmlFor="file-upload" className="text-lg font-semibold text-foreground">
+          <Label htmlFor="file-upload" className="text-base font-semibold text-foreground">
             Upload Image
           </Label>
           <div className="mt-2">
@@ -172,9 +163,9 @@ export function ImageEncodeSection() {
         </Button>
       </div>
 
-      {maskedResult && (
+      {maskedResult && shortCode && (
         <div className="space-y-4 pt-6 border-t border-border">
-          <h3 className="text-lg font-semibold text-foreground">Masked Result</h3>
+          <h3 className="text-base font-semibold text-foreground">Masked Result</h3>
 
           <Card className="p-4 bg-muted/30">
             <img
@@ -184,43 +175,24 @@ export function ImageEncodeSection() {
             />
           </Card>
 
-          <div>
-            <Label className="text-sm font-medium text-foreground">
-              Encoded Code (copy to reveal later)
-            </Label>
-            <div className="mt-2 p-3 bg-muted rounded-lg break-all font-mono text-xs">
-              {encodedCode}
-            </div>
-          </div>
-
-          {shortCode && (
-            <div className="p-3 bg-muted rounded-lg text-sm">
-              <div className="font-medium text-foreground">Your share code:</div>
-              <div className="font-mono break-all">HIDEY-{shortCode}</div>
-              <div className="mt-2 text-xs text-muted-foreground">
-                Share link: {window.location.origin}/reveal?code={shortCode}
+          <div className="p-4 bg-muted rounded-lg space-y-3">
+            <div>
+              <Label className="text-sm font-medium text-foreground">
+                Your Share Code:
+              </Label>
+              <div className="mt-2 p-3 bg-background rounded font-mono text-sm break-all">
+                {shortCode}
               </div>
             </div>
-          )}
-          
-          <div className="flex gap-2">
-            <Button
-              onClick={handleDownloadMasked}
-              variant="outline"
-              className="flex-1"
-            >
-              <Download className="mr-2 h-4 w-4" />
-              Download
-            </Button>
-            <Button onClick={handleCopyCode} variant="outline" className="flex-1">
+            
+            <Button onClick={handleCopyCode} variant="outline" className="w-full">
               <Copy className="mr-2 h-4 w-4" />
               Copy Code
             </Button>
           </div>
           
           <p className="text-sm text-muted-foreground">
-            💡 Share the link or code. Only those with the correct passphrase can
-            reveal the original image.
+            💡 Share this code. Only those with the correct passphrase can reveal the original image.
           </p>
         </div>
       )}

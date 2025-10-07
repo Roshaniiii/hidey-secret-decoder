@@ -31,9 +31,7 @@ const Index = () => {
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2">
-            {/* Mode Selection */}
-            {(() => {})()}
-            <Tabs value={mode} onValueChange={setMode} defaultValue="message" className="w-full">
+            <Tabs value={mode} onValueChange={(value) => setMode(value as "message" | "image" | "question")} defaultValue="message" className="w-full">
               <TabsList className="grid w-full grid-cols-3 bg-card border-2 border-border rounded-2xl p-1 h-14 mb-6">
                 <TabsTrigger 
                   value="message" 

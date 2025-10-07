@@ -11,13 +11,13 @@ export function HelpSidebar({ mode }: { mode: Mode }) {
   }
 
   return (
-    <Card className="bg-gradient-to-br from-accent/50 to-card border-2 border-border rounded-2xl shadow-lg h-full">
+    <Card className="bg-gradient-to-br from-accent/50 to-card border-2 border-border rounded-2xl shadow-lg h-fit sticky top-4">
       <CardHeader>
         <CardTitle className="text-foreground font-bold">
           {isImage ? "How to Use Image Mode" : "How to Use Question Mode"}
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-3 text-sm text-foreground/80 overflow-y-auto">
+      <CardContent className="space-y-3 text-sm text-foreground/80 max-h-[600px] overflow-y-auto">
         {isImage ? (
           <ol className="list-decimal ml-5 space-y-2">
             <li>Upload Image – Choose the picture you want to hide.</li>

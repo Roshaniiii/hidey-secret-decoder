@@ -81,16 +81,26 @@ export function QuestionDecodeSection() {
         });
       } else {
         setAttempts(attempts + 1);
-        const messages = [
-          '❌ Nope, try again!',
-          '🤔 Close, but not quite...',
-          '🔐 The message remains hidden!',
-        ];
-        toast({
-          title: messages[Math.min(attempts, 2)],
-          description: result.error || 'Incorrect answer',
-          variant: 'destructive',
-        });
+        
+        // Check if error suggests private pattern was used
+        if (result.error && result.error.includes('decode') && !usePassphrase) {
+          toast({
+            title: '🔐 Private Pattern May Be Required',
+            description: 'This message might use a private pattern. Try checking the box and entering the passphrase.',
+            variant: 'destructive',
+          });
+        } else {
+          const messages = [
+            '❌ Nope, try again!',
+            '🤔 Close, but not quite...',
+            '🔐 The message remains hidden!',
+          ];
+          toast({
+            title: messages[Math.min(attempts, 2)],
+            description: result.error || 'Incorrect answer',
+            variant: 'destructive',
+          });
+        }
       }
     } catch (error) {
       toast({
@@ -164,6 +174,9 @@ export function QuestionDecodeSection() {
                 className="mt-2"
                 disabled={!!decoded}
               />
+              <p className="text-xs text-muted-foreground mt-1">
+                ⚠️ Case-sensitive. It's best to use lowercase letters.
+              </p>
             </div>
 
             <div className="flex items-center gap-2">
