@@ -172,7 +172,8 @@ const Index = () => {
 
         {/* Footer */}
         <div className="mt-12 text-center text-sm text-muted-foreground">
-          <p>Made with 💖 by Hidey • Keep your messages playfully private</p>
+          <p>© Hidey • Keep it fun, keep it safe.</p>
+          <p className="mt-1">Do not use or share sensitive or private information.</p>
         </div>
       </div>
     </div>

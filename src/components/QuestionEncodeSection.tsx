@@ -65,8 +65,8 @@ export function QuestionEncodeSection() {
   // Share option removed as requested
 
   return (
-    <div className="space-y-6">
-      <div className="space-y-4">
+    <div className="space-y-4 sm:space-y-6">
+      <div className="space-y-3 sm:space-y-4">
         <div>
           <Label htmlFor="message">Enter your secret message</Label>
           <Textarea
@@ -99,6 +99,9 @@ export function QuestionEncodeSection() {
             onChange={(e) => setAnswer(e.target.value)}
             className="mt-2"
           />
+          <p className="text-xs text-muted-foreground mt-1">
+            💡 It's better to write the answer in lowercase for consistency
+          </p>
         </div>
 
         <div className="flex items-center gap-2">
