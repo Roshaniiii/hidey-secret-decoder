@@ -1,6 +1,5 @@
 import CryptoJS from "crypto-js";
 import pako from "pako";
-import { createHideyCode, decodeHideyCode } from "./utils/hideyCode";
 
 export type MaskType = "blur" | "swirl" | "pixel" | "noise" | "mosaic";
 
@@ -349,11 +348,23 @@ export function generateShortCode(result: MaskResult): string {
     encrypted: result.encodedData,
     mask: result.metadata.maskType,
   };
-  const code = createHideyCode(payload);
-  if (!code) {
-    throw new Error("Failed to generate share code");
+  const jsonStr = JSON.stringify(payload);
+  const compressed = pako.deflate(jsonStr);
+  const base64 = uint8ToBase64(compressed);
+  // Use base64url encoding (replace +/ with -_ and remove padding)
+  const shortCode = base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+  return `HIDEY-${shortCode}`;
+}
+
+// Helper for compression
+function uint8ToBase64(bytes: Uint8Array): string {
+  let binary = "";
+  const chunkSize = 0x8000;
+  for (let i = 0; i < bytes.length; i += chunkSize) {
+    const chunk = bytes.subarray(i, i + chunkSize);
+    binary += String.fromCharCode(...Array.from(chunk));
   }
-  return code;
+  return btoa(binary);
 }
 
 // Decode short code to get encrypted data
@@ -362,15 +373,26 @@ export function decodeShortCode(shortCode: string): {
   maskType: MaskType;
 } {
   try {
-    const obj = decodeHideyCode(shortCode);
-    if (!obj || typeof obj !== 'object') {
-      throw new Error("Invalid or corrupted code");
+    // Remove HIDEY- prefix
+    if (!shortCode.startsWith("HIDEY-")) {
+      throw new Error("Invalid code format");
     }
-    const payload = obj as { encrypted?: string; mask?: MaskType };
-    if (!payload.encrypted || !payload.mask) {
-      throw new Error("Invalid or corrupted code");
-    }
-    return { encrypted: payload.encrypted, maskType: payload.mask };
+    
+    const encoded = shortCode.substring(6);
+    // Convert back from base64url to base64
+    const base64 = encoded.replace(/-/g, '+').replace(/_/g, '/');
+    // Add padding if needed
+    const padded = base64 + '=='.substring(0, (4 - base64.length % 4) % 4);
+    
+    // Decompress
+    const compressedData = Uint8Array.from(atob(padded), (c) => c.charCodeAt(0));
+    const decompressed = pako.inflate(compressedData, { to: 'string' });
+    const payload = JSON.parse(decompressed);
+
+    return {
+      encrypted: payload.encrypted,
+      maskType: payload.mask,
+    };
   } catch (error) {
     console.error("Decode error:", error);
     throw new Error("Invalid or corrupted code");
