@@ -2,16 +2,17 @@ import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EncodeSection } from "@/components/EncodeSection";
 import { DecodeSection } from "@/components/DecodeSection";
-import { ImageEncodeSection } from "@/components/ImageEncodeSection";
-import { ImageDecodeSection } from "@/components/ImageDecodeSection";
+import { QuizCreateSection } from "@/components/QuizCreateSection";
+import { QuizAttemptSection } from "@/components/QuizAttemptSection";
+import { QuizRevealSection } from "@/components/QuizRevealSection";
 import { QuestionEncodeSection } from "@/components/QuestionEncodeSection";
 import { QuestionDecodeSection } from "@/components/QuestionDecodeSection";
 import { PatternExamples } from "@/components/PatternExamples";
 import { HelpSidebar } from "@/components/HelpSidebar";
-import { Lock, Unlock, MessageSquare, Image, HelpCircle } from "lucide-react";
+import { Lock, Unlock, MessageSquare, HelpCircle, ListChecks } from "lucide-react";
 
 const Index = () => {
-  const [mode, setMode] = useState<"message" | "image" | "question">("message");
+  const [mode, setMode] = useState<"message" | "quiz" | "question">("message");
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-accent/20 to-secondary/20">
       <div className="container max-w-6xl mx-auto px-4 py-12">
@@ -31,7 +32,7 @@ const Index = () => {
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2">
-            <Tabs value={mode} onValueChange={(value) => setMode(value as "message" | "image" | "question")} defaultValue="message" className="w-full">
+            <Tabs value={mode} onValueChange={(value) => setMode(value as "message" | "quiz" | "question")} defaultValue="message" className="w-full">
               <TabsList className="grid w-full grid-cols-3 bg-card border-2 border-border rounded-2xl p-1 h-14 mb-6">
                 <TabsTrigger 
                   value="message" 
@@ -41,11 +42,11 @@ const Index = () => {
                   Message Mode
                 </TabsTrigger>
                 <TabsTrigger 
-                  value="image"
+                  value="quiz"
                   className="rounded-xl data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground font-semibold"
                 >
-                  <Image className="mr-2 h-4 w-4" />
-                  Image Mode
+                  <ListChecks className="mr-2 h-4 w-4" />
+                  Quiz Mode
                 </TabsTrigger>
                 <TabsTrigger 
                   value="question"
@@ -90,35 +91,48 @@ const Index = () => {
                 </Tabs>
               </TabsContent>
 
-              {/* Image Mode */}
-              <TabsContent value="image" className="space-y-0">
-                <Tabs defaultValue="scramble" className="w-full">
-                  <TabsList className="grid w-full grid-cols-2 bg-card border-2 border-border rounded-2xl p-1 h-14">
+              {/* Quiz Mode */}
+              <TabsContent value="quiz" className="space-y-0">
+                <Tabs defaultValue="create" className="w-full">
+                  <TabsList className="grid w-full grid-cols-3 bg-card border-2 border-border rounded-2xl p-1 h-14">
                     <TabsTrigger 
-                      value="scramble" 
+                      value="create" 
                       className="rounded-xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground font-semibold"
                     >
                       <Lock className="mr-2 h-4 w-4" />
-                      Scramble
+                      Create Quiz
+                    </TabsTrigger>
+                    <TabsTrigger 
+                      value="attempt"
+                      className="rounded-xl data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground font-semibold"
+                    >
+                      <HelpCircle className="mr-2 h-4 w-4" />
+                      Attempt Quiz
                     </TabsTrigger>
                     <TabsTrigger 
                       value="reveal"
-                      className="rounded-xl data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground font-semibold"
+                      className="rounded-xl data-[state=active]:bg-accent data-[state=active]:text-accent-foreground font-semibold"
                     >
                       <Unlock className="mr-2 h-4 w-4" />
-                      Reveal
+                      Reveal Score
                     </TabsTrigger>
                   </TabsList>
                   
-                  <TabsContent value="scramble" className="mt-6">
+                  <TabsContent value="create" className="mt-6">
                     <div className="bg-card border-2 border-border rounded-2xl p-6 shadow-lg">
-                      <ImageEncodeSection />
+                      <QuizCreateSection />
+                    </div>
+                  </TabsContent>
+                  
+                  <TabsContent value="attempt" className="mt-6">
+                    <div className="bg-card border-2 border-border rounded-2xl p-6 shadow-lg">
+                      <QuizAttemptSection />
                     </div>
                   </TabsContent>
                   
                   <TabsContent value="reveal" className="mt-6">
                     <div className="bg-card border-2 border-border rounded-2xl p-6 shadow-lg">
-                      <ImageDecodeSection />
+                      <QuizRevealSection />
                     </div>
                   </TabsContent>
                 </Tabs>
@@ -161,8 +175,8 @@ const Index = () => {
           </div>
 
           {/* Sidebar */}
-          <div className="lg:col-span-1">
-            {mode === "image" || mode === "question" ? (
+          <div className="lg:col-span-1 h-fit">
+            {mode === "quiz" || mode === "question" ? (
               <HelpSidebar mode={mode} />
             ) : (
               <PatternExamples />

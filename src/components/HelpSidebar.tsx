@@ -1,33 +1,33 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-type Mode = "message" | "image" | "question";
+type Mode = "message" | "quiz" | "question";
 
 export function HelpSidebar({ mode }: { mode: Mode }) {
-  const isImage = mode === "image";
+  const isQuiz = mode === "quiz";
   const isQuestion = mode === "question";
 
-  if (!isImage && !isQuestion) {
+  if (!isQuiz && !isQuestion) {
     return null;
   }
 
   return (
-    <Card className="bg-gradient-to-br from-accent/50 to-card border-2 border-border rounded-2xl shadow-lg h-fit sticky top-4">
-      <CardHeader>
-        <CardTitle className="text-foreground font-bold">
-          {isImage ? "How to Use Image Mode" : "How to Use Question Mode"}
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-3 text-sm text-foreground/80 max-h-[600px] overflow-y-auto">
-        {isImage ? (
+    <div className="sticky top-4">
+      <Card className="bg-gradient-to-br from-accent/50 to-card border-2 border-border rounded-2xl shadow-lg h-fit max-h-[calc(100vh-2rem)] overflow-y-auto">
+        <CardHeader>
+          <CardTitle className="text-foreground font-bold">
+            {isQuiz ? "How to Use Quiz Mode" : "How to Use Question Mode"}
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3 text-sm text-foreground/80">
+        {isQuiz ? (
           <ol className="list-decimal ml-5 space-y-2">
-            <li>Upload Image – Choose the picture you want to hide.</li>
-            <li>Enter Passphrase – Type a strong secret key (you’ll need it later to reveal).</li>
-            <li>Click Scramble – Your image will be masked and turned into a secret code.</li>
-            <li>Copy the Code – Save it or send it to someone you trust.</li>
-            <li>
-              To Reveal – Paste the code in the “Paste Encoded Code” box, enter the same
-              passphrase, and click Reveal to see the original image again.
-            </li>
+            <li>Create Quiz – Add MCQs with 4 options each, choose one correct answer.</li>
+            <li>Optional Passphrase – Add a passphrase for quiz access protection.</li>
+            <li>Optional Score Key – Add a score key to protect score visibility.</li>
+            <li>Generate Code – Click "Generate Quiz Code" and share it.</li>
+            <li>Attempt Quiz – Recipient pastes Quiz Code, enters passphrase if needed, answers questions.</li>
+            <li>Submit Answers – Get Score Code to send back to quiz creator.</li>
+            <li>Reveal Score – Quiz creator pastes Score Code, enters score key if needed, sees the score.</li>
           </ol>
         ) : (
           <ol className="list-decimal ml-5 space-y-2">
@@ -38,7 +38,8 @@ export function HelpSidebar({ mode }: { mode: Mode }) {
             <li>Share the Code – They must paste the code, enter the same answer, and click Load Challenge to reveal your secret message.</li>
           </ol>
         )}
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+    </div>
   );
 }
