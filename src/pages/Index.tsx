@@ -186,8 +186,10 @@ const Index = () => {
 
         {/* Footer */}
         <div className="mt-12 text-center text-sm text-muted-foreground">
-          <p>© Hidey • Keep it fun, keep it safe.</p>
+          <p>© 2025 Hidey • Keep it fun, keep it safe.</p>
           <p className="mt-1">Do not use or share sensitive or private information.</p>
+          <a href="https://www.linkedin.com/in/roshani-gusain/" target="_blank"><b>➜ Roshani hehe!!</b></a>
+
         </div>
       </div>
     </div>

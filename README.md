@@ -1,73 +1,40 @@
-# Welcome to your Lovable project
+# 🔐 SecretQuiz — Play & Share Secret Quizzes
 
-## Project info
+SecretQuiz is a fun and private way to challenge your friends with custom quizzes!  
+Create questions, share them as secret codes, and decode your friends’ scores securely — all without any backend!
 
-**URL**: https://lovable.dev/projects/e1bf46ae-ee58-42c1-be53-063cf3bca0eb
+---
 
-## How can I edit this code?
+## 🌟 Features
+- Create unlimited MCQs (4 options each)
+- Encode & share your quiz with a short code
+- Optional passphrase for private results
+- Clean, modern UI with smooth animations
+- 100% client-side (no data stored on servers)
 
-There are several ways of editing your application.
+---
 
-**Use Lovable**
+## 🧠 How It Works
+1. Create your quiz (up to 5 or unlimited questions).
+2. Share the generated quiz code with your friend.
+3. They decode, answer, and get a secret score code.
+4. You decode the score code to see their result!
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/e1bf46ae-ee58-42c1-be53-063cf3bca0eb) and start prompting.
+---
 
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
+## 🚀 Tech Stack
+- React + TypeScript
 - Tailwind CSS
+- Lovable / Vercel for hosting
 
-## How can I deploy this project?
+---
 
-Simply open [Lovable](https://lovable.dev/projects/e1bf46ae-ee58-42c1-be53-063cf3bca0eb) and click on Share -> Publish.
+## 🎨 Theme
+Soft cream background with accent colors matching the app’s minimal look.
 
-## Can I connect a custom domain to my Lovable project?
+---
 
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+## 🧩 Installation
+```bash
+npm install
+npm run dev
