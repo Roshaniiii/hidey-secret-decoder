@@ -118,7 +118,7 @@ export function decodeQuizCode(shortCode: string): QuizPayload {
     throw new Error('Invalid Quiz Code format: ' + result.error.issues.map(i => i.message).join(', '));
   }
 
-  return result.data;
+  return result.data as QuizPayload;
 }
 
 export async function generateScoreCode(quiz: QuizPayload, answers: number[], passphrase?: string): Promise<string> {
