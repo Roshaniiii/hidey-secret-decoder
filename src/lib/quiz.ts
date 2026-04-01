@@ -145,11 +145,30 @@ export async function generateScoreCode(quiz: QuizPayload, answers: number[], pa
 export function decodeScoreCode(shortCode: string): ScorePayload {
   if (!shortCode || !shortCode.startsWith('HIDEYS-')) throw new Error('Invalid Score Code');
   const encoded = shortCode.substring(7);
-  const bytes = fromBase64Url(encoded);
-  const inflated = pako.inflate(bytes, { to: 'string' });
-  const payload = JSON.parse(inflated) as ScorePayload;
-  if (typeof payload.total !== 'number' || typeof payload.correct !== 'number') throw new Error('Corrupted Score Code');
-  return payload;
+
+  if (encoded.length > 500000) throw new Error('Payload too large');
+
+  let inflated: string;
+  try {
+    const bytes = fromBase64Url(encoded);
+    inflated = pako.inflate(bytes, { to: 'string' });
+  } catch {
+    throw new Error('Corrupted or invalid Score Code');
+  }
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(inflated);
+  } catch {
+    throw new Error('Corrupted or invalid Score Code');
+  }
+
+  const result = ScorePayloadSchema.safeParse(parsed);
+  if (!result.success) {
+    throw new Error('Invalid Score Code format: ' + result.error.issues.map(i => i.message).join(', '));
+  }
+
+  return result.data;
 }
 
 export async function verifyScoreKey(scorePayload: ScorePayload, scoreKey: string): Promise<boolean> {
