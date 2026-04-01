@@ -38,22 +38,22 @@ const Index = () => {
                   value="message" 
                   className="rounded-xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground font-semibold"
                 >
-                  <MessageSquare className="mr-2 h-4 w-4" />
-                  Message Mode
+                  <MessageSquare className="mr-2 h-4 w-4 hidden sm:block" />
+                  Message
                 </TabsTrigger>
                 <TabsTrigger 
                   value="quiz"
                   className="rounded-xl data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground font-semibold"
                 >
-                  <ListChecks className="mr-2 h-4 w-4" />
-                  Quiz Mode
+                  <ListChecks className="mr-2 h-4 w-4 hidden sm:block" />
+                  Quiz
                 </TabsTrigger>
                 <TabsTrigger 
                   value="question"
                   className="rounded-xl data-[state=active]:bg-accent data-[state=active]:text-accent-foreground font-semibold"
                 >
-                  <HelpCircle className="mr-2 h-4 w-4" />
-                  Question Mode
+                  <HelpCircle className="mr-2 h-4 w-4 hidden sm:block" />
+                  Question
                 </TabsTrigger>
               </TabsList>
               
