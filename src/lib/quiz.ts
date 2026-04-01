@@ -168,7 +168,7 @@ export function decodeScoreCode(shortCode: string): ScorePayload {
     throw new Error('Invalid Score Code format: ' + result.error.issues.map(i => i.message).join(', '));
   }
 
-  return result.data;
+  return result.data as ScorePayload;
 }
 
 export async function verifyScoreKey(scorePayload: ScorePayload, scoreKey: string): Promise<boolean> {

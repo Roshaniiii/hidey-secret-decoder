@@ -108,7 +108,7 @@ export function decodeQuestionStructure(encodedText: string): QuestionData {
     throw new Error('Invalid challenge format: ' + result.error.issues.map(i => i.message).join(', '));
   }
 
-  return result.data;
+  return result.data as QuestionData;
 }
 
 // Verify answer and decode message
