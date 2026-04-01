@@ -1,11 +1,31 @@
 import { encodeMessage, decodeMessage, PatternType } from './encoding';
 import pako from 'pako';
+import { z } from 'zod';
+
+const VALID_PATTERN_TYPES: PatternType[] = ['alnum', 'symbol', 'caps', 'hex'];
+
+const QuestionDataSchema = z.object({
+  question: z.string().min(1, 'Question is required').max(1000, 'Question too long'),
+  answerHash: z.string().regex(/^[a-f0-9]{64}$/i, 'Invalid answer hash format'),
+  encryptedMessage: z.string().min(1, 'Encrypted message is required'),
+  patternType: z.enum(['alnum', 'symbol', 'caps', 'hex'] as const),
+});
 
 export interface QuestionData {
   question: string;
   answerHash: string;
   encryptedMessage: string;
   patternType: PatternType;
+}
+
+// Constant-time string comparison to prevent timing attacks
+function constantTimeCompare(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+  let result = 0;
+  for (let i = 0; i < a.length; i++) {
+    result |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  }
+  return result === 0;
 }
 
 // Hash function using Web Crypto API
@@ -27,6 +47,10 @@ export async function encodeQuestionMessage(
 ): Promise<string> {
   if (!message || !question || !answer) {
     throw new Error('Message, question, and answer are required');
+  }
+
+  if (!VALID_PATTERN_TYPES.includes(patternType)) {
+    throw new Error('Invalid pattern type');
   }
 
   // Hash the answer
@@ -59,16 +83,32 @@ export function decodeQuestionStructure(encodedText: string): QuestionData {
   }
 
   const base64 = encodedText.slice(7);
-  // Decompress the data
-  const compressedData = Uint8Array.from(atob(base64), (c) => c.charCodeAt(0));
-  const jsonString = pako.inflate(compressedData, { to: 'string' });
-  const questionData: QuestionData = JSON.parse(jsonString);
 
-  if (!questionData.question || !questionData.answerHash || !questionData.encryptedMessage) {
-    throw new Error('Invalid question data structure');
+  if (base64.length > 500000) {
+    throw new Error('Payload too large');
   }
 
-  return questionData;
+  let jsonString: string;
+  try {
+    const compressedData = Uint8Array.from(atob(base64), (c) => c.charCodeAt(0));
+    jsonString = pako.inflate(compressedData, { to: 'string' });
+  } catch {
+    throw new Error('Corrupted or invalid challenge code');
+  }
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(jsonString);
+  } catch {
+    throw new Error('Corrupted or invalid challenge code');
+  }
+
+  const result = QuestionDataSchema.safeParse(parsed);
+  if (!result.success) {
+    throw new Error('Invalid challenge format: ' + result.error.issues.map(i => i.message).join(', '));
+  }
+
+  return result.data as QuestionData;
 }
 
 // Verify answer and decode message
@@ -82,7 +122,7 @@ export async function verifyAndDecode(
     const userHash = await hashAnswer(userAnswer);
 
     // Compare hashes
-    if (userHash !== questionData.answerHash) {
+    if (!constantTimeCompare(userHash, questionData.answerHash)) {
       return {
         success: false,
         error: 'Incorrect answer',

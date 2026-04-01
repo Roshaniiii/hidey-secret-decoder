@@ -1,4 +1,5 @@
 import pako from 'pako';
+import { z } from 'zod';
 
 export type QuizOption = string;
 
@@ -10,15 +11,46 @@ export interface QuizQuestion {
 
 export interface QuizPayload {
   questions: QuizQuestion[];
-  passphraseHash?: string; // SHA-256 hex of passphrase if provided
-  scoreKeyHash?: string; // SHA-256 hex of score key if provided
+  passphraseHash?: string;
+  scoreKeyHash?: string;
 }
 
 export interface ScorePayload {
   total: number;
   correct: number;
-  passphraseHash?: string; // Echoed for validation
-  scoreKeyHash?: string; // SHA-256 hex of score key if provided
+  passphraseHash?: string;
+  scoreKeyHash?: string;
+}
+
+const hexHashRegex = /^[a-f0-9]{64}$/i;
+
+const QuizQuestionSchema = z.object({
+  question: z.string().min(1).max(1000),
+  options: z.tuple([z.string().max(500), z.string().max(500), z.string().max(500), z.string().max(500)]),
+  correctIndex: z.union([z.literal(0), z.literal(1), z.literal(2), z.literal(3)]),
+});
+
+const QuizPayloadSchema = z.object({
+  questions: z.array(QuizQuestionSchema).min(1).max(100),
+  passphraseHash: z.string().regex(hexHashRegex).optional(),
+  scoreKeyHash: z.string().regex(hexHashRegex).optional(),
+});
+
+const ScorePayloadSchema = z.object({
+  total: z.number().int().min(0).max(100),
+  correct: z.number().int().min(0).max(100),
+  passphraseHash: z.string().regex(hexHashRegex).optional(),
+  scoreKeyHash: z.string().regex(hexHashRegex).optional(),
+});
+
+// Constant-time string comparison to prevent timing attacks
+function constantTimeCompare(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+  let result = 0;
+  for (let i = 0; i < a.length; i++) {
+    result |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  }
+  return result === 0;
 }
 
 // Web crypto SHA-256 helper
@@ -63,11 +95,30 @@ export async function generateQuizCode(questions: QuizQuestion[], passphrase?: s
 export function decodeQuizCode(shortCode: string): QuizPayload {
   if (!shortCode || !shortCode.startsWith('HIDEYQ-')) throw new Error('Invalid Quiz Code');
   const encoded = shortCode.substring(7);
-  const bytes = fromBase64Url(encoded);
-  const inflated = pako.inflate(bytes, { to: 'string' });
-  const payload = JSON.parse(inflated) as QuizPayload;
-  if (!payload.questions || !Array.isArray(payload.questions)) throw new Error('Corrupted Quiz Code');
-  return payload;
+
+  if (encoded.length > 500000) throw new Error('Payload too large');
+
+  let inflated: string;
+  try {
+    const bytes = fromBase64Url(encoded);
+    inflated = pako.inflate(bytes, { to: 'string' });
+  } catch {
+    throw new Error('Corrupted or invalid Quiz Code');
+  }
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(inflated);
+  } catch {
+    throw new Error('Corrupted or invalid Quiz Code');
+  }
+
+  const result = QuizPayloadSchema.safeParse(parsed);
+  if (!result.success) {
+    throw new Error('Invalid Quiz Code format: ' + result.error.issues.map(i => i.message).join(', '));
+  }
+
+  return result.data as QuizPayload;
 }
 
 export async function generateScoreCode(quiz: QuizPayload, answers: number[], passphrase?: string): Promise<string> {
@@ -94,17 +145,36 @@ export async function generateScoreCode(quiz: QuizPayload, answers: number[], pa
 export function decodeScoreCode(shortCode: string): ScorePayload {
   if (!shortCode || !shortCode.startsWith('HIDEYS-')) throw new Error('Invalid Score Code');
   const encoded = shortCode.substring(7);
-  const bytes = fromBase64Url(encoded);
-  const inflated = pako.inflate(bytes, { to: 'string' });
-  const payload = JSON.parse(inflated) as ScorePayload;
-  if (typeof payload.total !== 'number' || typeof payload.correct !== 'number') throw new Error('Corrupted Score Code');
-  return payload;
+
+  if (encoded.length > 500000) throw new Error('Payload too large');
+
+  let inflated: string;
+  try {
+    const bytes = fromBase64Url(encoded);
+    inflated = pako.inflate(bytes, { to: 'string' });
+  } catch {
+    throw new Error('Corrupted or invalid Score Code');
+  }
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(inflated);
+  } catch {
+    throw new Error('Corrupted or invalid Score Code');
+  }
+
+  const result = ScorePayloadSchema.safeParse(parsed);
+  if (!result.success) {
+    throw new Error('Invalid Score Code format: ' + result.error.issues.map(i => i.message).join(', '));
+  }
+
+  return result.data as ScorePayload;
 }
 
 export async function verifyScoreKey(scorePayload: ScorePayload, scoreKey: string): Promise<boolean> {
-  if (!scorePayload.scoreKeyHash) return true; // No score key required
+  if (!scorePayload.scoreKeyHash) return true;
   const providedHash = await sha256Hex(scoreKey);
-  return scorePayload.scoreKeyHash === providedHash;
+  return constantTimeCompare(scorePayload.scoreKeyHash, providedHash);
 }
 
 
