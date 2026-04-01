@@ -122,7 +122,7 @@ export async function verifyAndDecode(
     const userHash = await hashAnswer(userAnswer);
 
     // Compare hashes
-    if (userHash !== questionData.answerHash) {
+    if (!constantTimeCompare(userHash, questionData.answerHash)) {
       return {
         success: false,
         error: 'Incorrect answer',

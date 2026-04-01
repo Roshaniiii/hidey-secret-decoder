@@ -172,9 +172,9 @@ export function decodeScoreCode(shortCode: string): ScorePayload {
 }
 
 export async function verifyScoreKey(scorePayload: ScorePayload, scoreKey: string): Promise<boolean> {
-  if (!scorePayload.scoreKeyHash) return true; // No score key required
+  if (!scorePayload.scoreKeyHash) return true;
   const providedHash = await sha256Hex(scoreKey);
-  return scorePayload.scoreKeyHash === providedHash;
+  return constantTimeCompare(scorePayload.scoreKeyHash, providedHash);
 }
 
 
