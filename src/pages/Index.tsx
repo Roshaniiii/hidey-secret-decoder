@@ -17,14 +17,11 @@ const Index = () => {
     <div className="min-h-screen bg-gradient-to-br from-background via-accent/20 to-secondary/20">
       <div className="container max-w-6xl mx-auto px-4 py-12">
         {/* Header */}
-        <div className="text-center mb-12 space-y-3">
-          <div className="inline-block p-3 bg-primary/20 rounded-2xl mb-4">
-            <Lock className="h-12 w-12 text-primary" />
-          </div>
-          <h1 className="text-6xl font-bold text-foreground mb-3 tracking-tight">
+        <div className="text-center mb-8 space-y-1">
+          <h1 className="text-5xl font-bold text-foreground tracking-tight">
             Hidey
           </h1>
-          <p className="text-xl text-muted-foreground font-medium">
+          <p className="text-lg text-muted-foreground font-medium">
             Hide it. Share it. Reveal it.
           </p>
         </div>
