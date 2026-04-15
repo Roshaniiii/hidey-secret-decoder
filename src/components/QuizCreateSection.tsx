@@ -124,25 +124,25 @@ export function QuizCreateSection() {
       </div>
 
       <div className="space-y-2">
-        <Label className="text-foreground font-medium">Passphrase (optional)</Label>
+        <Label className="text-foreground font-medium">Passphrase</Label>
         <Input
           type="password"
           placeholder="Enter passphrase"
           value={passphrase}
           onChange={e => setPassphrase(e.target.value)}
         />
-        <p className="text-xs text-muted-foreground">(Optional) Add a passphrase for extra privacy.</p>
+        <p className="text-xs text-muted-foreground">Add a passphrase for extra privacy.</p>
       </div>
 
       <div className="space-y-2">
-        <Label className="text-foreground font-medium">Score Key (optional)</Label>
+        <Label className="text-foreground font-medium">Score Key</Label>
         <Input
           type="password"
           placeholder="Enter score key"
           value={scoreKey}
           onChange={e => setScoreKey(e.target.value)}
         />
-        <p className="text-xs text-muted-foreground">(Optional) Add a score key to protect score visibility.</p>
+        <p className="text-xs text-muted-foreground">Add a score key to protect score visibility.</p>
       </div>
 
       <Button onClick={handleGenerate} className="w-full" disabled={isGenerating}>
