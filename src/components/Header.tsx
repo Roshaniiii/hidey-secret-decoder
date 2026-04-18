@@ -35,6 +35,7 @@ export function Header() {
               <span className="hidden sm:inline">{label}</span>
             </Link>
           ))}
+          <ThemeToggle />
         </nav>
       </div>
     </header>
