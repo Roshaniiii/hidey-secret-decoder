@@ -1,36 +1,167 @@
+import { useState, FormEvent } from "react";
 import { Card } from "@/components/ui/card";
-import { Linkedin, Mail } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Loader2, Mail, Send } from "lucide-react";
+import { z } from "zod";
+import { toast } from "sonner";
+
+const contactSchema = z.object({
+  name: z.string().trim().nonempty("Name is required").max(100, "Name must be less than 100 characters"),
+  email: z.string().trim().email("Invalid email address").max(255, "Email must be less than 255 characters"),
+  subject: z.string().trim().nonempty("Subject is required").max(150, "Subject must be less than 150 characters"),
+  message: z.string().trim().nonempty("Message is required").max(2000, "Message must be less than 2000 characters"),
+});
+
+type FieldErrors = Partial<Record<"name" | "email" | "subject" | "message", string>>;
 
 const Contact = () => {
+  const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
+  const [errors, setErrors] = useState<FieldErrors>({});
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleChange = (field: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setForm((prev) => ({ ...prev, [field]: e.target.value }));
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setErrors({});
+
+    const result = contactSchema.safeParse(form);
+    if (!result.success) {
+      const fieldErrors: FieldErrors = {};
+      result.error.issues.forEach((issue) => {
+        const key = issue.path[0] as keyof FieldErrors;
+        if (key && !fieldErrors[key]) fieldErrors[key] = issue.message;
+      });
+      setErrors(fieldErrors);
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      const res = await fetch("https://formspree.io/f/xeevkkdv", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(result.data),
+      });
+
+      if (res.ok) {
+        toast.success("✅ Message sent! We'll get back to you soon.");
+        setForm({ name: "", email: "", subject: "", message: "" });
+      } else {
+        toast.error("❌ Something went wrong. Please try again or email us directly.");
+      }
+    } catch {
+      toast.error("❌ Something went wrong. Please try again or email us directly.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-accent/20 to-secondary/20">
-      <div className="container max-w-4xl mx-auto px-4 py-12 space-y-6">
-        <div className="text-center space-y-2">
-          <h1 className="text-3xl font-bold text-foreground tracking-tight">Contact</h1>
+      <div className="container max-w-[600px] mx-auto px-4 py-12 space-y-8">
+        <div className="text-center space-y-3">
+          <h1 className="text-3xl font-bold text-foreground tracking-tight">Get in Touch</h1>
           <p className="text-sm text-muted-foreground">
-            Have a question, suggestion, or feedback? Feel free to reach out.
+            Have a question, suggestion, or just want to say hello? Fill in the form below and we'll get back to you as
+            soon as possible.
           </p>
         </div>
 
-        <div className="flex items-center justify-center gap-6">
+        <Card className="p-6 sm:p-8">
+          <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+            <div className="space-y-2">
+              <Label htmlFor="name">Name</Label>
+              <Input
+                id="name"
+                type="text"
+                placeholder="Your name"
+                value={form.name}
+                onChange={handleChange("name")}
+                aria-invalid={!!errors.name}
+                maxLength={100}
+                required
+              />
+              {errors.name && <p className="text-xs text-destructive">{errors.name}</p>}
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="your@email.com"
+                value={form.email}
+                onChange={handleChange("email")}
+                aria-invalid={!!errors.email}
+                maxLength={255}
+                required
+              />
+              {errors.email && <p className="text-xs text-destructive">{errors.email}</p>}
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="subject">Subject</Label>
+              <Input
+                id="subject"
+                type="text"
+                placeholder="What's this about?"
+                value={form.subject}
+                onChange={handleChange("subject")}
+                aria-invalid={!!errors.subject}
+                maxLength={150}
+                required
+              />
+              {errors.subject && <p className="text-xs text-destructive">{errors.subject}</p>}
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="message">Message</Label>
+              <Textarea
+                id="message"
+                placeholder="Write your message here..."
+                value={form.message}
+                onChange={handleChange("message")}
+                aria-invalid={!!errors.message}
+                maxLength={2000}
+                className="min-h-[150px] resize-y"
+                required
+              />
+              {errors.message && <p className="text-xs text-destructive">{errors.message}</p>}
+            </div>
+
+            <Button type="submit" className="w-full" disabled={submitting}>
+              {submitting ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Sending...
+                </>
+              ) : (
+                <>
+                  <Send className="h-4 w-4" />
+                  Send Message
+                </>
+              )}
+            </Button>
+          </form>
+        </Card>
+
+        <Card className="p-6 sm:p-8 space-y-3">
+          <h2 className="text-lg font-semibold text-foreground">Other Ways to Reach Us</h2>
           <a
-            href="https://www.linkedin.com/in/roshani-gusain/"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="mailto:support@yourdomain.com"
             className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
           >
-            <Linkedin className="h-5 w-5" />
-            Connect on LinkedIn
+            <Mail className="h-4 w-4" />
+            support@yourdomain.com
           </a>
-          <a
-            href="mailto:gusainroshani583@gmail.com"
-            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
-            title="Send Email"
-          >
-            <Mail className="h-5 w-5" />
-            Send an Email
-          </a>
-        </div>
+          <p className="text-xs text-muted-foreground">We typically respond within 24–48 hours.</p>
+        </Card>
       </div>
     </div>
   );
