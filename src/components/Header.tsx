@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { Lock, Home, Info, Mail } from "lucide-react";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export function Header() {
   const location = useLocation();
