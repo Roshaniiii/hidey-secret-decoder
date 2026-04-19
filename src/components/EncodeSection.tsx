@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { PatternSelector } from "./PatternSelector";
 import { encodeMessage, PatternType } from "@/lib/encoding";
-import { Copy, Lock } from "lucide-react";
+import { Copy, Lock, Link as LinkIcon } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
 export function EncodeSection() {
@@ -53,6 +53,19 @@ export function EncodeSection() {
     toast({
       title: "Copied!",
       description: "Encoded message copied to clipboard.",
+    });
+  };
+
+  const handleCopyLink = () => {
+    const params = new URLSearchParams();
+    params.set("m", encoded);
+    params.set("p", pattern);
+    if (usePassphrase && passphrase) params.set("pp", "1");
+    const url = `${window.location.origin}/?${params.toString()}`;
+    navigator.clipboard.writeText(url);
+    toast({
+      title: "Link copied!",
+      description: "Share it anywhere.",
     });
   };
 
@@ -118,14 +131,29 @@ export function EncodeSection() {
           <div className="p-4 bg-card rounded-lg border border-border font-mono text-sm break-all">
             {encoded}
           </div>
-          <Button
-            onClick={handleCopy}
-            variant="outline"
-            className="w-full rounded-xl border-2"
-          >
-            <Copy className="mr-2 h-4 w-4" />
-            Copy text
-          </Button>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <Button
+              onClick={handleCopy}
+              variant="outline"
+              className="w-full rounded-xl border-2"
+            >
+              <Copy className="mr-2 h-4 w-4" />
+              Copy text
+            </Button>
+            <Button
+              onClick={handleCopyLink}
+              variant="outline"
+              className="w-full rounded-xl border-2"
+            >
+              <LinkIcon className="mr-2 h-4 w-4" />
+              Copy link
+            </Button>
+          </div>
+          {usePassphrase && passphrase && (
+            <p className="text-xs text-muted-foreground">
+              🔒 Share the passphrase separately for security.
+            </p>
+          )}
         </div>
       )}
     </div>
