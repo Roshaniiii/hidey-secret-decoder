@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
-import { Copy } from "lucide-react";
+import { Copy, Link as LinkIcon } from "lucide-react";
 import type { QuizQuestion } from "@/lib/quiz";
 import { generateQuizCode } from "@/lib/quiz";
 
@@ -60,6 +60,16 @@ export function QuizCreateSection() {
     try {
       await navigator.clipboard.writeText(quizCode);
       toast.success("Copied to clipboard");
+    } catch {
+      toast.error("Copy failed");
+    }
+  };
+
+  const copyQuizLink = async () => {
+    try {
+      const url = `${window.location.origin}/?quiz=${encodeURIComponent(quizCode)}`;
+      await navigator.clipboard.writeText(url);
+      toast.success("Quiz link copied! Share it anywhere.");
     } catch {
       toast.error("Copy failed");
     }
@@ -153,7 +163,13 @@ export function QuizCreateSection() {
         <div className="space-y-2">
           <Label className="text-foreground font-semibold">Quiz Code</Label>
           <Textarea readOnly value={quizCode} className="min-h-[100px] font-mono text-sm" />
-          <Button variant="outline" onClick={copyCode}><Copy className="h-4 w-4 mr-2"/>Copy</Button>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <Button variant="outline" onClick={copyCode}><Copy className="h-4 w-4 mr-2"/>Copy Code</Button>
+            <Button variant="outline" onClick={copyQuizLink}><LinkIcon className="h-4 w-4 mr-2"/>Copy Quiz Link</Button>
+          </div>
+          {passphrase && (
+            <p className="text-xs text-muted-foreground">🔒 Share the passphrase separately for security.</p>
+          )}
         </div>
       )}
     </div>

@@ -1,14 +1,19 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
+import { Sparkles } from "lucide-react";
 import type { QuizPayload } from "@/lib/quiz";
 import { decodeQuizCode, generateScoreCode } from "@/lib/quiz";
 
-export function QuizAttemptSection() {
+interface QuizAttemptSectionProps {
+  initialQuizCode?: string | null;
+}
+
+export function QuizAttemptSection({ initialQuizCode }: QuizAttemptSectionProps = {}) {
   const [quizCode, setQuizCode] = useState("");
   const [passphrase, setPassphrase] = useState("");
   const [quiz, setQuiz] = useState<QuizPayload | null>(null);
@@ -16,6 +21,14 @@ export function QuizAttemptSection() {
   const [scoreCode, setScoreCode] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [showSharedBanner, setShowSharedBanner] = useState(false);
+
+  useEffect(() => {
+    if (initialQuizCode) {
+      setQuizCode(initialQuizCode);
+      setShowSharedBanner(true);
+    }
+  }, [initialQuizCode]);
 
   const needsPassphrase = useMemo(() => !!quiz?.passphraseHash, [quiz]);
 
@@ -83,6 +96,16 @@ export function QuizAttemptSection() {
 
   return (
     <div className="space-y-6">
+      {showSharedBanner && (
+        <div className="p-4 rounded-xl border-2 border-primary/30 bg-gradient-to-br from-primary/10 to-secondary/10 space-y-1">
+          <div className="flex items-center gap-2 font-semibold text-foreground">
+            <Sparkles className="h-4 w-4 text-primary" />
+            🔗 Someone shared a quiz with you!
+          </div>
+          <p className="text-sm text-muted-foreground">Hit Load Quiz to begin.</p>
+        </div>
+      )}
+
       <div className="space-y-2">
         <Label className="text-foreground font-semibold">Paste Quiz Code</Label>
         <Textarea
