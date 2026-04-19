@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EncodeSection } from "@/components/EncodeSection";
 import { DecodeSection } from "@/components/DecodeSection";
@@ -9,10 +9,21 @@ import { QuestionEncodeSection } from "@/components/QuestionEncodeSection";
 import { QuestionDecodeSection } from "@/components/QuestionDecodeSection";
 import { PatternExamples } from "@/components/PatternExamples";
 import { HelpSidebar } from "@/components/HelpSidebar";
+import { useSharedContent } from "@/hooks/useSharedContent";
 import { Lock, Unlock, MessageSquare, HelpCircle, ListChecks } from "lucide-react";
 
 const Index = () => {
-  const [mode, setMode] = useState<"message" | "quiz" | "question">("message");
+  const shared = useSharedContent();
+  const [mode, setMode] = useState<"message" | "quiz" | "question">(shared.initialMode ?? "message");
+  const [messageSubTab, setMessageSubTab] = useState<string>(shared.message ? "decode" : "encode");
+  const [quizSubTab, setQuizSubTab] = useState<string>(shared.quizCode ? "attempt" : "create");
+
+  useEffect(() => {
+    if (shared.initialMode) setMode(shared.initialMode);
+    if (shared.message) setMessageSubTab("decode");
+    if (shared.quizCode) setQuizSubTab("attempt");
+  }, [shared.initialMode, shared.message, shared.quizCode]);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-accent/20 to-secondary/20">
       <div className="container max-w-6xl mx-auto px-4 py-12">
@@ -56,7 +67,7 @@ const Index = () => {
               
               {/* Message Mode */}
               <TabsContent value="message" className="space-y-0">
-                <Tabs defaultValue="encode" className="w-full">
+                <Tabs value={messageSubTab} onValueChange={setMessageSubTab} className="w-full">
                   <TabsList className="grid w-full grid-cols-2 bg-card border-2 border-border rounded-2xl p-1 h-14">
                     <TabsTrigger 
                       value="encode" 
@@ -82,7 +93,11 @@ const Index = () => {
                   
                   <TabsContent value="decode" className="mt-6">
                     <div className="bg-card border-2 border-border rounded-2xl p-6 shadow-lg">
-                      <DecodeSection />
+                      <DecodeSection
+                        initialMessage={shared.message}
+                        initialPattern={shared.pattern}
+                        sharedHasPassphrase={shared.hasPassphrase}
+                      />
                     </div>
                   </TabsContent>
                 </Tabs>
@@ -90,7 +105,7 @@ const Index = () => {
 
               {/* Quiz Mode */}
               <TabsContent value="quiz" className="space-y-0">
-                <Tabs defaultValue="create" className="w-full">
+                <Tabs value={quizSubTab} onValueChange={setQuizSubTab} className="w-full">
                   <TabsList className="grid w-full grid-cols-3 bg-card border-2 border-border rounded-2xl p-1 h-14">
                     <TabsTrigger 
                       value="create" 
@@ -123,7 +138,7 @@ const Index = () => {
                   
                   <TabsContent value="attempt" className="mt-6">
                     <div className="bg-card border-2 border-border rounded-2xl p-6 shadow-lg">
-                      <QuizAttemptSection />
+                      <QuizAttemptSection initialQuizCode={shared.quizCode} />
                     </div>
                   </TabsContent>
                   
