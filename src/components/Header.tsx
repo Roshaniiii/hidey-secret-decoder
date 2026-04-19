@@ -25,7 +25,7 @@ export function Header() {
             <Link
               key={path}
               to={path}
-              className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
+              className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-normal transition-all ${
                 location.pathname === path
                   ? "bg-primary/20 text-primary"
                   : "text-muted-foreground hover:text-foreground hover:bg-accent"
