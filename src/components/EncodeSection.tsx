@@ -126,8 +126,7 @@ export function EncodeSection() {
 
       {encoded && (
         <div className="space-y-3 p-6 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-xl border-2 border-primary/20">
-          <Label className="text-foreground font-semibold">Obfuscated message</Label>
-          <p className="text-xs text-muted-foreground">⚠️ This is obfuscation for fun — not cryptographic encryption. Do not use for sensitive data.</p>
+          <Label className="text-foreground font-semibold">Encoded message</Label>
           <div className="p-4 bg-card rounded-lg border border-border font-mono text-sm break-all">
             {encoded}
           </div>

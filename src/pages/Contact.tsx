@@ -151,17 +151,6 @@ const Contact = () => {
           </form>
         </Card>
 
-        <Card className="p-6 sm:p-8 space-y-3">
-          <h2 className="text-lg font-semibold text-foreground">Other Ways to Reach Us</h2>
-          <a
-            href="mailto:support@yourdomain.com"
-            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
-          >
-            <Mail className="h-4 w-4" />
-            support@yourdomain.com
-          </a>
-          <p className="text-xs text-muted-foreground">We typically respond within 24–48 hours.</p>
-        </Card>
       </div>
     </div>
   );

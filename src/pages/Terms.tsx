@@ -39,7 +39,6 @@ const Terms = () => {
             <h1 className="text-3xl sm:text-4xl font-bold text-foreground tracking-tight">Terms of Service</h1>
           </div>
           <p className="text-sm text-muted-foreground">Please read these terms carefully before using Hidey.</p>
-          <p className="text-xs text-muted-foreground">Last updated: April 2026</p>
         </header>
 
         <article>
