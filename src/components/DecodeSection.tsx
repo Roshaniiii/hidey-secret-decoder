@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -6,15 +6,31 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { PatternSelector } from "./PatternSelector";
 import { decodeMessage, PatternType } from "@/lib/encoding";
-import { Lock, Unlock } from "lucide-react";
+import { Lock, Unlock, Sparkles } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
-export function DecodeSection() {
+interface DecodeSectionProps {
+  initialMessage?: string | null;
+  initialPattern?: PatternType | null;
+  sharedHasPassphrase?: boolean;
+}
+
+export function DecodeSection({ initialMessage, initialPattern, sharedHasPassphrase }: DecodeSectionProps = {}) {
   const [encoded, setEncoded] = useState("");
   const [pattern, setPattern] = useState<PatternType>("alnum");
   const [usePassphrase, setUsePassphrase] = useState(false);
   const [passphrase, setPassphrase] = useState("");
   const [decoded, setDecoded] = useState("");
+  const [showSharedBanner, setShowSharedBanner] = useState(false);
+
+  useEffect(() => {
+    if (initialMessage) {
+      setEncoded(initialMessage);
+      setShowSharedBanner(true);
+    }
+    if (initialPattern) setPattern(initialPattern);
+    if (sharedHasPassphrase) setUsePassphrase(true);
+  }, [initialMessage, initialPattern, sharedHasPassphrase]);
 
   const handleDecode = () => {
     if (!encoded) {
@@ -58,6 +74,21 @@ export function DecodeSection() {
 
   return (
     <div className="space-y-6">
+      {showSharedBanner && (
+        <div className="p-4 rounded-xl border-2 border-primary/30 bg-gradient-to-br from-primary/10 to-secondary/10 space-y-1">
+          <div className="flex items-center gap-2 font-semibold text-foreground">
+            <Sparkles className="h-4 w-4 text-primary" />
+            🔗 Someone shared a secret message with you!
+          </div>
+          <p className="text-sm text-muted-foreground">Hit Decode to reveal it.</p>
+          {sharedHasPassphrase && (
+            <p className="text-sm text-muted-foreground">
+              🔒 This message is passphrase protected. Ask the sender for the passphrase.
+            </p>
+          )}
+        </div>
+      )}
+
       <div className="space-y-2">
         <Label htmlFor="encoded" className="text-foreground font-medium">
           Encoded message
