@@ -10,8 +10,10 @@ export interface SharedContent {
   hasPassphrase: boolean;
   quizCode: string | null;
   hasShared: boolean;
-  initialMode: "message" | "quiz" | null;
+  initialMode: "message" | "quiz" | "question" | null;
 }
+
+const VALID_MODES = ["message", "quiz", "question"] as const;
 
 export function useSharedContent(): SharedContent {
   const [params] = useSearchParams();
@@ -27,9 +29,12 @@ export function useSharedContent(): SharedContent {
         ? (patternRaw as PatternType)
         : null;
 
-    let initialMode: "message" | "quiz" | null = null;
+    const modeParam = params.get("mode");
+    let initialMode: "message" | "quiz" | "question" | null = null;
     if (quizCode) initialMode = "quiz";
     else if (message) initialMode = "message";
+    else if (modeParam && (VALID_MODES as readonly string[]).includes(modeParam))
+      initialMode = modeParam as "message" | "quiz" | "question";
 
     return {
       message,

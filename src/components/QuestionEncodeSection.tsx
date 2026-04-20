@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
-import { Copy, Lock, Share2 } from 'lucide-react';
+import { Copy, Lock, Share2, Eye, EyeOff } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { encodeQuestionMessage } from '@/lib/questionEncoding';
 import { PatternType } from '@/lib/encoding';
@@ -17,6 +17,8 @@ export function QuestionEncodeSection() {
   const [usePassphrase, setUsePassphrase] = useState(false);
   const [encoded, setEncoded] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [showAnswer, setShowAnswer] = useState(false);
+  const [showPassphrase, setShowPassphrase] = useState(false);
   const { toast } = useToast();
 
   const handleEncode = async () => {
@@ -91,14 +93,24 @@ export function QuestionEncodeSection() {
 
         <div>
           <Label htmlFor="answer">Answer (case-sensitive)</Label>
-          <Input
-            id="answer"
-            type="password"
-            placeholder="Enter the correct answer"
-            value={answer}
-            onChange={(e) => setAnswer(e.target.value)}
-            className="mt-2"
-          />
+          <div className="relative mt-2">
+            <Input
+              id="answer"
+              type={showAnswer ? 'text' : 'password'}
+              placeholder="Enter the correct answer"
+              value={answer}
+              onChange={(e) => setAnswer(e.target.value)}
+              className="pr-10"
+            />
+            <button
+              type="button"
+              onClick={() => setShowAnswer((v) => !v)}
+              aria-label={showAnswer ? 'Hide answer' : 'Show answer'}
+              className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 text-muted-foreground hover:text-foreground transition-colors"
+            >
+              {showAnswer ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            </button>
+          </div>
           <p className="text-xs text-muted-foreground mt-1">
             💡 It's better to write the answer in lowercase for consistency
           </p>
@@ -120,14 +132,24 @@ export function QuestionEncodeSection() {
         {usePassphrase && (
           <div>
             <Label htmlFor="passphrase">Passphrase</Label>
-            <Input
-              id="passphrase"
-              type="password"
-              placeholder="Enter your private key"
-              value={passphrase}
-              onChange={(e) => setPassphrase(e.target.value)}
-              className="mt-2"
-            />
+            <div className="relative mt-2">
+              <Input
+                id="passphrase"
+                type={showPassphrase ? 'text' : 'password'}
+                placeholder="Enter your private key"
+                value={passphrase}
+                onChange={(e) => setPassphrase(e.target.value)}
+                className="pr-10"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassphrase((v) => !v)}
+                aria-label={showPassphrase ? 'Hide passphrase' : 'Show passphrase'}
+                className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 text-muted-foreground hover:text-foreground transition-colors"
+              >
+                {showPassphrase ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              </button>
+            </div>
           </div>
         )}
 

@@ -50,13 +50,13 @@ const Contact = () => {
       });
 
       if (res.ok) {
-        toast.success("✅ Message sent! We'll get back to you soon.");
+        toast.success("Message sent");
         setForm({ name: "", email: "", subject: "", message: "" });
       } else {
-        toast.error("❌ Something went wrong. Please try again or email us directly.");
+        toast.error("Something went wrong. Please try again or email us directly.");
       }
     } catch {
-      toast.error("❌ Something went wrong. Please try again or email us directly.");
+      toast.error("Something went wrong. Please try again or email us directly.");
     } finally {
       setSubmitting(false);
     }
