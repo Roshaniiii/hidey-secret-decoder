@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Lock, Linkedin } from "lucide-react";
+import { Lock } from "lucide-react";
 
 export function Footer() {
   return (
@@ -32,12 +32,11 @@ export function Footer() {
               <li><Link to="/contact" className="text-sm text-muted-foreground hover:text-primary transition-colors">Contact</Link></li>
               <li>
                 <a
-                  href="https://linkedin.com"
+                  href="https://www.linkedin.com/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-muted-foreground hover:text-primary transition-colors inline-flex items-center gap-1.5"
+                  className="text-sm text-muted-foreground hover:text-primary transition-colors"
                 >
-                  <Linkedin className="h-3.5 w-3.5" />
                   LinkedIn
                 </a>
               </li>
@@ -49,7 +48,6 @@ export function Footer() {
             <ul className="space-y-2">
               <li><Link to="/terms" className="text-sm text-muted-foreground hover:text-primary transition-colors">Terms of Service</Link></li>
               <li><Link to="/privacy-policy" className="text-sm text-muted-foreground hover:text-primary transition-colors">Privacy Policy</Link></li>
-              <li><Link to="/privacy-policy" className="text-sm text-muted-foreground hover:text-primary transition-colors">Cookie Policy</Link></li>
             </ul>
           </div>
         </div>

@@ -109,24 +109,24 @@ const Index = () => {
                   <TabsList className="grid w-full grid-cols-3 bg-card border-2 border-border rounded-2xl p-1 h-14">
                     <TabsTrigger 
                       value="create" 
-                      className="rounded-xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground font-semibold"
+                      className="rounded-xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground font-semibold text-xs sm:text-sm px-1 sm:px-3"
                     >
-                      <Lock className="mr-2 h-4 w-4" />
-                      Create Quiz
+                      <Lock className="mr-1 sm:mr-2 h-4 w-4 shrink-0" />
+                      <span className="truncate">Create Quiz</span>
                     </TabsTrigger>
                     <TabsTrigger 
                       value="attempt"
-                      className="rounded-xl data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground font-semibold"
+                      className="rounded-xl data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground font-semibold text-xs sm:text-sm px-1 sm:px-3"
                     >
-                      <HelpCircle className="mr-2 h-4 w-4" />
-                      Attempt Quiz
+                      <HelpCircle className="mr-1 sm:mr-2 h-4 w-4 shrink-0" />
+                      <span className="truncate">Attempt Quiz</span>
                     </TabsTrigger>
                     <TabsTrigger 
                       value="reveal"
-                      className="rounded-xl data-[state=active]:bg-accent data-[state=active]:text-accent-foreground font-semibold"
+                      className="rounded-xl data-[state=active]:bg-accent data-[state=active]:text-accent-foreground font-semibold text-xs sm:text-sm px-1 sm:px-3"
                     >
-                      <Unlock className="mr-2 h-4 w-4" />
-                      Reveal Score
+                      <Unlock className="mr-1 sm:mr-2 h-4 w-4 shrink-0" />
+                      <span className="truncate">Reveal Score</span>
                     </TabsTrigger>
                   </TabsList>
                   
