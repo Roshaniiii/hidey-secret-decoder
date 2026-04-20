@@ -10,9 +10,9 @@ export function Footer() {
             <h3 className="text-sm font-semibold text-foreground tracking-wide uppercase">Product</h3>
             <ul className="space-y-2">
               <li><Link to="/" className="text-sm text-muted-foreground hover:text-primary transition-colors">Home</Link></li>
-              <li><Link to="/?tab=message" className="text-sm text-muted-foreground hover:text-primary transition-colors">Message Mode</Link></li>
-              <li><Link to="/?tab=quiz" className="text-sm text-muted-foreground hover:text-primary transition-colors">Quiz Mode</Link></li>
-              <li><Link to="/?tab=question" className="text-sm text-muted-foreground hover:text-primary transition-colors">Question Mode</Link></li>
+              <li><Link to="/?mode=message" className="text-sm text-muted-foreground hover:text-primary transition-colors">Message Mode</Link></li>
+              <li><Link to="/?mode=quiz" className="text-sm text-muted-foreground hover:text-primary transition-colors">Quiz Mode</Link></li>
+              <li><Link to="/?mode=question" className="text-sm text-muted-foreground hover:text-primary transition-colors">Question Mode</Link></li>
             </ul>
           </div>
 

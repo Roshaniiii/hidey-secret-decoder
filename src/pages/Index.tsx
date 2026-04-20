@@ -196,10 +196,6 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Footer */}
-        <div className="mt-12 text-center text-sm text-muted-foreground">
-          <p>© 2026 Hidey • Keep it fun, keep it safe.</p>
-        </div>
       </div>
     </div>
   );
