@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Loader2, Mail, Send } from "lucide-react";
+import { CheckCircle2, Loader2, Mail, Send } from "lucide-react";
 import { z } from "zod";
 import { toast } from "sonner";
 
@@ -21,6 +21,7 @@ const Contact = () => {
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
   const [errors, setErrors] = useState<FieldErrors>({});
   const [submitting, setSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const handleChange = (field: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm((prev) => ({ ...prev, [field]: e.target.value }));
@@ -52,6 +53,7 @@ const Contact = () => {
       if (res.ok) {
         toast.success("Message sent");
         setForm({ name: "", email: "", subject: "", message: "" });
+        setIsSuccess(true);
       } else {
         toast.error("Something went wrong. Please try again or email us directly.");
       }
