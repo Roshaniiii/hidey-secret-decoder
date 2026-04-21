@@ -5,13 +5,13 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
-import { Copy, Link as LinkIcon } from "lucide-react";
+import { Copy, Link as LinkIcon, Plus, X } from "lucide-react";
 import type { QuizQuestion } from "@/lib/quiz";
 import { generateQuizCode } from "@/lib/quiz";
 
 export function QuizCreateSection() {
   const [questions, setQuestions] = useState<QuizQuestion[]>([
-    { question: "", options: ["", "", "", ""], correctIndex: 0 },
+    { question: "", options: ["", ""], correctIndex: 0 },
   ]);
   const [passphrase, setPassphrase] = useState("");
   const [scoreKey, setScoreKey] = useState("");
@@ -23,11 +23,29 @@ export function QuizCreateSection() {
   };
 
   const addQuestion = () => {
-    setQuestions(prev => [...prev, { question: "", options: ["", "", "", ""], correctIndex: 0 }]);
+    setQuestions(prev => [...prev, { question: "", options: ["", ""], correctIndex: 0 }]);
   };
 
   const removeQuestion = (idx: number) => {
     setQuestions(prev => prev.filter((_, i) => i !== idx));
+  };
+
+  const addOption = (qIdx: number) => {
+    updateQuestion(qIdx, (cur) => {
+      if (cur.options.length >= 4) return cur;
+      return { ...cur, options: [...cur.options, ""] };
+    });
+  };
+
+  const removeOption = (qIdx: number, optIdx: number) => {
+    updateQuestion(qIdx, (cur) => {
+      if (cur.options.length <= 2) return cur;
+      const nextOptions = cur.options.filter((_, i) => i !== optIdx);
+      let nextCorrect = cur.correctIndex;
+      if (cur.correctIndex === optIdx) nextCorrect = 0;
+      else if (cur.correctIndex > optIdx) nextCorrect = cur.correctIndex - 1;
+      return { ...cur, options: nextOptions, correctIndex: nextCorrect };
+    });
   };
 
   const handleGenerate = async () => {
@@ -36,13 +54,13 @@ export function QuizCreateSection() {
       const sanitized = questions
         .map(q => ({
           question: q.question.trim(),
-          options: [q.options[0].trim(), q.options[1].trim(), q.options[2].trim(), q.options[3].trim()] as [string, string, string, string],
+          options: q.options.map(o => o.trim()),
           correctIndex: q.correctIndex,
         }))
-        .filter(q => q.question && q.options.every(o => o));
+        .filter(q => q.question && q.options.length >= 2 && q.options.every(o => o));
 
       if (sanitized.length === 0) {
-        toast.error("Please fill at least one complete question");
+        toast.error("Please fill at least one complete question with 2+ options");
         return;
       }
 
@@ -79,7 +97,7 @@ export function QuizCreateSection() {
     <div className="space-y-6">
       <div className="space-y-2">
         <Label className="text-foreground font-semibold">Create MCQs</Label>
-        <p className="text-sm text-muted-foreground">Each question must have 4 options and one correct answer.</p>
+        <p className="text-sm text-muted-foreground">Each question requires at least 2 options (up to 4) and one correct answer.</p>
       </div>
 
       <div className="space-y-4">
@@ -97,31 +115,48 @@ export function QuizCreateSection() {
               onChange={e => updateQuestion(idx, (cur) => ({ ...cur, question: e.target.value }))}
             />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {[0,1,2,3].map((optIndex) => (
+              {q.options.map((opt, optIndex) => (
                 <div key={optIndex} className={q.correctIndex === optIndex ? "bg-emerald-500/10 border border-emerald-500 rounded-md p-2" : "p-0"}>
-                  <Input
-                    placeholder={`Option ${String.fromCharCode(65 + optIndex)}`}
-                    value={q.options[optIndex]}
-                    onChange={e => updateQuestion(idx, (cur) => {
-                      const next = { ...cur, options: [...cur.options] as [string, string, string, string] };
-                      next.options[optIndex] = e.target.value;
-                      return next;
-                    })}
-                  />
+                  <div className="flex items-center gap-2">
+                    <Input
+                      placeholder={`Option ${String.fromCharCode(65 + optIndex)}`}
+                      value={opt}
+                      onChange={e => updateQuestion(idx, (cur) => {
+                        const nextOptions = [...cur.options];
+                        nextOptions[optIndex] = e.target.value;
+                        return { ...cur, options: nextOptions };
+                      })}
+                    />
+                    {q.options.length > 2 && (
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => removeOption(idx, optIndex)}
+                        aria-label={`Remove option ${String.fromCharCode(65 + optIndex)}`}
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    )}
+                  </div>
                 </div>
               ))}
             </div>
+            {q.options.length < 4 && (
+              <Button type="button" variant="outline" size="sm" onClick={() => addOption(idx)}>
+                <Plus className="h-4 w-4 mr-1" /> Add option
+              </Button>
+            )}
             <div className="grid grid-cols-2 md:grid-cols-5 gap-2 items-center">
               <Label className="col-span-2 md:col-span-1">Correct answer</Label>
               <select
                 className="bg-card border-2 border-border rounded-md h-10 px-3"
                 value={q.correctIndex}
-                onChange={e => updateQuestion(idx, (cur) => ({ ...cur, correctIndex: Number(e.target.value) as 0|1|2|3 }))}
+                onChange={e => updateQuestion(idx, (cur) => ({ ...cur, correctIndex: Number(e.target.value) }))}
               >
-                <option value={0}>A</option>
-                <option value={1}>B</option>
-                <option value={2}>C</option>
-                <option value={3}>D</option>
+                {q.options.map((_, i) => (
+                  <option key={i} value={i}>{String.fromCharCode(65 + i)}</option>
+                ))}
               </select>
               <div className="md:col-span-3 text-sm text-muted-foreground">The correct option appears light green.</div>
             </div>
@@ -175,5 +210,3 @@ export function QuizCreateSection() {
     </div>
   );
 }
-
-
