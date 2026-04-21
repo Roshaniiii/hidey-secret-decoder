@@ -73,14 +73,14 @@ const Index = () => {
                       value="encode" 
                       className="rounded-xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground font-semibold"
                     >
-                      <Lock className="mr-2 h-4 w-4" />
+                      <Lock className="mr-2 h-4 w-4 hidden sm:block" />
                       Encode
                     </TabsTrigger>
                     <TabsTrigger 
                       value="decode"
                       className="rounded-xl data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground font-semibold"
                     >
-                      <Unlock className="mr-2 h-4 w-4" />
+                      <Unlock className="mr-2 h-4 w-4 hidden sm:block" />
                       Decode
                     </TabsTrigger>
                   </TabsList>
@@ -111,21 +111,21 @@ const Index = () => {
                       value="create" 
                       className="rounded-xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground font-semibold text-xs sm:text-sm px-1 sm:px-3"
                     >
-                      <Lock className="mr-1 sm:mr-2 h-4 w-4 shrink-0" />
+                      <Lock className="mr-1 sm:mr-2 h-4 w-4 shrink-0 hidden sm:block" />
                       <span className="truncate">Create Quiz</span>
                     </TabsTrigger>
                     <TabsTrigger 
                       value="attempt"
                       className="rounded-xl data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground font-semibold text-xs sm:text-sm px-1 sm:px-3"
                     >
-                      <HelpCircle className="mr-1 sm:mr-2 h-4 w-4 shrink-0" />
+                      <HelpCircle className="mr-1 sm:mr-2 h-4 w-4 shrink-0 hidden sm:block" />
                       <span className="truncate">Attempt Quiz</span>
                     </TabsTrigger>
                     <TabsTrigger 
                       value="reveal"
                       className="rounded-xl data-[state=active]:bg-accent data-[state=active]:text-accent-foreground font-semibold text-xs sm:text-sm px-1 sm:px-3"
                     >
-                      <Unlock className="mr-1 sm:mr-2 h-4 w-4 shrink-0" />
+                      <Unlock className="mr-1 sm:mr-2 h-4 w-4 shrink-0 hidden sm:block" />
                       <span className="truncate">Reveal Score</span>
                     </TabsTrigger>
                   </TabsList>
@@ -158,14 +158,14 @@ const Index = () => {
                       value="create" 
                       className="rounded-xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground font-semibold"
                     >
-                      <Lock className="mr-2 h-4 w-4" />
+                      <Lock className="mr-2 h-4 w-4 hidden sm:block" />
                       Create Challenge
                     </TabsTrigger>
                     <TabsTrigger 
                       value="unlock"
                       className="rounded-xl data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground font-semibold"
                     >
-                      <Unlock className="mr-2 h-4 w-4" />
+                      <Unlock className="mr-2 h-4 w-4 hidden sm:block" />
                       Unlock
                     </TabsTrigger>
                   </TabsList>
