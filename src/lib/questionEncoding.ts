@@ -92,7 +92,13 @@ export function decodeQuestionStructure(encodedText: string): QuestionData {
   try {
     const compressedData = Uint8Array.from(atob(base64), (c) => c.charCodeAt(0));
     jsonString = pako.inflate(compressedData, { to: 'string' });
-  } catch {
+    if (jsonString.length > 100000) {
+      throw new Error('Payload too large');
+    }
+  } catch (err) {
+    if (err instanceof Error && err.message === 'Payload too large') {
+      throw err;
+    }
     throw new Error('Corrupted or invalid challenge code');
   }
 
