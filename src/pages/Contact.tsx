@@ -76,81 +76,97 @@ const Contact = () => {
         </div>
 
         <Card className="p-6 sm:p-8">
-          <form onSubmit={handleSubmit} className="space-y-4" noValidate>
-            <div className="space-y-2">
-              <Label htmlFor="name">Name</Label>
-              <Input
-                id="name"
-                type="text"
-                placeholder="Your name"
-                value={form.name}
-                onChange={handleChange("name")}
-                aria-invalid={!!errors.name}
-                maxLength={100}
-                required
-              />
-              {errors.name && <p className="text-xs text-destructive">{errors.name}</p>}
+          {isSuccess ? (
+            <div className="flex flex-col items-center text-center space-y-4 py-6">
+              <div className="p-3 bg-primary/15 rounded-full">
+                <CheckCircle2 className="h-10 w-10 text-primary" />
+              </div>
+              <h2 className="text-xl font-semibold text-foreground">Message sent!</h2>
+              <Button
+                onClick={() => setIsSuccess(false)}
+                variant="outline"
+                className="mt-2"
+              >
+                Send another
+              </Button>
             </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+              <div className="space-y-2">
+                <Label htmlFor="name">Name</Label>
+                <Input
+                  id="name"
+                  type="text"
+                  placeholder="Your name"
+                  value={form.name}
+                  onChange={handleChange("name")}
+                  aria-invalid={!!errors.name}
+                  maxLength={100}
+                  required
+                />
+                {errors.name && <p className="text-xs text-destructive">{errors.name}</p>}
+              </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="your@email.com"
-                value={form.email}
-                onChange={handleChange("email")}
-                aria-invalid={!!errors.email}
-                maxLength={255}
-                required
-              />
-              {errors.email && <p className="text-xs text-destructive">{errors.email}</p>}
-            </div>
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="your@email.com"
+                  value={form.email}
+                  onChange={handleChange("email")}
+                  aria-invalid={!!errors.email}
+                  maxLength={255}
+                  required
+                />
+                {errors.email && <p className="text-xs text-destructive">{errors.email}</p>}
+              </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="subject">Subject</Label>
-              <Input
-                id="subject"
-                type="text"
-                placeholder="What's this about?"
-                value={form.subject}
-                onChange={handleChange("subject")}
-                aria-invalid={!!errors.subject}
-                maxLength={150}
-                required
-              />
-              {errors.subject && <p className="text-xs text-destructive">{errors.subject}</p>}
-            </div>
+              <div className="space-y-2">
+                <Label htmlFor="subject">Subject</Label>
+                <Input
+                  id="subject"
+                  type="text"
+                  placeholder="What's this about?"
+                  value={form.subject}
+                  onChange={handleChange("subject")}
+                  aria-invalid={!!errors.subject}
+                  maxLength={150}
+                  required
+                />
+                {errors.subject && <p className="text-xs text-destructive">{errors.subject}</p>}
+              </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="message">Message</Label>
-              <Textarea
-                id="message"
-                placeholder="Write your message here..."
-                value={form.message}
-                onChange={handleChange("message")}
-                aria-invalid={!!errors.message}
-                maxLength={2000}
-                className="min-h-[150px] resize-y"
-                required
-              />
-              {errors.message && <p className="text-xs text-destructive">{errors.message}</p>}
-            </div>
+              <div className="space-y-2">
+                <Label htmlFor="message">Message</Label>
+                <Textarea
+                  id="message"
+                  placeholder="Write your message here..."
+                  value={form.message}
+                  onChange={handleChange("message")}
+                  aria-invalid={!!errors.message}
+                  maxLength={2000}
+                  className="min-h-[150px] resize-y"
+                  required
+                />
+                {errors.message && <p className="text-xs text-destructive">{errors.message}</p>}
+              </div>
 
-            <Button type="submit" className="w-full" disabled={submitting}>
-              {submitting ? (
-                <>
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                  Sending...
-                </>
-              ) : (
-                <>
-                  <Send className="h-4 w-4" />
-                  Send Message
-                </>
-              )}
-            </Button>
-          </form>
+              <Button type="submit" className="w-full" disabled={submitting}>
+                {submitting ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Sending...
+                  </>
+                ) : (
+                  <>
+                    <Send className="h-4 w-4" />
+                    Send Message
+                  </>
+                )}
+              </Button>
+            </form>
+          )}
         </Card>
 
       </div>
