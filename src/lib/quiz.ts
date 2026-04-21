@@ -5,8 +5,8 @@ export type QuizOption = string;
 
 export interface QuizQuestion {
   question: string;
-  options: [QuizOption, QuizOption, QuizOption, QuizOption];
-  correctIndex: 0 | 1 | 2 | 3;
+  options: QuizOption[];
+  correctIndex: number;
 }
 
 export interface QuizPayload {
@@ -26,8 +26,10 @@ const hexHashRegex = /^[a-f0-9]{64}$/i;
 
 const QuizQuestionSchema = z.object({
   question: z.string().min(1).max(1000),
-  options: z.tuple([z.string().max(500), z.string().max(500), z.string().max(500), z.string().max(500)]),
-  correctIndex: z.union([z.literal(0), z.literal(1), z.literal(2), z.literal(3)]),
+  options: z.array(z.string().max(500)).min(2).max(4),
+  correctIndex: z.number().int().min(0).max(3),
+}).refine(q => q.correctIndex < q.options.length, {
+  message: "correctIndex must be a valid option index",
 });
 
 const QuizPayloadSchema = z.object({
