@@ -102,7 +102,13 @@ export function decodeQuizCode(shortCode: string): QuizPayload {
   try {
     const bytes = fromBase64Url(encoded);
     inflated = pako.inflate(bytes, { to: 'string' });
-  } catch {
+    if (inflated.length > 200000) {
+      throw new Error('Payload too large');
+    }
+  } catch (err) {
+    if (err instanceof Error && err.message === 'Payload too large') {
+      throw err;
+    }
     throw new Error('Corrupted or invalid Quiz Code');
   }
 
@@ -152,7 +158,13 @@ export function decodeScoreCode(shortCode: string): ScorePayload {
   try {
     const bytes = fromBase64Url(encoded);
     inflated = pako.inflate(bytes, { to: 'string' });
-  } catch {
+    if (inflated.length > 10000) {
+      throw new Error('Payload too large');
+    }
+  } catch (err) {
+    if (err instanceof Error && err.message === 'Payload too large') {
+      throw err;
+    }
     throw new Error('Corrupted or invalid Score Code');
   }
 
