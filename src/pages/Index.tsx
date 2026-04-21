@@ -73,14 +73,14 @@ const Index = () => {
                       value="encode" 
                       className="rounded-xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground font-semibold"
                     >
-                      <Lock className="mr-2 h-4 w-4" />
+                      <Lock className="mr-2 h-4 w-4 hidden sm:block" />
                       Encode
                     </TabsTrigger>
                     <TabsTrigger 
                       value="decode"
                       className="rounded-xl data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground font-semibold"
                     >
-                      <Unlock className="mr-2 h-4 w-4" />
+                      <Unlock className="mr-2 h-4 w-4 hidden sm:block" />
                       Decode
                     </TabsTrigger>
                   </TabsList>
