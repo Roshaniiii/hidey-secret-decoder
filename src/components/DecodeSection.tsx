@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { PatternSelector } from "./PatternSelector";
 import { decodeMessage, PatternType } from "@/lib/encoding";
-import { Lock, Unlock, Sparkles } from "lucide-react";
+import { Lock, Unlock, Sparkles, X } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
 interface DecodeSectionProps {
@@ -31,6 +31,17 @@ export function DecodeSection({ initialMessage, initialPattern, sharedHasPassphr
     if (initialPattern) setPattern(initialPattern);
     if (sharedHasPassphrase) setUsePassphrase(true);
   }, [initialMessage, initialPattern, sharedHasPassphrase]);
+
+  const handleClear = () => {
+    setEncoded("");
+    setDecoded("");
+    setPassphrase("");
+    setShowSharedBanner(false);
+    toast({
+      title: "Cleared",
+      description: "Form has been reset.",
+    });
+  };
 
   const handleDecode = () => {
     if (!encoded) {
@@ -90,9 +101,23 @@ export function DecodeSection({ initialMessage, initialPattern, sharedHasPassphr
       )}
 
       <div className="space-y-2">
-        <Label htmlFor="encoded" className="text-foreground font-medium">
-          Encoded message
-        </Label>
+        <div className="flex items-center justify-between">
+          <Label htmlFor="encoded" className="text-foreground font-medium">
+            Encoded message
+          </Label>
+          {(encoded || decoded || passphrase) && (
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={handleClear}
+              className="h-7 px-2 text-xs text-muted-foreground hover:text-foreground"
+            >
+              <X className="mr-1 h-3 w-3" />
+              Clear
+            </Button>
+          )}
+        </div>
         <Textarea
           id="encoded"
           placeholder="Paste encoded text here..."
@@ -109,7 +134,7 @@ export function DecodeSection({ initialMessage, initialPattern, sharedHasPassphr
           <div className="flex items-center gap-2">
             <Lock className="h-4 w-4 text-primary" />
             <Label htmlFor="use-passphrase-decode" className="text-foreground font-medium cursor-pointer">
-              Private pattern (optional)
+              Passphrase protection (optional)
             </Label>
           </div>
           <Switch
