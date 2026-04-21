@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { PatternSelector } from "./PatternSelector";
 import { encodeMessage, PatternType } from "@/lib/encoding";
-import { Copy, Lock, Link as LinkIcon } from "lucide-react";
+import { Copy, Lock, Link as LinkIcon, X } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import pako from "pako";
 
@@ -57,6 +57,16 @@ export function EncodeSection() {
     });
   };
 
+  const handleClear = () => {
+    setMessage("");
+    setEncoded("");
+    setPassphrase("");
+    toast({
+      title: "Cleared",
+      description: "Form has been reset.",
+    });
+  };
+
   const handleCopyLink = () => {
     try {
       const compressed = pako.deflate(encoded);
@@ -89,9 +99,23 @@ export function EncodeSection() {
   return (
     <div className="space-y-6">
       <div className="space-y-2">
-        <Label htmlFor="message" className="text-foreground font-medium">
-          Your message
-        </Label>
+        <div className="flex items-center justify-between">
+          <Label htmlFor="message" className="text-foreground font-medium">
+            Your message
+          </Label>
+          {(message || encoded || passphrase) && (
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={handleClear}
+              className="h-7 px-2 text-xs text-muted-foreground hover:text-foreground"
+            >
+              <X className="mr-1 h-3 w-3" />
+              Clear
+            </Button>
+          )}
+        </div>
         <Textarea
           id="message"
           placeholder="Type your message here..."
@@ -111,7 +135,7 @@ export function EncodeSection() {
           <div className="flex items-center gap-2">
             <Lock className="h-4 w-4 text-primary" />
             <Label htmlFor="use-passphrase" className="text-foreground font-medium cursor-pointer">
-              Private pattern (optional)
+              Passphrase protection (optional)
             </Label>
           </div>
           <Switch

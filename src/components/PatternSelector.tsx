@@ -2,7 +2,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { HelpCircle } from "lucide-react";
-import { PatternType } from "@/lib/encoding";
+import { PatternType, getPatternExample } from "@/lib/encoding";
 
 interface PatternSelectorProps {
   value: PatternType;
@@ -45,6 +45,12 @@ export function PatternSelector({ value, onChange }: PatternSelectorProps) {
           ))}
         </SelectContent>
       </Select>
+      <div className="lg:hidden p-2 bg-accent/30 rounded-lg border border-border">
+        <p className="text-[10px] uppercase tracking-wide text-muted-foreground mb-1">Preview</p>
+        <p className="text-xs font-mono break-all text-foreground/80 line-clamp-2">
+          {getPatternExample(value)}
+        </p>
+      </div>
     </div>
   );
 }

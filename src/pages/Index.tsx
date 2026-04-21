@@ -25,7 +25,7 @@ const Index = () => {
   }, [shared.initialMode, shared.message, shared.quizCode]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-accent/20 to-secondary/20">
+    <div className="min-h-screen bg-gradient-to-br from-background via-accent/20 to-secondary/20 pb-8">
       <div className="container max-w-6xl mx-auto px-4 py-12">
         {/* Header */}
         <div className="text-center mb-8 space-y-1">
