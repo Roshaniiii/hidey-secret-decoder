@@ -6,9 +6,16 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { PatternSelector } from "./PatternSelector";
 import { encodeMessage, PatternType } from "@/lib/encoding";
-import { Copy, Lock, Link as LinkIcon, X } from "lucide-react";
+import { Copy, Lock, Link as LinkIcon, X, Share2 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import pako from "pako";
+
+const patternLabels: Record<PatternType, string> = {
+  alnum: "Alnum Blocks",
+  symbol: "Symbol Stream",
+  caps: "Caps Blast",
+  hex: "Hex Weave",
+};
 
 export function EncodeSection() {
   const [message, setMessage] = useState("");
@@ -64,6 +71,31 @@ export function EncodeSection() {
     toast({
       title: "Cleared",
       description: "Form has been reset.",
+    });
+  };
+
+  const handleCopyShareCard = () => {
+    const passphraseLine = usePassphrase
+      ? "5. Enter the passphrase (ask the sender)\n6. Click Decode ✨"
+      : "5. Click Decode ✨";
+
+    const shareCard = `🔐 Someone sent you a secret message via Hidey!
+
+${encoded}
+
+To decode it:
+1. Go to ${window.location.origin}
+2. Click "Message" tab → "Decode" tab
+3. Paste the text above
+4. Select pattern: ${patternLabels[pattern]}
+${passphraseLine}
+
+Sent via Hidey — Hide it. Share it. Reveal it.`;
+
+    navigator.clipboard.writeText(shareCard);
+    toast({
+      title: "Share card copied!",
+      description: "Paste it in any chat or email.",
     });
   };
 
@@ -171,7 +203,7 @@ export function EncodeSection() {
           <div className="p-4 bg-card rounded-lg border border-border font-mono text-sm break-all">
             {encoded}
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
             <Button
               onClick={handleCopy}
               variant="outline"
@@ -179,6 +211,14 @@ export function EncodeSection() {
             >
               <Copy className="mr-2 h-4 w-4" />
               Copy text
+            </Button>
+            <Button
+              onClick={handleCopyShareCard}
+              variant="outline"
+              className="w-full rounded-xl border-2"
+            >
+              <Share2 className="mr-2 h-4 w-4" />
+              Copy Share Card
             </Button>
             <Button
               onClick={handleCopyLink}
