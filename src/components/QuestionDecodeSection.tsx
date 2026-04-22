@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
-import { Copy, Unlock } from 'lucide-react';
+import { Copy, Unlock, X } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { decodeQuestionStructure, verifyAndDecode, QuestionData } from '@/lib/questionEncoding';
 
@@ -136,7 +136,21 @@ export function QuestionDecodeSection() {
       {!questionData ? (
         <div className="space-y-4">
           <div>
-            <Label htmlFor="encoded">Paste Challenge Code</Label>
+            <div className="flex items-center justify-between">
+              <Label htmlFor="encoded">Paste Challenge Code</Label>
+              {encodedText && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleReset}
+                  className="h-7 px-2 text-xs text-muted-foreground hover:text-foreground"
+                >
+                  <X className="mr-1 h-3 w-3" />
+                  Clear
+                </Button>
+              )}
+            </div>
             <Textarea
               id="encoded"
               placeholder="Paste your QMODE:: challenge code here..."
