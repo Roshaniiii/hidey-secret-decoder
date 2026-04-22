@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
-import { Copy, Lock, Eye, EyeOff, Link as LinkIcon, QrCode } from 'lucide-react';
+import { Copy, Lock, Eye, EyeOff, QrCode, X } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { encodeQuestionMessage } from '@/lib/questionEncoding';
 import { PatternType } from '@/lib/encoding';
@@ -27,10 +27,14 @@ export function QuestionEncodeSection() {
     ? `${window.location.origin}/#question-decode=${encodeURIComponent(encoded)}`
     : '';
 
-  const handleCopyLink = () => {
-    if (!questionShareUrl) return;
-    navigator.clipboard.writeText(questionShareUrl);
-    toast({ title: 'Link copied!', description: 'Share it anywhere.' });
+  const handleClear = () => {
+    setMessage('');
+    setQuestion('');
+    setAnswer('');
+    setPassphrase('');
+    setUsePassphrase(false);
+    setEncoded('');
+    toast({ title: 'Cleared', description: 'Form has been reset.' });
   };
 
   const handleEncode = async () => {
@@ -81,6 +85,21 @@ export function QuestionEncodeSection() {
   return (
     <div className="space-y-4 sm:space-y-6">
       <div className="space-y-3 sm:space-y-4">
+        <div className="flex items-center justify-between">
+          <Label className="text-foreground font-semibold">Create Challenge</Label>
+          {(message || question || answer || passphrase || encoded) && (
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={handleClear}
+              className="h-7 px-2 text-xs text-muted-foreground hover:text-foreground"
+            >
+              <X className="mr-1 h-3 w-3" />
+              Clear all
+            </Button>
+          )}
+        </div>
         <div>
           <Label htmlFor="message">Enter your secret message</Label>
           <Textarea
@@ -185,14 +204,10 @@ export function QuestionEncodeSection() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <Button onClick={handleCopy} variant="outline" className="w-full">
               <Copy className="mr-2 h-4 w-4" />
               Copy Code
-            </Button>
-            <Button onClick={handleCopyLink} variant="outline" className="w-full">
-              <LinkIcon className="mr-2 h-4 w-4" />
-              Copy Link
             </Button>
             <Button onClick={() => setShowQR(true)} variant="outline" className="w-full">
               <QrCode className="mr-2 h-4 w-4" />
