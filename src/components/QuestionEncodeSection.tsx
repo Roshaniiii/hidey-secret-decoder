@@ -3,10 +3,11 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
-import { Copy, Lock, Share2, Eye, EyeOff } from 'lucide-react';
+import { Copy, Lock, Eye, EyeOff, Link as LinkIcon, QrCode } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { encodeQuestionMessage } from '@/lib/questionEncoding';
 import { PatternType } from '@/lib/encoding';
+import { QRCodeDialog } from './QRCodeDialog';
 
 export function QuestionEncodeSection() {
   const [message, setMessage] = useState('');
@@ -19,7 +20,18 @@ export function QuestionEncodeSection() {
   const [isLoading, setIsLoading] = useState(false);
   const [showAnswer, setShowAnswer] = useState(false);
   const [showPassphrase, setShowPassphrase] = useState(false);
+  const [showQR, setShowQR] = useState(false);
   const { toast } = useToast();
+
+  const questionShareUrl = encoded
+    ? `${window.location.origin}/#question-decode=${encodeURIComponent(encoded)}`
+    : '';
+
+  const handleCopyLink = () => {
+    if (!questionShareUrl) return;
+    navigator.clipboard.writeText(questionShareUrl);
+    toast({ title: 'Link copied!', description: 'Share it anywhere.' });
+  };
 
   const handleEncode = async () => {
     if (!message || !question || !answer) {
@@ -173,14 +185,30 @@ export function QuestionEncodeSection() {
             </div>
           </div>
 
-          <div className="flex gap-2">
-            <Button onClick={handleCopy} variant="outline" className="flex-1">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+            <Button onClick={handleCopy} variant="outline" className="w-full">
               <Copy className="mr-2 h-4 w-4" />
               Copy Code
+            </Button>
+            <Button onClick={handleCopyLink} variant="outline" className="w-full">
+              <LinkIcon className="mr-2 h-4 w-4" />
+              Copy Link
+            </Button>
+            <Button onClick={() => setShowQR(true)} variant="outline" className="w-full">
+              <QrCode className="mr-2 h-4 w-4" />
+              Show QR Code
             </Button>
           </div>
         </div>
       )}
+
+      <QRCodeDialog
+        open={showQR}
+        onOpenChange={setShowQR}
+        shareUrl={questionShareUrl}
+        title="Scan to open Challenge"
+        fileName="hidey-question-qr"
+      />
     </div>
   );
 }
