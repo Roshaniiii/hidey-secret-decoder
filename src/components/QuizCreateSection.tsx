@@ -101,9 +101,26 @@ export function QuizCreateSection() {
 
   return (
     <div className="space-y-6">
-      <div className="space-y-2">
+      <div className="flex items-center justify-between">
         <Label className="text-foreground font-semibold">Create MCQs</Label>
-        <p className="text-sm text-muted-foreground">Each question requires at least 2 options (up to 4) and one correct answer.</p>
+        {(questions.some(q => q.question || q.options.some(o => o)) || passphrase || scoreKey || quizCode) && (
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={() => {
+              setQuestions([{ question: "", options: ["", ""], correctIndex: 0 }]);
+              setPassphrase("");
+              setScoreKey("");
+              setQuizCode("");
+              toast.success("Cleared");
+            }}
+            className="h-7 px-2 text-xs text-muted-foreground hover:text-foreground"
+          >
+            <X className="mr-1 h-3 w-3" />
+            Clear all
+          </Button>
+        )}
       </div>
 
       <div className="space-y-4">
@@ -204,9 +221,8 @@ export function QuizCreateSection() {
         <div className="space-y-2">
           <Label className="text-foreground font-semibold">Quiz Code</Label>
           <Textarea readOnly value={quizCode} className="min-h-[100px] font-mono text-sm" />
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <Button variant="outline" onClick={copyCode}><Copy className="h-4 w-4 mr-2"/>Copy Code</Button>
-            <Button variant="outline" onClick={copyQuizLink}><LinkIcon className="h-4 w-4 mr-2"/>Copy Quiz Link</Button>
             <Button variant="outline" onClick={() => setShowQR(true)}><QrCode className="h-4 w-4 mr-2"/>Show QR Code</Button>
           </div>
           {passphrase && (
