@@ -6,9 +6,7 @@ export function ThemeToggle() {
 
   useEffect(() => {
     const stored = localStorage.getItem("hidey-theme");
-    const prefersDark =
-      stored === "dark" ||
-      (!stored && window.matchMedia("(prefers-color-scheme: dark)").matches);
+    const prefersDark = stored === "dark";
     setIsDark(prefersDark);
     document.documentElement.classList.toggle("dark", prefersDark);
   }, []);

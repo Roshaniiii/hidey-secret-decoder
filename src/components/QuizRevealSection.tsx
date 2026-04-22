@@ -64,7 +64,7 @@ export function QuizRevealSection() {
 
       {result && (
         <Card className="p-6 text-center space-y-2">
-          <div className="text-lg">🧭 Mission complete! Score: {result.correct} of {result.total}.</div>
+          <div className="text-lg">Your score: {result.correct} of {result.total}.</div>
         </Card>
       )}
     </div>
