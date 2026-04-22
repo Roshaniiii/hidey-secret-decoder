@@ -5,9 +5,10 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
-import { Copy, Link as LinkIcon, Plus, X } from "lucide-react";
+import { Copy, Link as LinkIcon, Plus, X, QrCode } from "lucide-react";
 import type { QuizQuestion } from "@/lib/quiz";
 import { generateQuizCode } from "@/lib/quiz";
+import { QRCodeDialog } from "./QRCodeDialog";
 
 export function QuizCreateSection() {
   const [questions, setQuestions] = useState<QuizQuestion[]>([
@@ -17,6 +18,11 @@ export function QuizCreateSection() {
   const [scoreKey, setScoreKey] = useState("");
   const [quizCode, setQuizCode] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
+  const [showQR, setShowQR] = useState(false);
+
+  const quizShareUrl = quizCode
+    ? `${window.location.origin}/?quiz=${encodeURIComponent(quizCode)}`
+    : "";
 
   const updateQuestion = (idx: number, updater: (q: QuizQuestion) => QuizQuestion) => {
     setQuestions(prev => prev.map((q, i) => (i === idx ? updater(q) : q)));
@@ -198,15 +204,24 @@ export function QuizCreateSection() {
         <div className="space-y-2">
           <Label className="text-foreground font-semibold">Quiz Code</Label>
           <Textarea readOnly value={quizCode} className="min-h-[100px] font-mono text-sm" />
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
             <Button variant="outline" onClick={copyCode}><Copy className="h-4 w-4 mr-2"/>Copy Code</Button>
             <Button variant="outline" onClick={copyQuizLink}><LinkIcon className="h-4 w-4 mr-2"/>Copy Quiz Link</Button>
+            <Button variant="outline" onClick={() => setShowQR(true)}><QrCode className="h-4 w-4 mr-2"/>Show QR Code</Button>
           </div>
           {passphrase && (
             <p className="text-xs text-muted-foreground">🔒 Share the passphrase separately for security.</p>
           )}
         </div>
       )}
+
+      <QRCodeDialog
+        open={showQR}
+        onOpenChange={setShowQR}
+        shareUrl={quizShareUrl}
+        title="Scan to open Quiz"
+        fileName="hidey-quiz-qr"
+      />
     </div>
   );
 }
