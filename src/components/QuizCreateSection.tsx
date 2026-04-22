@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
-import { Copy, Link as LinkIcon, Plus, X, QrCode } from "lucide-react";
+import { Copy, Plus, X, QrCode } from "lucide-react";
 import type { QuizQuestion } from "@/lib/quiz";
 import { generateQuizCode } from "@/lib/quiz";
 import { QRCodeDialog } from "./QRCodeDialog";
@@ -89,15 +89,6 @@ export function QuizCreateSection() {
     }
   };
 
-  const copyQuizLink = async () => {
-    try {
-      const url = `${window.location.origin}/?quiz=${encodeURIComponent(quizCode)}`;
-      await navigator.clipboard.writeText(url);
-      toast.success("Quiz link copied! Share it anywhere.");
-    } catch {
-      toast.error("Copy failed");
-    }
-  };
 
   return (
     <div className="space-y-6">

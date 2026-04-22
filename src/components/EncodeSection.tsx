@@ -6,9 +6,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { PatternSelector } from "./PatternSelector";
 import { encodeMessage, PatternType } from "@/lib/encoding";
-import { Copy, Lock, Link as LinkIcon, X, Share2 } from "lucide-react";
+import { Copy, Lock, X, Share2 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
-import pako from "pako";
 
 const patternLabels: Record<PatternType, string> = {
   alnum: "Alnum Blocks",
@@ -99,34 +98,6 @@ Sent via Hidey — Hide it. Share it. Reveal it.`;
     });
   };
 
-  const handleCopyLink = () => {
-    try {
-      const compressed = pako.deflate(encoded);
-      const b64 = btoa(String.fromCharCode(...compressed))
-        .replace(/\+/g, "-")
-        .replace(/\//g, "_")
-        .replace(/=+$/, "");
-
-      const params = new URLSearchParams();
-      params.set("m", b64);
-      params.set("p", pattern);
-      params.set("compressed", "1");
-      if (usePassphrase && passphrase) params.set("pp", "1");
-
-      const url = `${window.location.origin}/?${params.toString()}`;
-      navigator.clipboard.writeText(url);
-      toast({
-        title: "Link copied!",
-        description: "Share it anywhere.",
-      });
-    } catch {
-      toast({
-        title: "Copy failed",
-        description: "Try copying the text instead.",
-        variant: "destructive",
-      });
-    }
-  };
 
   return (
     <div className="space-y-6">
