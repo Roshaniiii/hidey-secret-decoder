@@ -195,9 +195,6 @@ export function QuestionEncodeSection() {
           <div className="p-4 bg-muted rounded-xl break-all font-mono text-sm border-2 border-border">
             {encoded}
           </div>
-          <p className="text-xs text-muted-foreground">
-            Share the Challenge Code with your friend. They need to answer your question to unlock the message.
-          </p>
           <Button onClick={handleCopy} variant="outline" className="w-full rounded-xl border-2">
             <Copy className="mr-2 h-4 w-4" />
             Copy Code

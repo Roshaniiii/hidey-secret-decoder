@@ -51,7 +51,7 @@ export function EncodeSection() {
     setEncoded(result);
     toast({
       title: "Message encoded!",
-      description: "Copy or share it.",
+      description: "Press Ctrl/Cmd+C to copy.",
     });
   };
 
@@ -158,7 +158,7 @@ export function EncodeSection() {
           </Button>
           {usePassphrase && passphrase && (
             <p className="text-xs text-muted-foreground">
-              🔒 Share the passphrase separately for security.
+              🔒 Keep the passphrase private.
             </p>
           )}
         </div>

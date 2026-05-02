@@ -212,15 +212,12 @@ export function QuizCreateSection() {
             value={quizCode}
             className="min-h-[100px] font-mono text-sm bg-card border-2 border-border rounded-xl"
           />
-          <p className="text-xs text-muted-foreground">
-            Share the Quiz Code with your friends.
-          </p>
           <Button variant="outline" onClick={copyCode} className="w-full rounded-xl border-2">
             <Copy className="mr-2 h-4 w-4" />
             Copy Quiz Code
           </Button>
           {passphrase && (
-            <p className="text-xs text-muted-foreground">🔒 Share the passphrase separately for security.</p>
+            <p className="text-xs text-muted-foreground">🔒 Keep the passphrase private.</p>
           )}
         </div>
       )}
