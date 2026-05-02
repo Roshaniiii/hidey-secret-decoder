@@ -21,12 +21,6 @@ export function QuestionEncodeSection() {
   const [showPassphrase, setShowPassphrase] = useState(false);
   const { toast } = useToast();
 
-  const siteUrl =
-    window.location.hostname === 'localhost' ||
-    window.location.hostname.includes('lovable') ||
-    window.location.hostname.includes('preview')
-      ? 'https://hideyapp.com'
-      : window.location.origin;
 
   const handleClear = () => {
     setMessage('');
