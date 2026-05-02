@@ -229,6 +229,9 @@ export function QuizCreateSection() {
             <Copy className="mr-2 h-4 w-4" />
             Copy Quiz Code
           </Button>
+          <p className="text-xs text-muted-foreground text-center">
+            Tip: press Ctrl/Cmd + Shift + C to copy
+          </p>
           {passphrase && (
             <p className="text-xs text-muted-foreground">🔒 Keep the passphrase private.</p>
           )}
