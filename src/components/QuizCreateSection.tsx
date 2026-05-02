@@ -248,33 +248,12 @@ ${siteUrl}`;
             className="min-h-[100px] font-mono text-sm bg-card border-2 border-border rounded-xl"
           />
           <p className="text-xs text-muted-foreground">
-            Share the Quiz Code or the Share Card below with your friends.
+            Share the Quiz Code with your friends.
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            <Button variant="outline" onClick={copyCode} className="w-full rounded-xl border-2">
-              <Copy className="mr-2 h-4 w-4" />
-              Copy Quiz Code
-            </Button>
-            <Button
-              variant="outline"
-              onClick={copyShareCard}
-              className="w-full rounded-xl border-2 border-primary/40 hover:bg-primary/10 text-primary"
-            >
-              <Share2 className="mr-2 h-4 w-4" />
-              Copy Share Card
-            </Button>
-          </div>
-          <div className="p-4 bg-accent/30 rounded-xl border border-border space-y-1">
-            <p className="text-xs font-semibold text-foreground flex items-center gap-1">
-              💡 How sharing works
-            </p>
-            <p className="text-xs text-muted-foreground leading-relaxed">
-              Copy Quiz Code — share just the code. Your friend pastes it in the Attempt Quiz tab.
-            </p>
-            <p className="text-xs text-muted-foreground leading-relaxed">
-              Copy Share Card — share a full formatted message with instructions. Perfect for WhatsApp, Telegram, or email.
-            </p>
-          </div>
+          <Button variant="outline" onClick={copyCode} className="w-full rounded-xl border-2">
+            <Copy className="mr-2 h-4 w-4" />
+            Copy Quiz Code
+          </Button>
           {passphrase && (
             <p className="text-xs text-muted-foreground">🔒 Share the passphrase separately for security.</p>
           )}
