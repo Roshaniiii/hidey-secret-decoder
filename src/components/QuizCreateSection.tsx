@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -76,6 +76,7 @@ export function QuizCreateSection() {
   };
 
   const copyCode = async () => {
+    if (!quizCode) return;
     try {
       await navigator.clipboard.writeText(quizCode);
       toast.success("Copied to clipboard");
@@ -83,6 +84,18 @@ export function QuizCreateSection() {
       toast.error("Copy failed");
     }
   };
+
+  useEffect(() => {
+    if (!quizCode) return;
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === "c") {
+        e.preventDefault();
+        copyCode();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [quizCode]);
 
 
 
