@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
-import { Copy, Plus, X, Share2 } from "lucide-react";
+import { Copy, Plus, X } from "lucide-react";
 import type { QuizQuestion } from "@/lib/quiz";
 import { generateQuizCode } from "@/lib/quiz";
 
@@ -18,12 +18,6 @@ export function QuizCreateSection() {
   const [quizCode, setQuizCode] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
 
-  const siteUrl =
-    window.location.hostname === "localhost" ||
-    window.location.hostname.includes("lovable") ||
-    window.location.hostname.includes("preview")
-      ? "https://hideyapp.com"
-      : window.location.origin;
 
   const updateQuestion = (idx: number, updater: (q: QuizQuestion) => QuizQuestion) => {
     setQuestions(prev => prev.map((q, i) => (i === idx ? updater(q) : q)));
@@ -90,35 +84,6 @@ export function QuizCreateSection() {
     }
   };
 
-  const copyShareCard = async () => {
-    try {
-      const shareCard =
-`🧩 You have been challenged to a quiz on Hidey!
-
-━━━━━━━━━━━━━━━━━━━━━━
-📋 QUIZ CODE:
-${quizCode}
-━━━━━━━━━━━━━━━━━━━━━━
-
-How to attempt it:
-1️⃣  Go to ${siteUrl}
-2️⃣  Click the "Quiz" tab
-3️⃣  Click "Attempt Quiz"
-4️⃣  Paste the Quiz Code above
-5️⃣  Answer all questions
-6️⃣  Send back your Score Code 🏆
-
-${passphrase ? '🔒 This quiz is passphrase protected.\n    Ask the creator for the passphrase.\n\n' : ''}Good luck! 🎯
-
-Created with Hidey — Hide it. Share it. Reveal it.
-${siteUrl}`;
-
-      await navigator.clipboard.writeText(shareCard);
-      toast.success("Share card copied! Paste it anywhere.");
-    } catch {
-      toast.error("Copy failed. Please try again.");
-    }
-  };
 
 
   return (
@@ -248,33 +213,12 @@ ${siteUrl}`;
             className="min-h-[100px] font-mono text-sm bg-card border-2 border-border rounded-xl"
           />
           <p className="text-xs text-muted-foreground">
-            Share the Quiz Code or the Share Card below with your friends.
+            Share the Quiz Code with your friends.
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            <Button variant="outline" onClick={copyCode} className="w-full rounded-xl border-2">
-              <Copy className="mr-2 h-4 w-4" />
-              Copy Quiz Code
-            </Button>
-            <Button
-              variant="outline"
-              onClick={copyShareCard}
-              className="w-full rounded-xl border-2 border-primary/40 hover:bg-primary/10 text-primary"
-            >
-              <Share2 className="mr-2 h-4 w-4" />
-              Copy Share Card
-            </Button>
-          </div>
-          <div className="p-4 bg-accent/30 rounded-xl border border-border space-y-1">
-            <p className="text-xs font-semibold text-foreground flex items-center gap-1">
-              💡 How sharing works
-            </p>
-            <p className="text-xs text-muted-foreground leading-relaxed">
-              Copy Quiz Code — share just the code. Your friend pastes it in the Attempt Quiz tab.
-            </p>
-            <p className="text-xs text-muted-foreground leading-relaxed">
-              Copy Share Card — share a full formatted message with instructions. Perfect for WhatsApp, Telegram, or email.
-            </p>
-          </div>
+          <Button variant="outline" onClick={copyCode} className="w-full rounded-xl border-2">
+            <Copy className="mr-2 h-4 w-4" />
+            Copy Quiz Code
+          </Button>
           {passphrase && (
             <p className="text-xs text-muted-foreground">🔒 Share the passphrase separately for security.</p>
           )}

@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
-import { Copy, Lock, Eye, EyeOff, Share2, X } from 'lucide-react';
+import { Copy, Lock, Eye, EyeOff, X } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { encodeQuestionMessage } from '@/lib/questionEncoding';
 import { PatternType } from '@/lib/encoding';
@@ -21,12 +21,6 @@ export function QuestionEncodeSection() {
   const [showPassphrase, setShowPassphrase] = useState(false);
   const { toast } = useToast();
 
-  const siteUrl =
-    window.location.hostname === 'localhost' ||
-    window.location.hostname.includes('lovable') ||
-    window.location.hostname.includes('preview')
-      ? 'https://hideyapp.com'
-      : window.location.origin;
 
   const handleClear = () => {
     setMessage('');
@@ -81,41 +75,6 @@ export function QuestionEncodeSection() {
     });
   };
 
-  const copyShareCard = async () => {
-    try {
-      const shareCard =
-`🔐 Someone locked a secret message for you on Hidey!
-
-━━━━━━━━━━━━━━━━━━━━━━
-🗝️ CHALLENGE CODE:
-${encoded}
-━━━━━━━━━━━━━━━━━━━━━━
-
-How to unlock it:
-1️⃣  Go to ${siteUrl}
-2️⃣  Click the "Question" tab
-3️⃣  Click "Unlock"
-4️⃣  Paste the Challenge Code above
-5️⃣  Answer the question correctly
-6️⃣  Your secret message will be revealed ✨
-
-${usePassphrase ? '🔒 This message has extra protection.\n    Ask the sender for the passphrase too.\n\n' : ''}Can you unlock it? 🤔
-Created with Hidey — Hide it. Share it. Reveal it.
-${siteUrl}`;
-
-      await navigator.clipboard.writeText(shareCard);
-      toast({
-        title: 'Share card copied! 📋',
-        description: 'Paste it in any chat or email.',
-      });
-    } catch {
-      toast({
-        title: 'Copy failed',
-        description: 'Please try again.',
-        variant: 'destructive',
-      });
-    }
-  };
 
   return (
     <div className="space-y-4 sm:space-y-6">
@@ -237,33 +196,12 @@ ${siteUrl}`;
             {encoded}
           </div>
           <p className="text-xs text-muted-foreground">
-            Share the Challenge Code or the full Share Card with your friend. They need to answer your question to unlock the message.
+            Share the Challenge Code with your friend. They need to answer your question to unlock the message.
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            <Button onClick={handleCopy} variant="outline" className="w-full rounded-xl border-2">
-              <Copy className="mr-2 h-4 w-4" />
-              Copy Code
-            </Button>
-            <Button
-              onClick={copyShareCard}
-              variant="outline"
-              className="w-full rounded-xl border-2 border-primary/40 hover:bg-primary/10 text-primary"
-            >
-              <Share2 className="mr-2 h-4 w-4" />
-              Copy Share Card
-            </Button>
-          </div>
-          <div className="p-4 bg-accent/30 rounded-xl border border-border space-y-1">
-            <p className="text-xs font-semibold text-foreground flex items-center gap-1">
-              💡 How sharing works
-            </p>
-            <p className="text-xs text-muted-foreground leading-relaxed">
-              Copy Code — share just the raw challenge code. Your friend pastes it in the Unlock tab.
-            </p>
-            <p className="text-xs text-muted-foreground leading-relaxed">
-              Copy Share Card — share a full formatted message with step-by-step instructions. Perfect for WhatsApp, Telegram, Instagram DM, or email.
-            </p>
-          </div>
+          <Button onClick={handleCopy} variant="outline" className="w-full rounded-xl border-2">
+            <Copy className="mr-2 h-4 w-4" />
+            Copy Code
+          </Button>
         </div>
       )}
     </div>
