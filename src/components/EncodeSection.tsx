@@ -73,32 +73,6 @@ export function EncodeSection() {
     });
   };
 
-  const handleCopyShareCard = () => {
-    const passphraseLine = usePassphrase
-      ? "5. Enter the passphrase (ask the sender)\n6. Click Decode ✨"
-      : "5. Click Decode ✨";
-
-    const shareCard = `🔐 Someone sent you a secret message via Hidey!
-
-${encoded}
-
-To decode it:
-1. Go to ${window.location.origin}
-2. Click "Message" tab → "Decode" tab
-3. Paste the text above
-4. Select pattern: ${patternLabels[pattern]}
-${passphraseLine}
-
-Sent via Hidey — Hide it. Share it. Reveal it.`;
-
-    navigator.clipboard.writeText(shareCard);
-    toast({
-      title: "Share card copied!",
-      description: "Paste it in any chat or email.",
-    });
-  };
-
-
   return (
     <div className="space-y-6">
       <div className="space-y-2">
