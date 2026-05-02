@@ -84,35 +84,6 @@ export function QuizCreateSection() {
     }
   };
 
-  const copyShareCard = async () => {
-    try {
-      const shareCard =
-`🧩 You have been challenged to a quiz on Hidey!
-
-━━━━━━━━━━━━━━━━━━━━━━
-📋 QUIZ CODE:
-${quizCode}
-━━━━━━━━━━━━━━━━━━━━━━
-
-How to attempt it:
-1️⃣  Go to ${siteUrl}
-2️⃣  Click the "Quiz" tab
-3️⃣  Click "Attempt Quiz"
-4️⃣  Paste the Quiz Code above
-5️⃣  Answer all questions
-6️⃣  Send back your Score Code 🏆
-
-${passphrase ? '🔒 This quiz is passphrase protected.\n    Ask the creator for the passphrase.\n\n' : ''}Good luck! 🎯
-
-Created with Hidey — Hide it. Share it. Reveal it.
-${siteUrl}`;
-
-      await navigator.clipboard.writeText(shareCard);
-      toast.success("Share card copied! Paste it anywhere.");
-    } catch {
-      toast.error("Copy failed. Please try again.");
-    }
-  };
 
 
   return (
