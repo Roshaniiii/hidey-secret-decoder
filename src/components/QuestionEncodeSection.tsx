@@ -81,41 +81,6 @@ export function QuestionEncodeSection() {
     });
   };
 
-  const copyShareCard = async () => {
-    try {
-      const shareCard =
-`🔐 Someone locked a secret message for you on Hidey!
-
-━━━━━━━━━━━━━━━━━━━━━━
-🗝️ CHALLENGE CODE:
-${encoded}
-━━━━━━━━━━━━━━━━━━━━━━
-
-How to unlock it:
-1️⃣  Go to ${siteUrl}
-2️⃣  Click the "Question" tab
-3️⃣  Click "Unlock"
-4️⃣  Paste the Challenge Code above
-5️⃣  Answer the question correctly
-6️⃣  Your secret message will be revealed ✨
-
-${usePassphrase ? '🔒 This message has extra protection.\n    Ask the sender for the passphrase too.\n\n' : ''}Can you unlock it? 🤔
-Created with Hidey — Hide it. Share it. Reveal it.
-${siteUrl}`;
-
-      await navigator.clipboard.writeText(shareCard);
-      toast({
-        title: 'Share card copied! 📋',
-        description: 'Paste it in any chat or email.',
-      });
-    } catch {
-      toast({
-        title: 'Copy failed',
-        description: 'Please try again.',
-        variant: 'destructive',
-      });
-    }
-  };
 
   return (
     <div className="space-y-4 sm:space-y-6">
