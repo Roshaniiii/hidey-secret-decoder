@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { PatternSelector } from "./PatternSelector";
 import { encodeMessage, PatternType } from "@/lib/encoding";
-import { Copy, Lock, X, Share2 } from "lucide-react";
+import { Copy, Lock, X } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
 const patternLabels: Record<PatternType, string> = {
