@@ -18,12 +18,6 @@ export function QuizCreateSection() {
   const [quizCode, setQuizCode] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
 
-  const siteUrl =
-    window.location.hostname === "localhost" ||
-    window.location.hostname.includes("lovable") ||
-    window.location.hostname.includes("preview")
-      ? "https://hideyapp.com"
-      : window.location.origin;
 
   const updateQuestion = (idx: number, updater: (q: QuizQuestion) => QuizQuestion) => {
     setQuestions(prev => prev.map((q, i) => (i === idx ? updater(q) : q)));
