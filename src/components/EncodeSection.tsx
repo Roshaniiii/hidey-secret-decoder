@@ -174,24 +174,14 @@ Sent via Hidey — Hide it. Share it. Reveal it.`;
           <div className="p-4 bg-card rounded-lg border border-border font-mono text-sm break-all">
             {encoded}
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            <Button
-              onClick={handleCopy}
-              variant="outline"
-              className="w-full rounded-xl border-2"
-            >
-              <Copy className="mr-2 h-4 w-4" />
-              Copy text
-            </Button>
-            <Button
-              onClick={handleCopyShareCard}
-              variant="outline"
-              className="w-full rounded-xl border-2"
-            >
-              <Share2 className="mr-2 h-4 w-4" />
-              Copy Share Card
-            </Button>
-          </div>
+          <Button
+            onClick={handleCopy}
+            variant="outline"
+            className="w-full rounded-xl border-2"
+          >
+            <Copy className="mr-2 h-4 w-4" />
+            Copy text
+          </Button>
           {usePassphrase && passphrase && (
             <p className="text-xs text-muted-foreground">
               🔒 Share the passphrase separately for security.
