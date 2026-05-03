@@ -161,7 +161,7 @@ export function QuestionEncodeSection() {
             className="rounded"
           />
           <Label htmlFor="usePassphrase" className="cursor-pointer">
-            Private Pattern (extra security)
+            Passphrase Protection (extra security)
           </Label>
         </div>
 

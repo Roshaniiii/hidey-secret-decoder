@@ -30,7 +30,6 @@ export function Header() {
 
   const navItems = [
     { path: "/", label: "Home", icon: Home },
-    { path: "/about", label: "About", icon: Info },
     { path: "/contact", label: "Contact", icon: Mail },
   ];
 
@@ -61,7 +60,7 @@ export function Header() {
           {showInstall && (
             <button
               onClick={handleInstall}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-primary/20 text-primary hover:bg-primary/30 transition-all border border-primary/30"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-normal bg-primary/20 text-primary hover:bg-primary/30 transition-all border border-primary/30"
               aria-label="Install Hidey app"
             >
               <Download className="h-3.5 w-3.5" />
