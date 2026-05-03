@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -76,6 +76,7 @@ export function QuizCreateSection() {
   };
 
   const copyCode = async () => {
+    if (!quizCode) return;
     try {
       await navigator.clipboard.writeText(quizCode);
       toast.success("Copied to clipboard");
@@ -83,6 +84,18 @@ export function QuizCreateSection() {
       toast.error("Copy failed");
     }
   };
+
+  useEffect(() => {
+    if (!quizCode) return;
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === "c") {
+        e.preventDefault();
+        copyCode();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [quizCode]);
 
 
 
@@ -212,15 +225,15 @@ export function QuizCreateSection() {
             value={quizCode}
             className="min-h-[100px] font-mono text-sm bg-card border-2 border-border rounded-xl"
           />
-          <p className="text-xs text-muted-foreground">
-            Share the Quiz Code with your friends.
-          </p>
           <Button variant="outline" onClick={copyCode} className="w-full rounded-xl border-2">
             <Copy className="mr-2 h-4 w-4" />
             Copy Quiz Code
           </Button>
+          <p className="text-xs text-muted-foreground text-center">
+            Tip: press Ctrl/Cmd + Shift + C to copy
+          </p>
           {passphrase && (
-            <p className="text-xs text-muted-foreground">🔒 Share the passphrase separately for security.</p>
+            <p className="text-xs text-muted-foreground">🔒 Keep the passphrase private.</p>
           )}
         </div>
       )}

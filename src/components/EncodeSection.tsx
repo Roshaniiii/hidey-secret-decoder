@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -51,17 +51,30 @@ export function EncodeSection() {
     setEncoded(result);
     toast({
       title: "Message encoded!",
-      description: "Copy or share it.",
+      description: "Press Ctrl/Cmd+C to copy.",
     });
   };
 
   const handleCopy = () => {
+    if (!encoded) return;
     navigator.clipboard.writeText(encoded);
     toast({
       title: "Copied!",
       description: "Encoded message copied to clipboard.",
     });
   };
+
+  useEffect(() => {
+    if (!encoded) return;
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === "c") {
+        e.preventDefault();
+        handleCopy();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [encoded]);
 
   const handleClear = () => {
     setMessage("");
@@ -156,9 +169,12 @@ export function EncodeSection() {
             <Copy className="mr-2 h-4 w-4" />
             Copy text
           </Button>
+          <p className="text-xs text-muted-foreground text-center">
+            Tip: press Ctrl/Cmd + Shift + C to copy
+          </p>
           {usePassphrase && passphrase && (
             <p className="text-xs text-muted-foreground">
-              🔒 Share the passphrase separately for security.
+              🔒 Keep the passphrase private.
             </p>
           )}
         </div>
