@@ -1,0 +1,49 @@
+{
+  "name": "Hidey — Secret Message Encoder",
+  "short_name": "Hidey",
+  "description": "Free secret message generator, quiz maker and question-lock tool. No account, no server, 100% private and browser-based.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#FFF5F9",
+  "theme_color": "#F472A8",
+  "categories": ["utilities", "productivity"],
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    }
+  ],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Encode Message",
+      "short_name": "Encode",
+      "description": "Go directly to message encoding",
+      "url": "/?mode=message",
+      "icons": [{ "src": "/favicon.svg", "sizes": "any" }]
+    },
+    {
+      "name": "Create Quiz",
+      "short_name": "Quiz",
+      "description": "Go directly to quiz creation",
+      "url": "/?mode=quiz",
+      "icons": [{ "src": "/favicon.svg", "sizes": "any" }]
+    },
+    {
+      "name": "Question Lock",
+      "short_name": "Question",
+      "description": "Go directly to question mode",
+      "url": "/?mode=question",
+      "icons": [{ "src": "/favicon.svg", "sizes": "any" }]
+    }
+  ]
+}

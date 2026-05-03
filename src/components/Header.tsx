@@ -1,9 +1,32 @@
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Lock, Home, Info, Mail } from "lucide-react";
+import { Lock, Home, Info, Mail, Download } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
 export function Header() {
   const location = useLocation();
+  const [installPrompt, setInstallPrompt] = useState<any>(null);
+  const [showInstall, setShowInstall] = useState(false);
+
+  useEffect(() => {
+    const handler = (e: Event) => {
+      e.preventDefault();
+      setInstallPrompt(e);
+      setShowInstall(true);
+    };
+    window.addEventListener('beforeinstallprompt', handler);
+    return () => window.removeEventListener('beforeinstallprompt', handler);
+  }, []);
+
+  const handleInstall = async () => {
+    if (!installPrompt) return;
+    installPrompt.prompt();
+    const { outcome } = await installPrompt.userChoice;
+    if (outcome === 'accepted') {
+      setShowInstall(false);
+      setInstallPrompt(null);
+    }
+  };
 
   const navItems = [
     { path: "/", label: "Home", icon: Home },
@@ -35,6 +58,16 @@ export function Header() {
               <span className="hidden sm:inline">{label}</span>
             </Link>
           ))}
+          {showInstall && (
+            <button
+              onClick={handleInstall}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-primary/20 text-primary hover:bg-primary/30 transition-all border border-primary/30"
+              aria-label="Install Hidey app"
+            >
+              <Download className="h-3.5 w-3.5" />
+              <span className="hidden sm:inline">Install App</span>
+            </button>
+          )}
           <ThemeToggle />
         </nav>
       </div>
