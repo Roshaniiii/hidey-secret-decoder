@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
@@ -75,17 +75,6 @@ export function QuestionEncodeSection() {
     });
   };
 
-  useEffect(() => {
-    if (!encoded) return;
-    const onKey = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'c') {
-        e.preventDefault();
-        handleCopy();
-      }
-    };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [encoded]);
 
   return (
     <div className="space-y-4 sm:space-y-6">
@@ -210,9 +199,6 @@ export function QuestionEncodeSection() {
             <Copy className="mr-2 h-4 w-4" />
             Copy Code
           </Button>
-          <p className="text-xs text-muted-foreground text-center">
-            Tip: press Ctrl/Cmd + Shift + C to copy
-          </p>
         </div>
       )}
     </div>

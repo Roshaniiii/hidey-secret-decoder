@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -85,17 +85,6 @@ export function QuizCreateSection() {
     }
   };
 
-  useEffect(() => {
-    if (!quizCode) return;
-    const onKey = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === "c") {
-        e.preventDefault();
-        copyCode();
-      }
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [quizCode]);
 
 
 
@@ -229,9 +218,6 @@ export function QuizCreateSection() {
             <Copy className="mr-2 h-4 w-4" />
             Copy Quiz Code
           </Button>
-          <p className="text-xs text-muted-foreground text-center">
-            Tip: press Ctrl/Cmd + Shift + C to copy
-          </p>
           {passphrase && (
             <p className="text-xs text-muted-foreground">🔒 Keep the passphrase private.</p>
           )}
