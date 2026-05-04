@@ -85,17 +85,6 @@ export function QuizCreateSection() {
     }
   };
 
-  useEffect(() => {
-    if (!quizCode) return;
-    const onKey = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === "c") {
-        e.preventDefault();
-        copyCode();
-      }
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [quizCode]);
 
 
 
