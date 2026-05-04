@@ -51,7 +51,7 @@ export function EncodeSection() {
     setEncoded(result);
     toast({
       title: "Message encoded!",
-      description: "Press Ctrl/Cmd+C to copy.",
+      description: "Your message is ready to copy.",
     });
   };
 
@@ -63,18 +63,6 @@ export function EncodeSection() {
       description: "Encoded message copied to clipboard.",
     });
   };
-
-  useEffect(() => {
-    if (!encoded) return;
-    const onKey = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === "c") {
-        e.preventDefault();
-        handleCopy();
-      }
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [encoded]);
 
   const handleClear = () => {
     setMessage("");
