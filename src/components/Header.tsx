@@ -37,9 +37,14 @@ export function Header() {
     <header className="sticky top-0 z-50 bg-card/80 backdrop-blur-md border-b-2 border-border">
       <div className="container max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2">
-          <div className="p-1.5 bg-primary/20 rounded-xl">
-            <Lock className="h-6 w-6 text-primary" />
-          </div>
+          <img
+            src="/logo.png"
+            alt="Hidey"
+            className="h-10 w-10 rounded-xl object-contain"
+            width={40}
+            height={40}
+            loading="eager"
+          />
           <span className="text-2xl font-bold text-foreground tracking-tight">Hidey</span>
         </Link>
         <nav className="flex items-center gap-1">

@@ -44,9 +44,14 @@ export function Footer() {
 
         <div className="mt-10 pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
           <Link to="/" className="flex items-center gap-2">
-            <div className="p-1.5 bg-primary/20 rounded-xl">
-              <Lock className="h-4 w-4 text-primary" />
-            </div>
+            <img
+              src="/logo.png"
+              alt="Hidey"
+              className="h-8 w-8 rounded-xl object-contain"
+              width={32}
+              height={32}
+              loading="lazy"
+            />
             <span className="text-base font-semibold text-foreground">Hidey</span>
           </Link>
 
