@@ -40,10 +40,11 @@ export function Header() {
           <img
             src="/logo.png"
             alt="Hidey"
-            className="h-10 w-10 rounded-xl object-contain"
-            width={40}
-            height={40}
+            className="h-12 w-12 rounded-2xl object-contain"
+            width={48}
+            height={48}
             loading="eager"
+            style={{ imageRendering: "auto" }}
           />
           <span className="text-2xl font-bold text-foreground tracking-tight">Hidey</span>
         </Link>
