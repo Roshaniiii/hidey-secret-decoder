@@ -157,9 +157,6 @@ export function EncodeSection() {
             <Copy className="mr-2 h-4 w-4" />
             Copy text
           </Button>
-          <p className="text-xs text-muted-foreground text-center">
-            Tip: press Ctrl/Cmd + Shift + C to copy
-          </p>
           {usePassphrase && passphrase && (
             <p className="text-xs text-muted-foreground">
               🔒 Keep the passphrase private.
