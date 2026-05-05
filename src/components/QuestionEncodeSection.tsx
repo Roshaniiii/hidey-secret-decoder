@@ -112,7 +112,7 @@ export function QuestionEncodeSection() {
             placeholder="e.g., What's our favorite city?"
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
-            className="mt-2"
+            className="mt-2 w-full"
           />
         </div>
 
