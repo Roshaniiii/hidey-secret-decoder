@@ -26,13 +26,13 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-accent/20 to-secondary/20 pb-8">
-      <div className="container max-w-6xl mx-auto px-4 py-12">
+      <div className="container max-w-6xl mx-auto px-4 py-6 sm:py-12">
         {/* Header */}
-        <div className="text-center mb-8 space-y-1">
-          <h1 className="text-5xl font-bold text-foreground tracking-tight">
+        <div className="text-center mb-6 sm:mb-8 space-y-1">
+          <h1 className="text-4xl sm:text-5xl font-bold text-foreground tracking-tight">
             Hidey
           </h1>
-          <p className="text-lg text-muted-foreground font-medium">
+          <p className="text-base sm:text-lg text-muted-foreground font-medium">
             Hide it. Share it. Reveal it.
           </p>
         </div>
