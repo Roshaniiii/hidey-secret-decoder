@@ -125,7 +125,7 @@ export function QuestionEncodeSection() {
               placeholder="Enter the correct answer"
               value={answer}
               onChange={(e) => setAnswer(e.target.value)}
-              className="pr-10"
+              className="pr-10 w-full"
             />
             <button
               type="button"
@@ -164,7 +164,7 @@ export function QuestionEncodeSection() {
                 placeholder="Enter your private key"
                 value={passphrase}
                 onChange={(e) => setPassphrase(e.target.value)}
-                className="pr-10"
+                className="pr-10 w-full"
               />
               <button
                 type="button"
