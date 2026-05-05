@@ -77,7 +77,7 @@ export function QuestionEncodeSection() {
 
 
   return (
-    <div className="space-y-4 sm:space-y-6">
+    <div className="space-y-4 sm:space-y-6 w-full">
       <div className="space-y-3 sm:space-y-4">
         <div className="flex items-center justify-between">
           <Label className="text-foreground font-semibold">Create Challenge</Label>
