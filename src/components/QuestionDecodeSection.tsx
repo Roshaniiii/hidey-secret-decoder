@@ -238,7 +238,7 @@ export function QuestionDecodeSection() {
             <div className="space-y-4 animate-fade-in">
               <div>
                 <Label className="text-lg font-semibold">✨ Unlocked Message:</Label>
-                <div className="mt-2 p-4 bg-muted rounded-lg whitespace-pre-wrap">
+                <div className="mt-2 p-4 bg-muted rounded-xl whitespace-pre-wrap w-full break-words">
                   {decoded}
                 </div>
               </div>
