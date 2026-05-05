@@ -203,7 +203,7 @@ export function QuestionDecodeSection() {
                 disabled={!!decoded}
               />
               <Label htmlFor="usePassphraseDecrypt" className="cursor-pointer">
-                Private Pattern was used
+                Passphrase Protection was used
               </Label>
             </div>
 
