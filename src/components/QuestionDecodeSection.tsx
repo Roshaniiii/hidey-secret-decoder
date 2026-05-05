@@ -171,7 +171,7 @@ export function QuestionDecodeSection() {
         </div>
       ) : (
         <div className="space-y-6 animate-fade-in">
-          <div className="p-6 bg-muted rounded-lg space-y-4">
+          <div className="p-4 sm:p-6 bg-muted rounded-xl space-y-4 w-full">
             <div>
               <Label className="text-lg font-semibold">🧩 Challenge:</Label>
               <p className="mt-2 text-lg">{questionData.question}</p>
