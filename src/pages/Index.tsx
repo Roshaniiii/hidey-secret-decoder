@@ -86,13 +86,13 @@ const Index = () => {
                   </TabsList>
                   
                   <TabsContent value="encode" className="mt-6">
-                    <div className="bg-card border-2 border-border rounded-2xl p-6 shadow-lg">
+                    <div className="bg-card border-2 border-border rounded-2xl p-4 sm:p-6 shadow-lg w-full">
                       <EncodeSection />
                     </div>
                   </TabsContent>
                   
                   <TabsContent value="decode" className="mt-6">
-                    <div className="bg-card border-2 border-border rounded-2xl p-6 shadow-lg">
+                    <div className="bg-card border-2 border-border rounded-2xl p-4 sm:p-6 shadow-lg w-full">
                       <DecodeSection
                         initialMessage={shared.message}
                         initialPattern={shared.pattern}
@@ -131,19 +131,19 @@ const Index = () => {
                   </TabsList>
                   
                   <TabsContent value="create" className="mt-6">
-                    <div className="bg-card border-2 border-border rounded-2xl p-6 shadow-lg">
+                    <div className="bg-card border-2 border-border rounded-2xl p-4 sm:p-6 shadow-lg w-full">
                       <QuizCreateSection />
                     </div>
                   </TabsContent>
                   
                   <TabsContent value="attempt" className="mt-6">
-                    <div className="bg-card border-2 border-border rounded-2xl p-6 shadow-lg">
+                    <div className="bg-card border-2 border-border rounded-2xl p-4 sm:p-6 shadow-lg w-full">
                       <QuizAttemptSection initialQuizCode={shared.quizCode} />
                     </div>
                   </TabsContent>
                   
                   <TabsContent value="reveal" className="mt-6">
-                    <div className="bg-card border-2 border-border rounded-2xl p-6 shadow-lg">
+                    <div className="bg-card border-2 border-border rounded-2xl p-4 sm:p-6 shadow-lg w-full">
                       <QuizRevealSection />
                     </div>
                   </TabsContent>
@@ -171,13 +171,13 @@ const Index = () => {
                   </TabsList>
                   
                   <TabsContent value="create" className="mt-6">
-                    <div className="bg-card border-2 border-border rounded-2xl p-6 shadow-lg">
+                    <div className="bg-card border-2 border-border rounded-2xl p-4 sm:p-6 shadow-lg w-full">
                       <QuestionEncodeSection />
                     </div>
                   </TabsContent>
                   
                   <TabsContent value="unlock" className="mt-6">
-                    <div className="bg-card border-2 border-border rounded-2xl p-6 shadow-lg">
+                    <div className="bg-card border-2 border-border rounded-2xl p-4 sm:p-6 shadow-lg w-full">
                       <QuestionDecodeSection />
                     </div>
                   </TabsContent>
