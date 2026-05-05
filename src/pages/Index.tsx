@@ -26,13 +26,13 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-accent/20 to-secondary/20 pb-8">
-      <div className="container max-w-6xl mx-auto px-4 py-12">
+      <div className="container max-w-6xl mx-auto px-4 py-6 sm:py-12">
         {/* Header */}
-        <div className="text-center mb-8 space-y-1">
-          <h1 className="text-5xl font-bold text-foreground tracking-tight">
+        <div className="text-center mb-6 sm:mb-8 space-y-1">
+          <h1 className="text-4xl sm:text-5xl font-bold text-foreground tracking-tight">
             Hidey
           </h1>
-          <p className="text-lg text-muted-foreground font-medium">
+          <p className="text-base sm:text-lg text-muted-foreground font-medium">
             Hide it. Share it. Reveal it.
           </p>
         </div>
@@ -86,13 +86,13 @@ const Index = () => {
                   </TabsList>
                   
                   <TabsContent value="encode" className="mt-6">
-                    <div className="bg-card border-2 border-border rounded-2xl p-6 shadow-lg">
+                    <div className="bg-card border-2 border-border rounded-2xl p-4 sm:p-6 shadow-lg w-full">
                       <EncodeSection />
                     </div>
                   </TabsContent>
                   
                   <TabsContent value="decode" className="mt-6">
-                    <div className="bg-card border-2 border-border rounded-2xl p-6 shadow-lg">
+                    <div className="bg-card border-2 border-border rounded-2xl p-4 sm:p-6 shadow-lg w-full">
                       <DecodeSection
                         initialMessage={shared.message}
                         initialPattern={shared.pattern}
@@ -131,19 +131,19 @@ const Index = () => {
                   </TabsList>
                   
                   <TabsContent value="create" className="mt-6">
-                    <div className="bg-card border-2 border-border rounded-2xl p-6 shadow-lg">
+                    <div className="bg-card border-2 border-border rounded-2xl p-4 sm:p-6 shadow-lg w-full">
                       <QuizCreateSection />
                     </div>
                   </TabsContent>
                   
                   <TabsContent value="attempt" className="mt-6">
-                    <div className="bg-card border-2 border-border rounded-2xl p-6 shadow-lg">
+                    <div className="bg-card border-2 border-border rounded-2xl p-4 sm:p-6 shadow-lg w-full">
                       <QuizAttemptSection initialQuizCode={shared.quizCode} />
                     </div>
                   </TabsContent>
                   
                   <TabsContent value="reveal" className="mt-6">
-                    <div className="bg-card border-2 border-border rounded-2xl p-6 shadow-lg">
+                    <div className="bg-card border-2 border-border rounded-2xl p-4 sm:p-6 shadow-lg w-full">
                       <QuizRevealSection />
                     </div>
                   </TabsContent>
@@ -153,31 +153,31 @@ const Index = () => {
               {/* Question Mode */}
               <TabsContent value="question" className="space-y-0">
                 <Tabs defaultValue="create" className="w-full">
-                  <TabsList className="grid w-full grid-cols-2 bg-card border-2 border-border rounded-2xl p-1 h-14">
+                  <TabsList className="grid w-full grid-cols-2 bg-card border-2 border-border rounded-2xl p-1 h-12 sm:h-14">
                     <TabsTrigger 
                       value="create" 
-                      className="rounded-xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground font-semibold"
+                      className="rounded-xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground font-semibold text-sm sm:text-base px-2 sm:px-4"
                     >
-                      <Lock className="mr-2 h-4 w-4 hidden sm:block" />
+                      <Lock className="mr-1 sm:mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4 hidden sm:block" />
                       Create Challenge
                     </TabsTrigger>
                     <TabsTrigger 
                       value="unlock"
-                      className="rounded-xl data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground font-semibold"
+                      className="rounded-xl data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground font-semibold text-sm sm:text-base px-2 sm:px-4"
                     >
-                      <Unlock className="mr-2 h-4 w-4 hidden sm:block" />
+                      <Unlock className="mr-1 sm:mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4 hidden sm:block" />
                       Unlock
                     </TabsTrigger>
                   </TabsList>
                   
                   <TabsContent value="create" className="mt-6">
-                    <div className="bg-card border-2 border-border rounded-2xl p-6 shadow-lg">
+                    <div className="bg-card border-2 border-border rounded-2xl p-4 sm:p-6 shadow-lg w-full">
                       <QuestionEncodeSection />
                     </div>
                   </TabsContent>
                   
                   <TabsContent value="unlock" className="mt-6">
-                    <div className="bg-card border-2 border-border rounded-2xl p-6 shadow-lg">
+                    <div className="bg-card border-2 border-border rounded-2xl p-4 sm:p-6 shadow-lg w-full">
                       <QuestionDecodeSection />
                     </div>
                   </TabsContent>

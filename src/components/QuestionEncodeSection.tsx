@@ -77,7 +77,7 @@ export function QuestionEncodeSection() {
 
 
   return (
-    <div className="space-y-4 sm:space-y-6">
+    <div className="space-y-4 sm:space-y-6 w-full">
       <div className="space-y-3 sm:space-y-4">
         <div className="flex items-center justify-between">
           <Label className="text-foreground font-semibold">Create Challenge</Label>
@@ -101,7 +101,7 @@ export function QuestionEncodeSection() {
             placeholder="Type your secret message here..."
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            className="mt-2 min-h-[100px]"
+            className="mt-2 min-h-[100px] w-full"
           />
         </div>
 
@@ -112,7 +112,7 @@ export function QuestionEncodeSection() {
             placeholder="e.g., What's our favorite city?"
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
-            className="mt-2"
+            className="mt-2 w-full"
           />
         </div>
 
@@ -125,7 +125,7 @@ export function QuestionEncodeSection() {
               placeholder="Enter the correct answer"
               value={answer}
               onChange={(e) => setAnswer(e.target.value)}
-              className="pr-10"
+              className="pr-10 w-full"
             />
             <button
               type="button"
@@ -164,7 +164,7 @@ export function QuestionEncodeSection() {
                 placeholder="Enter your private key"
                 value={passphrase}
                 onChange={(e) => setPassphrase(e.target.value)}
-                className="pr-10"
+                className="pr-10 w-full"
               />
               <button
                 type="button"

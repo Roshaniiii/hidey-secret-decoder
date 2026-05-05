@@ -132,7 +132,7 @@ export function QuestionDecodeSection() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 w-full">
       {!questionData ? (
         <div className="space-y-4">
           <div>
@@ -171,7 +171,7 @@ export function QuestionDecodeSection() {
         </div>
       ) : (
         <div className="space-y-6 animate-fade-in">
-          <div className="p-6 bg-muted rounded-lg space-y-4">
+          <div className="p-4 sm:p-6 bg-muted rounded-xl space-y-4 w-full">
             <div>
               <Label className="text-lg font-semibold">🧩 Challenge:</Label>
               <p className="mt-2 text-lg">{questionData.question}</p>
@@ -203,7 +203,7 @@ export function QuestionDecodeSection() {
                 disabled={!!decoded}
               />
               <Label htmlFor="usePassphraseDecrypt" className="cursor-pointer">
-                Private Pattern was used
+                Passphrase Protection was used
               </Label>
             </div>
 
@@ -238,7 +238,7 @@ export function QuestionDecodeSection() {
             <div className="space-y-4 animate-fade-in">
               <div>
                 <Label className="text-lg font-semibold">✨ Unlocked Message:</Label>
-                <div className="mt-2 p-4 bg-muted rounded-lg whitespace-pre-wrap">
+                <div className="mt-2 p-4 bg-muted rounded-xl whitespace-pre-wrap w-full break-words">
                   {decoded}
                 </div>
               </div>
