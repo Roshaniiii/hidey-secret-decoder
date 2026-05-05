@@ -153,19 +153,19 @@ const Index = () => {
               {/* Question Mode */}
               <TabsContent value="question" className="space-y-0">
                 <Tabs defaultValue="create" className="w-full">
-                  <TabsList className="grid w-full grid-cols-2 bg-card border-2 border-border rounded-2xl p-1 h-14">
+                  <TabsList className="grid w-full grid-cols-2 bg-card border-2 border-border rounded-2xl p-1 h-12 sm:h-14">
                     <TabsTrigger 
                       value="create" 
-                      className="rounded-xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground font-semibold"
+                      className="rounded-xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground font-semibold text-sm sm:text-base px-2 sm:px-4"
                     >
-                      <Lock className="mr-2 h-4 w-4 hidden sm:block" />
+                      <Lock className="mr-1 sm:mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4 hidden sm:block" />
                       Create Challenge
                     </TabsTrigger>
                     <TabsTrigger 
                       value="unlock"
-                      className="rounded-xl data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground font-semibold"
+                      className="rounded-xl data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground font-semibold text-sm sm:text-base px-2 sm:px-4"
                     >
-                      <Unlock className="mr-2 h-4 w-4 hidden sm:block" />
+                      <Unlock className="mr-1 sm:mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4 hidden sm:block" />
                       Unlock
                     </TabsTrigger>
                   </TabsList>
