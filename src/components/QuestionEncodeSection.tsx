@@ -101,7 +101,7 @@ export function QuestionEncodeSection() {
             placeholder="Type your secret message here..."
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            className="mt-2 min-h-[100px]"
+            className="mt-2 min-h-[100px] w-full"
           />
         </div>
 
