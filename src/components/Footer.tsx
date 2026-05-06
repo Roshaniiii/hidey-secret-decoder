@@ -47,9 +47,9 @@ export function Footer() {
             <img
               src="/logo.png"
               alt="Hidey"
-              className="h-9 w-9 object-contain"
-              width={36}
-              height={36}
+              className="h-8 w-8 rounded-xl object-contain"
+              width={32}
+              height={32}
               loading="lazy"
             />
             <span className="text-base font-semibold text-foreground">Hidey</span>

@@ -40,9 +40,9 @@ export function Header() {
           <img
             src="/logo.png"
             alt="Hidey"
-            className="h-11 w-11 object-contain drop-shadow-sm"
-            width={44}
-            height={44}
+            className="h-10 w-10 object-contain"
+            width={40}
+            height={40}
             loading="eager"
           />
           <span className="text-2xl font-bold text-foreground tracking-tight">Hidey</span>
