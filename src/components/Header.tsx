@@ -40,7 +40,7 @@ export function Header() {
           <img
             src="/logo.png"
             alt="Hidey"
-            className="h-10 w-10 object-contain"
+            className="h-10 w-10 rounded-xl object-contain"
             width={40}
             height={40}
             loading="eager"
