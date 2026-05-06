@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { Copy, Plus, X } from "lucide-react";
 import type { QuizQuestion } from "@/lib/quiz";
 import { generateQuizCode } from "@/lib/quiz";
+import { PassphraseToggle } from "./PassphraseToggle";
 
 export function QuizCreateSection() {
   const [questions, setQuestions] = useState<QuizQuestion[]>([
