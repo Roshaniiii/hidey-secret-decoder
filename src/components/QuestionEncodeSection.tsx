@@ -7,6 +7,7 @@ import { Copy, Lock, Eye, EyeOff, X } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { encodeQuestionMessage } from '@/lib/questionEncoding';
 import { PatternType } from '@/lib/encoding';
+import { PassphraseToggle } from './PassphraseToggle';
 
 export function QuestionEncodeSection() {
   const [message, setMessage] = useState('');
