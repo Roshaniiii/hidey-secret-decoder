@@ -17,6 +17,7 @@ interface QuizAttemptSectionProps {
 export function QuizAttemptSection({ initialQuizCode }: QuizAttemptSectionProps = {}) {
   const [quizCode, setQuizCode] = useState("");
   const [passphrase, setPassphrase] = useState("");
+  const [usePassphrase, setUsePassphrase] = useState(false);
   const [quiz, setQuiz] = useState<QuizPayload | null>(null);
   const [answers, setAnswers] = useState<number[]>([]);
   const [scoreCode, setScoreCode] = useState("");
