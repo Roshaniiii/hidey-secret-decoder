@@ -8,12 +8,14 @@ import { toast } from "sonner";
 import { Copy, Plus, X } from "lucide-react";
 import type { QuizQuestion } from "@/lib/quiz";
 import { generateQuizCode } from "@/lib/quiz";
+import { PassphraseToggle } from "./PassphraseToggle";
 
 export function QuizCreateSection() {
   const [questions, setQuestions] = useState<QuizQuestion[]>([
     { question: "", options: ["", ""], correctIndex: 0 },
   ]);
   const [passphrase, setPassphrase] = useState("");
+  const [usePassphrase, setUsePassphrase] = useState(false);
   const [scoreKey, setScoreKey] = useState("");
   const [quizCode, setQuizCode] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
@@ -180,16 +182,16 @@ export function QuizCreateSection() {
         <Button variant="secondary" onClick={addQuestion}>Add question</Button>
       </div>
 
-      <div className="space-y-2">
-        <Label className="text-foreground font-medium">Passphrase</Label>
-        <Input
-          type="password"
-          placeholder="Enter passphrase"
-          value={passphrase}
-          onChange={e => setPassphrase(e.target.value)}
-        />
-        <p className="text-xs text-muted-foreground">Add a passphrase for extra privacy.</p>
-      </div>
+      <PassphraseToggle
+        enabled={usePassphrase}
+        onEnabledChange={(v) => {
+          setUsePassphrase(v);
+          if (!v) setPassphrase("");
+        }}
+        passphrase={passphrase}
+        onPassphraseChange={setPassphrase}
+        id="quiz-use-passphrase"
+      />
 
       <div className="space-y-2">
         <Label className="text-foreground font-medium">Score Key</Label>

@@ -7,6 +7,7 @@ import { Copy, Lock, Eye, EyeOff, X } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { encodeQuestionMessage } from '@/lib/questionEncoding';
 import { PatternType } from '@/lib/encoding';
+import { PassphraseToggle } from './PassphraseToggle';
 
 export function QuestionEncodeSection() {
   const [message, setMessage] = useState('');
@@ -141,42 +142,13 @@ export function QuestionEncodeSection() {
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
-          <input
-            type="checkbox"
-            id="usePassphrase"
-            checked={usePassphrase}
-            onChange={(e) => setUsePassphrase(e.target.checked)}
-            className="rounded"
-          />
-          <Label htmlFor="usePassphrase" className="cursor-pointer">
-            Passphrase Protection (extra security)
-          </Label>
-        </div>
-
-        {usePassphrase && (
-          <div>
-            <Label htmlFor="passphrase">Passphrase</Label>
-            <div className="relative mt-2">
-              <Input
-                id="passphrase"
-                type={showPassphrase ? 'text' : 'password'}
-                placeholder="Enter your private key"
-                value={passphrase}
-                onChange={(e) => setPassphrase(e.target.value)}
-                className="pr-10 w-full"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassphrase((v) => !v)}
-                aria-label={showPassphrase ? 'Hide passphrase' : 'Show passphrase'}
-                className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 text-muted-foreground hover:text-foreground transition-colors"
-              >
-                {showPassphrase ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-              </button>
-            </div>
-          </div>
-        )}
+        <PassphraseToggle
+          enabled={usePassphrase}
+          onEnabledChange={setUsePassphrase}
+          passphrase={passphrase}
+          onPassphraseChange={setPassphrase}
+          id="question-use-passphrase"
+        />
 
         <Button
           onClick={handleEncode}

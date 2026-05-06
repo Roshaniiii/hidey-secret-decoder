@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { Sparkles } from "lucide-react";
 import type { QuizPayload } from "@/lib/quiz";
 import { decodeQuizCode, generateScoreCode } from "@/lib/quiz";
+import { PassphraseToggle } from "./PassphraseToggle";
 
 interface QuizAttemptSectionProps {
   initialQuizCode?: string | null;
@@ -16,6 +17,7 @@ interface QuizAttemptSectionProps {
 export function QuizAttemptSection({ initialQuizCode }: QuizAttemptSectionProps = {}) {
   const [quizCode, setQuizCode] = useState("");
   const [passphrase, setPassphrase] = useState("");
+  const [usePassphrase, setUsePassphrase] = useState(false);
   const [quiz, setQuiz] = useState<QuizPayload | null>(null);
   const [answers, setAnswers] = useState<number[]>([]);
   const [scoreCode, setScoreCode] = useState("");
@@ -116,16 +118,18 @@ export function QuizAttemptSection({ initialQuizCode }: QuizAttemptSectionProps 
         />
       </div>
 
-      <div className="space-y-2">
-        <Label className="text-foreground font-medium">Passphrase (if required)</Label>
-        <Input
-          type="password"
-          placeholder="Enter passphrase"
-          value={passphrase}
-          onChange={e => setPassphrase(e.target.value)}
-        />
-        <p className="text-xs text-muted-foreground">Enter passphrase if the quiz requires one.</p>
-      </div>
+      <PassphraseToggle
+        enabled={usePassphrase}
+        onEnabledChange={(v) => {
+          setUsePassphrase(v);
+          if (!v) setPassphrase("");
+        }}
+        passphrase={passphrase}
+        onPassphraseChange={setPassphrase}
+        id="quiz-attempt-use-passphrase"
+        label="Passphrase protection (if required)"
+        description="Enter passphrase if the quiz requires one."
+      />
 
       <Button variant="secondary" onClick={handleDecode} disabled={isLoading}>
         {isLoading ? "Loading..." : "Load Quiz"}
