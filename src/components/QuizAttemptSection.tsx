@@ -118,16 +118,18 @@ export function QuizAttemptSection({ initialQuizCode }: QuizAttemptSectionProps 
         />
       </div>
 
-      <div className="space-y-2">
-        <Label className="text-foreground font-medium">Passphrase (if required)</Label>
-        <Input
-          type="password"
-          placeholder="Enter passphrase"
-          value={passphrase}
-          onChange={e => setPassphrase(e.target.value)}
-        />
-        <p className="text-xs text-muted-foreground">Enter passphrase if the quiz requires one.</p>
-      </div>
+      <PassphraseToggle
+        enabled={usePassphrase}
+        onEnabledChange={(v) => {
+          setUsePassphrase(v);
+          if (!v) setPassphrase("");
+        }}
+        passphrase={passphrase}
+        onPassphraseChange={setPassphrase}
+        id="quiz-attempt-use-passphrase"
+        label="Passphrase protection (if required)"
+        description="Enter passphrase if the quiz requires one."
+      />
 
       <Button variant="secondary" onClick={handleDecode} disabled={isLoading}>
         {isLoading ? "Loading..." : "Load Quiz"}
