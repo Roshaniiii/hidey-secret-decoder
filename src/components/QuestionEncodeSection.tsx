@@ -137,7 +137,7 @@ export function QuestionEncodeSection() {
             </button>
           </div>
           <p className="text-xs text-muted-foreground mt-1">
-            write the answer in lowercase for consistency
+            💡 It's better to write the answer in lowercase for consistency
           </p>
         </div>
 
@@ -156,6 +156,7 @@ export function QuestionEncodeSection() {
 
         {usePassphrase && (
           <div>
+            <Label htmlFor="passphrase">Passphrase</Label>
             <div className="relative mt-2">
               <Input
                 id="passphrase"
