@@ -182,16 +182,16 @@ export function QuizCreateSection() {
         <Button variant="secondary" onClick={addQuestion}>Add question</Button>
       </div>
 
-      <div className="space-y-2">
-        <Label className="text-foreground font-medium">Passphrase</Label>
-        <Input
-          type="password"
-          placeholder="Enter passphrase"
-          value={passphrase}
-          onChange={e => setPassphrase(e.target.value)}
-        />
-        <p className="text-xs text-muted-foreground">Add a passphrase for extra privacy.</p>
-      </div>
+      <PassphraseToggle
+        enabled={usePassphrase}
+        onEnabledChange={(v) => {
+          setUsePassphrase(v);
+          if (!v) setPassphrase("");
+        }}
+        passphrase={passphrase}
+        onPassphraseChange={setPassphrase}
+        id="quiz-use-passphrase"
+      />
 
       <div className="space-y-2">
         <Label className="text-foreground font-medium">Score Key</Label>
