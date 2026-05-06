@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { Sparkles } from "lucide-react";
 import type { QuizPayload } from "@/lib/quiz";
 import { decodeQuizCode, generateScoreCode } from "@/lib/quiz";
+import { PassphraseToggle } from "./PassphraseToggle";
 
 interface QuizAttemptSectionProps {
   initialQuizCode?: string | null;
