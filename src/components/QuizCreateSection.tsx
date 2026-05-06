@@ -15,6 +15,7 @@ export function QuizCreateSection() {
     { question: "", options: ["", ""], correctIndex: 0 },
   ]);
   const [passphrase, setPassphrase] = useState("");
+  const [usePassphrase, setUsePassphrase] = useState(false);
   const [scoreKey, setScoreKey] = useState("");
   const [quizCode, setQuizCode] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
