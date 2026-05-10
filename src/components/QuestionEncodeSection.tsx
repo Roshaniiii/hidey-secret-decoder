@@ -157,7 +157,7 @@ export function QuestionEncodeSection() {
           size="lg"
         >
           <Lock className="mr-2 h-4 w-4" />
-          {isLoading ? 'Creating Challenge...' : '🔒 Encrypt & Create Challenge'}
+          {isLoading ? 'Creating Challenge...' : 'Encrypt & Create Challenge'}
         </Button>
       </div>
 
