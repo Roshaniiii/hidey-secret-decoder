@@ -188,11 +188,7 @@ const Index = () => {
 
           {/* Sidebar */}
           <div className="lg:col-span-1 h-fit">
-            {mode === "quiz" || mode === "question" ? (
-              <HelpSidebar mode={mode} />
-            ) : (
-              <PatternExamples />
-            )}
+            <HelpSidebar mode={mode} />
           </div>
         </div>
 
