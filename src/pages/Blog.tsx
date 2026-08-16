@@ -50,26 +50,7 @@ export const blogPosts = [
     date: "April 18, 2026",
     readTime: "7 min read",
   },
-  {
-    slug: "steganography-vs-encryption-how-text-obfuscation-works",
-    title: "Understanding Steganography vs. Encryption: How Text Obfuscation Works",
-    description:
-      "Steganography hides that a message exists, encryption makes it unreadable. Learn how both work, how they compare, and the best practices for private online messaging.",
-    category: "Privacy",
-    date: "August 16, 2026",
-    readTime: "6 min read",
-  },
-  {
-    slug: "how-to-use-secret-messages-for-audience-engagement",
-    title: "Creative Ways to Use Hidden Messages and Quizzes for Social Media Engagement",
-    description:
-      "Turn passive followers into active participants with encoded Easter eggs, spoiler-free threads, passphrase quizzes, and exclusive community rewards.",
-    category: "Fun Ideas",
-    date: "August 16, 2026",
-    readTime: "5 min read",
-  },
 ];
-
 
 const Blog = () => {
   useEffect(() => {
