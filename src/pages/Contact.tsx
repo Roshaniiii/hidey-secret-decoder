@@ -7,6 +7,8 @@ import { Label } from "@/components/ui/label";
 import { CheckCircle2, Loader2, Mail, Send } from "lucide-react";
 import { z } from "zod";
 import { toast } from "sonner";
+import { useSeo } from "@/hooks/useSeo";
+
 
 const contactSchema = z.object({
   name: z.string().trim().nonempty("Name is required").max(100, "Name must be less than 100 characters"),
