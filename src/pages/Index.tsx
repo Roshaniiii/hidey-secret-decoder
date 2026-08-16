@@ -202,7 +202,9 @@ const Index = () => {
           </div>
         </div>
 
+        <SeoContent />
       </div>
+
     </div>
   );
 };
