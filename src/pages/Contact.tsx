@@ -7,6 +7,8 @@ import { Label } from "@/components/ui/label";
 import { CheckCircle2, Loader2, Mail, Send } from "lucide-react";
 import { z } from "zod";
 import { toast } from "sonner";
+import { useSeo } from "@/hooks/useSeo";
+
 
 const contactSchema = z.object({
   name: z.string().trim().nonempty("Name is required").max(100, "Name must be less than 100 characters"),
@@ -18,10 +20,17 @@ const contactSchema = z.object({
 type FieldErrors = Partial<Record<"name" | "email" | "subject" | "message", string>>;
 
 const Contact = () => {
+  useSeo({
+    title: "Contact Hidey — Questions, Feedback & Support",
+    description:
+      "Get in touch with the Hidey team. Send questions, feedback, bug reports or feature ideas about our free secret message, quiz and question-lock tools.",
+    canonicalPath: "/contact",
+  });
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
   const [errors, setErrors] = useState<FieldErrors>({});
   const [submitting, setSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+
 
   const handleChange = (field: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm((prev) => ({ ...prev, [field]: e.target.value }));
