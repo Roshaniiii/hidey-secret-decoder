@@ -9,7 +9,9 @@ import { QuestionEncodeSection } from "@/components/QuestionEncodeSection";
 import { QuestionDecodeSection } from "@/components/QuestionDecodeSection";
 import { PatternExamples } from "@/components/PatternExamples";
 import { HelpSidebar } from "@/components/HelpSidebar";
+import { SeoContent } from "@/components/SeoContent";
 import { useSharedContent } from "@/hooks/useSharedContent";
+import { useSeo } from "@/hooks/useSeo";
 import { Lock, Unlock, MessageSquare, HelpCircle, ListChecks } from "lucide-react";
 
 const Index = () => {
@@ -17,6 +19,14 @@ const Index = () => {
   const [mode, setMode] = useState<"message" | "quiz" | "question">(shared.initialMode ?? "message");
   const [messageSubTab, setMessageSubTab] = useState<string>(shared.message ? "decode" : "encode");
   const [quizSubTab, setQuizSubTab] = useState<string>(shared.quizCode ? "attempt" : "create");
+
+  useSeo({
+    title: "Hidey — Free Secret Message Generator, Quiz Maker & Question Lock Tool",
+    description:
+      "Encode secret messages, build shareable quizzes, and lock notes behind questions. Free, no account, 100% private and browser-based.",
+    canonicalPath: "/",
+  });
+
 
   useEffect(() => {
     if (shared.initialMode) setMode(shared.initialMode);
