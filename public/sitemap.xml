@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://tryhidey.xyz/</loc><lastmod>2026-05-22</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://tryhidey.xyz/</loc><lastmod>2026-08-16</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
   <url><loc>https://tryhidey.xyz/about</loc><lastmod>2026-05-22</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://tryhidey.xyz/faq</loc><lastmod>2026-05-22</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://tryhidey.xyz/blog</loc><lastmod>2026-05-22</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://tryhidey.xyz/blog/how-to-send-a-secret-message-using-hidey</loc><lastmod>2026-04-10</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://tryhidey.xyz/blog/5-creative-ways-to-use-hidey-for-birthdays</loc><lastmod>2026-04-12</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://tryhidey.xyz/blog/is-hidey-safe-how-your-messages-are-protected</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://tryhidey.xyz/blog/how-to-create-the-perfect-secret-quiz</loc><lastmod>2026-04-16</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://tryhidey.xyz/blog/what-is-message-obfuscation-simple-guide</loc><lastmod>2026-04-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://tryhidey.xyz/contact</loc><lastmod>2026-05-22</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://tryhidey.xyz/terms</loc><lastmod>2026-05-22</lastmod><changefreq>yearly</changefreq><priority>0.4</priority></url>
   <url><loc>https://tryhidey.xyz/privacy-policy</loc><lastmod>2026-05-22</lastmod><changefreq>yearly</changefreq><priority>0.4</priority></url>
