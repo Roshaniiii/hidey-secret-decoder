@@ -7,6 +7,7 @@ import { lazy, Suspense } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { ScrollToTop } from "@/components/ScrollToTop";
+import { FeedbackButton } from "@/components/FeedbackButton";
 import Index from "./pages/Index";
 
 const About = lazy(() => import("./pages/About"));
@@ -52,6 +53,7 @@ const App = () => (
           </Routes>
         </Suspense>
         <Footer />
+        <FeedbackButton />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
