@@ -8,6 +8,7 @@ import { PatternSelector } from "./PatternSelector";
 import { encodeMessage, PatternType } from "@/lib/encoding";
 import { Copy, Lock, X } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import { openFeedbackPopupOnce } from "@/lib/tally";
 
 const patternLabels: Record<PatternType, string> = {
   alnum: "Alnum Blocks",
@@ -53,6 +54,7 @@ export function EncodeSection() {
       title: "Message encoded!",
       description: "Your message is ready to copy.",
     });
+    setTimeout(() => openFeedbackPopupOnce(), 1200);
   };
 
   const handleCopy = () => {
