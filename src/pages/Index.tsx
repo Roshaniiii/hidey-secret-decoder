@@ -45,6 +45,9 @@ const Index = () => {
           <p className="text-base sm:text-lg text-muted-foreground font-medium">
             Hide it. Share it. Reveal it.
           </p>
+          <p className="text-sm sm:text-base text-primary/80 font-medium">
+            🌍 Supports all languages — Chinese, Japanese, Spanish, French, and every other script and emoji
+          </p>
         </div>
 
         <div className="grid lg:grid-cols-3 gap-8">
