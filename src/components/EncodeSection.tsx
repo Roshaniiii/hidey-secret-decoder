@@ -106,6 +106,9 @@ export function EncodeSection() {
         <p className="text-xs text-muted-foreground">
           Emoji & unicode supported • {message.length}/10,000 characters
         </p>
+        <p className="text-xs text-primary/80 font-medium">
+          🌍 Supports all languages — Hindi, Arabic, Chinese, Japanese, Spanish, French, and every other script and emoji
+        </p>
       </div>
 
       <PatternSelector value={pattern} onChange={setPattern} />
