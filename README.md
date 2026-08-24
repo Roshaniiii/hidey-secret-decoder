@@ -92,6 +92,7 @@ React 18 · TypeScript · Vite · Tailwind CSS · shadcn/ui · Radix UI · pako 
 
 [Website](https://tryhidey.xyz) · [Blog](https://tryhidey.xyz/blog) · [FAQ](https://tryhidey.xyz/faq) · [Contact](https://tryhidey.xyz/contact)
 
-*Hide it. Share it. Reveal it.*
+*Hide it. Share it. Reveal it.*  
+🌍 Supports all languages — Chinese, Japanese, Spanish, French, and every other script and emoji.
 
 </div>
