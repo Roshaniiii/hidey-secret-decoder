@@ -135,6 +135,33 @@ const posts: Record<string, { meta: typeof blogPosts[number]; blocks: Block[] }>
       { type: "p", text: "Obfuscation has been used for thousands of years and is still perfectly relevant today — just not for the same things as cryptographic encryption. Understanding the difference makes you a smarter user of every tool in this space, including Hidey." },
     ],
   },
+  "secret-message-ideas-for-couples": {
+    meta: blogPosts[5],
+    blocks: [
+      { type: "p", text: "Romance is not always about grand gestures. Sometimes the most meaningful moments come from small, intentional surprises — like a private message only your partner can decode. Hidey makes that easy, turning an ordinary text into something playful, mysterious, and personal." },
+      { type: "p", text: "Here are six romantic secret message ideas for couples that work on any phone, require no signup, and take less than a minute to create." },
+      { type: "h2", text: "1. The Good Morning Encoded Note" },
+      { type: "p", text: "Instead of sending a plain "good morning" text, encode it with the Symbol Stream pattern and add a passphrase you both know — maybe the date you first met or your favourite song lyric. Your partner wakes up to a puzzle that turns into a sweet message once decoded." },
+      { type: "p", text: "It is a small ritual that makes the everyday feel special." },
+      { type: "h2", text: "2. The Anniversary Love Letter" },
+      { type: "p", text: "Write a short love note, encode it, and send it on your anniversary before you even see each other. The act of decoding becomes part of the gift. You can even hide the passphrase inside a real-world clue, like the page number of the book you both love." },
+      { type: "p", text: "This works beautifully for birthdays, Valentine's Day, or "just because" moments too." },
+      { type: "h2", text: "3. The Apology That Feels Thoughtful" },
+      { type: "p", text: "Saying sorry over text can feel flat. Encoding your apology adds effort and thoughtfulness without being dramatic. It tells your partner you took an extra step to make the message personal — because they are worth that extra step." },
+      { type: "p", text: "Keep it genuine. The format should support the message, not replace it." },
+      { type: "h2", text: "4. Long-Distance Relationship Check-Ins" },
+      { type: "p", text: "Distance is hard, but small rituals help. Send encoded check-in messages once a week with a rotating passphrase based on something you both experienced — the last movie you watched together online, the name of the restaurant you want to try, or a private joke." },
+      { type: "p", text: "It gives long-distance couples a shared activity that feels intimate, even across time zones." },
+      { type: "h2", text: "5. The Bedroom Scavenger Hunt" },
+      { type: "p", text: "Use Question Mode to create a mini scavenger hunt around your home. Each solved question reveals a clue to the next location. The final message might reveal a surprise date night, a handwritten letter, or simply "I love you" waiting somewhere unexpected." },
+      { type: "p", text: "This turns a simple message into an experience — and experiences are what people remember." },
+      { type: "h2", text: "6. The "I Miss You" Code" },
+      { type: "p", text: "When you miss your partner during the day, send an encoded "I miss you" with no explanation. The mystery will make them smile before they even decode it. It is a quiet way to say you are thinking about them without using the same words everyone else uses." },
+      { type: "h2", text: "Make It Yours" },
+      { type: "p", text: "The best secret messages are not about complexity — they are about meaning. Use a pattern and passphrase that belong to your relationship. Inside jokes, shared memories, and private references make the message feel like it was built just for them. Because it was." },
+      { type: "p", text: "Hidey keeps it simple so you can focus on the message, not the tool." },
+    ],
+  },
 };
 
 const BlogPost = () => {
