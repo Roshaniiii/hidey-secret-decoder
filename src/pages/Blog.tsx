@@ -50,6 +50,15 @@ export const blogPosts = [
     date: "April 18, 2026",
     readTime: "7 min read",
   },
+  {
+    slug: "secret-message-ideas-for-couples",
+    title: "Secret Message Ideas for Couples: Romantic Ways to Use Hidey",
+    description:
+      "Looking for romantic secret message ideas for your partner? Discover creative ways to use Hidey to send love notes, surprises, and private messages that feel personal and fun.",
+    category: "Fun Ideas",
+    date: "April 20, 2026",
+    readTime: "5 min read",
+  },
 ];
 
 const Blog = () => {
