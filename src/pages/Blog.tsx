@@ -11,7 +11,7 @@ export const blogPosts = [
     description:
       "Looking for a secret message generator online? Hidey is a free tool to create and send secret messages with no signup, no account, and no data stored anywhere.",
     category: "Guides",
-    date: "April 10, 2026",
+    date: "August 27, 2026",
     readTime: "5 min read",
   },
   {
@@ -20,7 +20,7 @@ export const blogPosts = [
     description:
       "Hidey is more than a secret message website — discover 5 fun ways to use hidden message tools for birthday surprises, treasure hunts, and unforgettable moments.",
     category: "Fun Ideas",
-    date: "April 12, 2026",
+    date: "August 27, 2026",
     readTime: "5 min read",
   },
   {
@@ -29,7 +29,7 @@ export const blogPosts = [
     description:
       "Before using any secret message website or hidden message tool, understand exactly how your data is protected. Here is a completely honest breakdown of Hidey's security.",
     category: "Privacy",
-    date: "April 14, 2026",
+    date: "August 27, 2026",
     readTime: "6 min read",
   },
   {
@@ -38,7 +38,7 @@ export const blogPosts = [
     description:
       "Hidey's Quiz Mode is the best free secret quiz maker online — create shareable MCQ quizzes with codes, no account or app needed. Here is how to make a great one.",
     category: "Quiz Tips",
-    date: "April 16, 2026",
+    date: "August 27, 2026",
     readTime: "5 min read",
   },
   {
@@ -47,7 +47,7 @@ export const blogPosts = [
     description:
       "What is the difference between obfuscation and encryption? This plain-English guide explains how hidden message tools and secret message generators work — and when to use them.",
     category: "Privacy",
-    date: "April 18, 2026",
+    date: "August 27, 2026",
     readTime: "7 min read",
   },
   {
@@ -56,7 +56,7 @@ export const blogPosts = [
     description:
       "Looking for romantic secret message ideas for your partner? Discover creative ways to use Hidey to send love notes, surprises, and private messages that feel personal and fun.",
     category: "Fun Ideas",
-    date: "April 20, 2026",
+    date: "August 27, 2026",
     readTime: "5 min read",
   },
 ];
