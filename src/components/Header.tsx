@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Lock, Home, Mail, Download } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { LanguageSelector } from "@/components/LanguageSelector";
+
 
 export function Header() {
   const location = useLocation();
@@ -46,7 +46,7 @@ export function Header() {
             height={40}
             loading="eager"
           />
-          <span className="notranslate text-2xl font-bold text-foreground tracking-tight" translate="no">Hidey</span>
+          <span className="text-2xl font-bold text-foreground tracking-tight">Hidey</span>
         </Link>
         <nav className="flex items-center gap-1">
           {navItems.map(({ path, label, icon: Icon }) => (
@@ -73,8 +73,8 @@ export function Header() {
               <span className="hidden sm:inline">Install App</span>
             </button>
           )}
-          <LanguageSelector />
           <ThemeToggle />
+
         </nav>
       </div>
     </header>
