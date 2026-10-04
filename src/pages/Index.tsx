@@ -39,7 +39,7 @@ const Index = () => {
       <div className="container max-w-6xl mx-auto px-4 py-6 sm:py-12">
         {/* Header */}
         <div className="text-center mb-6 sm:mb-8 space-y-1">
-          <h1 className="text-4xl sm:text-5xl font-bold text-foreground tracking-tight">
+          <h1 translate="no" className="notranslate text-4xl sm:text-5xl font-bold text-foreground tracking-tight">
             Hidey
           </h1>
           <p className="text-base sm:text-lg text-muted-foreground font-medium">
