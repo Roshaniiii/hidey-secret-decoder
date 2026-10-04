@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Lock, Home, Mail, Download } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { LanguageSelector } from "@/components/LanguageSelector";
 
 export function Header() {
   const location = useLocation();
@@ -72,6 +73,7 @@ export function Header() {
               <span className="hidden sm:inline">Install App</span>
             </button>
           )}
+          <LanguageSelector />
           <ThemeToggle />
         </nav>
       </div>

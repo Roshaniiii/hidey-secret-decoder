@@ -37,6 +37,7 @@ All colors MUST be HSL.
     --border: 330 60% 90%;
     --input: 330 40% 92%;
     --ring: 330 85% 75%;
+    --brown: 25 45% 32%;
 
     --radius: 1rem;
     
@@ -91,6 +92,7 @@ All colors MUST be HSL.
     --border: 270 12% 28%;
     --input: 270 12% 26%;
     --ring: 330 60% 75%;
+    --brown: 28 45% 68%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
