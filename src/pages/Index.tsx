@@ -46,7 +46,9 @@ const Index = () => {
             Hide it. Share it. Reveal it.
           </p>
           <p className="text-xs sm:text-sm">
+            <span className="text-muted-foreground">📸 Try it free: </span>
             <a
+
               href="https://wheephotobooth.site"
               target="_blank"
               rel="noopener"
