@@ -46,7 +46,7 @@ export function Header() {
             height={40}
             loading="eager"
           />
-          <span className="text-2xl font-bold text-foreground tracking-tight">Hidey</span>
+          <span className="notranslate text-2xl font-bold text-foreground tracking-tight" translate="no">Hidey</span>
         </Link>
         <nav className="flex items-center gap-1">
           {navItems.map(({ path, label, icon: Icon }) => (
