@@ -45,6 +45,17 @@ const Index = () => {
           <p className="text-base sm:text-lg text-muted-foreground font-medium">
             Hide it. Share it. Reveal it.
           </p>
+          <p className="text-xs sm:text-sm">
+            <a
+              href="https://wheephotobooth.site"
+              target="_blank"
+              rel="noopener"
+              className="font-medium text-primary hover:underline"
+            >
+              Whee! Free Online Photobooth
+            </a>
+          </p>
+
           <p className="text-xs sm:text-sm text-primary/80 font-medium">
             <span className="text-[10px]">🌍</span> Supports all languages — Chinese, Japanese, Spanish, French, and every other script and emoji
           </p>
